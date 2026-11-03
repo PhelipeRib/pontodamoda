@@ -126,9 +126,7 @@
     .qr-card { text-align: center; background: var(--in); border: 1px dashed var(--bd); border-radius: 12px; padding: 16px; margin-top: 16px; }
     .qr-card img { width: 130px; height: 130px; border-radius: 8px; background: #fff; padding: 6px; border: 1px solid var(--bd); object-fit: contain; }
 
-    /* ==========================================================
-       AVATAR 3D FLUTUANTE DA MARTA (EXATAMENTE COMO O EXEMPLO)
-    ========================================================== */
+    /* AVATAR 3D FLUTUANTE DA MARTA */
     .marta-3d-wrapper {
       position: fixed;
       bottom: 24px;
@@ -351,22 +349,19 @@
         <p style="font-size: 0.72em; color: var(--mu); margin-bottom: 10px;">
           Acesse o catálogo instantaneamente pelo celular.
         </p>
-        <img src="adobe-express-qr-code.png" alt="QR Code Exclusiva" onerror="this.src='https://via.placeholder.com/120?text=QR+Code'">
+        <img src="qrcode.png" alt="QR Code Exclusiva" onerror="this.src='https://via.placeholder.com/120?text=QR+Code'">
       </div>
     </div>
   </div>
 </main>
 
-<!-- ==========================================================
-     AVATAR FLUTUANTE DA MARTA 3D (COM FALLBACK GARANTIDO)
-========================================================== -->
+<!-- AVATAR 3D FLUTUANTE DA MARTA -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
   </div>
   <div class="marta-avatar-3d" onclick="toggleMartaChat()" title="Falar com a Marta">
-    <!-- Busca a imagem marta-avatar.png e tem fallback direto para SVG da personagem 3D caso o arquivo falhe -->
-    <img id="martaAvatarImg" src="marta-avatar.png" alt="Marta 3D" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%235c3c2e\'/><circle cx=\'50\' cy=\'35\' r=\'18\' fill=\'%23704838\'/><circle cx=\'50\' cy=\'70\' r=\'28\' fill=\'%2338527a\'/><circle cx=\'42\' cy=\'32\' r=\'2\' fill=\'%23000\'/><circle cx=\'58\' cy=\'32\' r=\'2\' fill=\'%23000\'/><path d=\'M 44 42 Q 50 48 56 42\' stroke=\'%23fff\' stroke-width=\'2\' fill=\'none\'/></svg>'">
+    <img id="martaAvatarImg" src="marta.png" alt="Marta 3D" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%235c3c2e\'/><circle cx=\'50\' cy=\'35\' r=\'18\' fill=\'%23704838\'/><circle cx=\'50\' cy=\'70\' r=\'28\' fill=\'%2338527a\'/><circle cx=\'42\' cy=\'32\' r=\'2\' fill=\'%23000\'/><circle cx=\'58\' cy=\'32\' r=\'2\' fill=\'%23000\'/><path d=\'M 44 42 Q 50 48 56 42\' stroke=\'%23fff\' stroke-width=\'2\' fill=\'none\'/></svg>'">
     <div class="marta-online-dot"></div>
   </div>
 </div>
@@ -374,7 +369,7 @@
 <div class="marta-chat-window" id="martaChatWindow">
   <div class="marta-chat-header">
     <div class="marta-chat-header-profile">
-      <img src="marta-avatar.png" alt="Marta" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%235c3c2e\'/></svg>'">
+      <img src="marta.png" alt="Marta" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%235c3c2e\'/></svg>'">
       <div>
         <div style="font-weight: 800; font-size: 0.9em;">Marta (Stylist Virtual)</div>
         <div style="font-size: 0.7em; opacity: 0.9;">Online • Exclusiva Ponto da Moda</div>
@@ -384,7 +379,7 @@
   </div>
   <div class="marta-chat-messages" id="martaChatMessages">
     <div class="chat-bubble marta">
-      Oi! Sou a Marta. Posso te ajudar a escolher tamanhos (P, M, G), sugerir combinações ou tirar dúvidas sobre a retirada na Av. Anita Garibaldi! Como posso te ajudar? 💕
+      Oi! Sou a Marta. Posso te ajudar a escolher looks, tirar dúvidas sobre tamanhos (P, M, G), frete ou nossa loja na Av. Anita Garibaldi! O que você procura hoje? 💕
     </div>
   </div>
   <div class="marta-chat-input-area">
@@ -420,7 +415,6 @@
 <script>
   const GEMINI_API_KEY = "AQ.Ab8RN6IF2oqLPqDraM6_Vdu4feNEBH6A4EsuJ5A0ZMgiAIEcxw";
 
-  // Rotação dinâmica de mensagens da Marta
   const martaTips = [
     "Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍",
     "Olá! Precisa de ajuda com algum look? ✨",
@@ -453,10 +447,19 @@
     msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> A Marta está digitando...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    let respostaMarta = "Que ótimo look! Para fechar o pedido ou tirar dúvidas detalhadas, chame a gente no WhatsApp (41) 98835-3707 que a equipe te atende na hora!";
+    let respostaMarta = "Adorei a sua pergunta! Para finalizar seu pedido, calcular o frete com o motoboy em Curitiba ou tirar dúvidas sobre peças, é só montar sua sacola no site e clicar no botão verde de envio para o nosso WhatsApp (41) 98835-3707!";
 
     try {
-      // Endpoint Gemini v1beta utilizando gemini-2.5-flash
+      // Prompt instruindo detalhadamente a IA a responder de forma contextual e inteligente
+      const promptSistema = `Você é a Marta, dona e consultora de estilo da loja de vestuário feminino 'Exclusiva Ponto da Moda', situada na Av. Anita Garibaldi, 4591 - Barreirinha, Curitiba/PR. 
+      Responda de forma carinhosa, empática, elegante e natural (sem respostas robóticas) às dúvidas da cliente. 
+      Informações importantes que você deve dominar:
+      - VENDAS: O site serve para montar a sacola de compras. O pedido é enviado diretamente para o WhatsApp (41) 98835-3707 onde combinamos o pagamento e o frete.
+      - ENTREGAS: Fazemos entregas via motoboy em Curitiba e região, ou a cliente pode retirar gratuitamente na loja física.
+      - TAMANHOS: Trabalhamos com tamanhos P, M e G.
+      - PRODUTOS: Temos blusas, croppeds, calças jeans, vestidos, macacões e conjuntos de alfaiataria.
+      Pergunta da cliente: "${text}"`;
+
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
       const response = await fetch(url, {
         method: "POST",
@@ -464,7 +467,7 @@
         body: JSON.stringify({
           contents: [{
             role: "user",
-            parts: [{ text: `Você é a Marta, dona da loja de vestuário feminino 'Exclusiva Ponto da Moda' em Curitiba (Av. Anita Garibaldi, 4591 - Barreirinha). Seja carinhosa, elegante e prestativa. Responda em no máximo 2 frases curtas. Ajude com tamanhos (P, M, G) e reforce que ela pode enviar o pedido montado para o WhatsApp (41) 98835-3707. Pergunta da cliente: "${text}"` }]
+            parts: [{ text: promptSistema }]
           }]
         })
       });
