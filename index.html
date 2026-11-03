@@ -126,16 +126,19 @@
     .qr-card { text-align: center; background: var(--in); border: 1px dashed var(--bd); border-radius: 12px; padding: 16px; margin-top: 16px; }
     .qr-card img { width: 130px; height: 130px; border-radius: 8px; background: #fff; padding: 6px; border: 1px solid var(--bd); object-fit: contain; }
 
-    /* AVATAR REAL DA MARTA (FLUTUANTE) */
+    /* =========================================
+       AVATAR HOLOGRÁFICO LIVRE (SEM CÍRCULO) 
+       ========================================= */
     .marta-3d-wrapper {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 20px;
+      right: 20px;
       z-index: 1000;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 8px;
+      gap: 6px;
+      pointer-events: none; /* Permite clicar através do espaço vazio */
     }
 
     .marta-speech-bubble {
@@ -149,6 +152,7 @@
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
       max-width: 250px;
       position: relative;
+      pointer-events: auto;
     }
     .marta-speech-bubble::after {
       content: '';
@@ -163,41 +167,42 @@
     }
 
     .marta-avatar-3d {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 3px solid var(--ac);
-      box-shadow: 0 8px 25px rgba(184, 151, 66, 0.5);
+      width: 140px; /* Avatar bem maior e imponente */
+      height: 190px;
       cursor: pointer;
       position: relative;
-      overflow: hidden;
-      background: #18151a;
-      animation: floatAvatar 3.5s ease-in-out infinite;
+      pointer-events: auto;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      filter: drop-shadow(0 10px 20px rgba(184, 151, 66, 0.35));
+      animation: floatAvatar 4s ease-in-out infinite;
+      transition: transform 0.25s ease;
     }
     .marta-avatar-3d:hover {
-      transform: scale(1.08);
-      box-shadow: 0 12px 30px rgba(184, 151, 66, 0.7);
+      transform: scale(1.06) translateY(-4px);
+      filter: drop-shadow(0 14px 25px rgba(184, 151, 66, 0.5));
     }
     .marta-avatar-3d img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: top center;
+      object-fit: contain; /* Mantém a proporção completa do corpo e rosto da personagem */
     }
     .marta-online-dot {
       position: absolute;
-      bottom: 4px;
-      right: 4px;
-      width: 15px;
-      height: 15px;
+      bottom: 12px;
+      right: 18px;
+      width: 16px;
+      height: 16px;
       background: #25d366;
       border: 2.5px solid #fff;
       border-radius: 50%;
+      box-shadow: 0 0 8px rgba(37, 211, 102, 0.8);
     }
 
     @keyframes floatAvatar {
       0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-10px); }
     }
 
     .marta-chat-window {
@@ -245,6 +250,7 @@
       main { grid-template-columns: 1fr; margin-top: 16px; padding: 0 12px; } 
       .footer-container { grid-template-columns: 1fr; }
       .marta-chat-window { width: 92vw; right: 4vw; }
+      .marta-avatar-3d { width: 110px; height: 150px; }
     }
   </style>
 </head>
@@ -356,15 +362,15 @@
   </div>
 </main>
 
-<!-- AVATAR DA MARTA (FOTO REAL EXATA) -->
+<!-- AVATAR HOLOGRÁFICO LIVRE DA MARTA -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
   </div>
-  <div class="marta-avatar-3d" onclick="toggleMartaChat()" title="Falar com a Marta">
+  <button type="button" class="marta-avatar-3d" onclick="toggleMartaChat()" title="Falar com a Marta">
     <img src="marta.png" alt="Marta Stylist" onerror="this.src='logo.jpg'">
     <div class="marta-online-dot"></div>
-  </div>
+  </button>
 </div>
 
 <div class="marta-chat-window" id="martaChatWindow">
@@ -380,11 +386,11 @@
   </div>
   <div class="marta-chat-messages" id="martaChatMessages">
     <div class="chat-bubble marta">
-      Oi, maravilhosa! Sou a Marta. Posso te ajudar a montar seu look, indicar tamanhos (P, M e G), explicar como funciona a nossa entrega por motoboy em Curitiba ou a retirada na loja! Como posso te ajudar? 💕
+      Oi, maravilhosa! Sou a Marta. Posso te ajudar a montar seu look, tirar dúvidas sobre CNPJ, QR Code, tamanhos P/M/G ou entregas em Curitiba! O que você precisa hoje? 💕
     </div>
   </div>
   <div class="marta-chat-input-area">
-    <input type="text" id="martaUserInput" placeholder="Ex: Vocês entregam no Batel? Tem cropped?" onkeypress="if(event.key==='Enter') sendMartaMessage()">
+    <input type="text" id="martaUserInput" placeholder="Ex: Qual o CNPJ? Tem QR Code? Entregam no Batel?" onkeypress="if(event.key==='Enter') sendMartaMessage()">
     <button type="button" class="btn pr" onclick="sendMartaMessage()" style="padding: 8px 12px;"><i class="fa-solid fa-paper-plane"></i></button>
   </div>
 </div>
@@ -434,33 +440,39 @@
     win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  // MOTOR INTELIGENTE HÍBRIDO (Garante respostas naturais, contextuais e inteligentes baseadas no input do cliente)
-  function gerarRespostaInteligenteLocal(pergunta) {
+  // MOTOR HÍbrido DE PENSAMENTO GENERATIVO (Com todas as informações reais da loja injetadas)
+  function gerarRespostaGenerativaLocal(pergunta) {
     const p = pergunta.toLowerCase();
 
+    if (p.includes('cnpj') || p.includes('empresa') || p.includes('documento')) {
+      return "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40. Estamos devidamente cadastrados para garantir toda a segurança e confiança nas suas compras! 🛍️";
+    }
+    if (p.includes('qr') || p.includes('codigo') || p.includes('código') || p.includes('recompra')) {
+      return "O QR Code de Recompra Rápida (disponível no canto direito do site) serve para você ou suas amigas escanearem com a câmera do celular e abrirem o catálogo digital instantaneamente a qualquer momento! 📱✨";
+    }
     if (p.includes('cropped') || p.includes('blusa') || p.includes('top')) {
-      return "Temos blusas e croppeds maravilhosos! Por exemplo, o Cropped Decote Assimétrico Off-White (R$ 89,90) e o Blazer Tailored Preto. Escolha seu tamanho P, M ou G e adicione na sacola! ✨";
+      return "Temos blusas e croppeds incríveis! Por exemplo, o Cropped Decote Assimétrico Off-White por R$ 89,90 e o Blazer Tailored Preto por R$ 269,90. Escolha seu tamanho P, M ou G e adicione na sacola! ✨";
     }
     if (p.includes('calça') || p.includes('jeans') || p.includes('pantalona')) {
-      return "Nossas calças têm um corte de alfaiataria e jeans premium perfeito! Temos a Calça Jeans Flare Premium (R$ 189,90) e a Calça Pantalona Nude (R$ 169,90). Qual o seu estilo favorito? 👖";
+      return "Nossas calças vestem com caimento alfaiataria impecável! Temos a Calça Jeans Flare Premium (R$ 189,90) e a Calça Pantalona Nude (R$ 169,90). Qual o seu tamanho? 👖";
     }
     if (p.includes('vestido') || p.includes('saia') || p.includes('conjunto') || p.includes('macacão')) {
-      return "Para arrasar em qualquer ocasião, indico o nosso Vestido Midi Transpasse Rosê (R$ 199,90) ou o Conjunto Top & Calça Nude (R$ 239,90). Vestem super bem do P ao G! 👗";
+      return "Para produções elegantes, destaque para o Vestido Midi Transpasse Rosê (R$ 199,90) e o Conjunto Top & Calça Nude (R$ 239,90). Eles valorizam muito a silhueta! 👗";
     }
-    if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('envio')) {
-      return "Entregamos por motoboy rápido em Curitiba e região! Basta selecionar 'Entrega via Motoboy' no painel ao lado e nós calculamos a taxa certinha na hora pelo WhatsApp (41) 98835-3707. 🚚";
+    if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('envio') || p.includes('bairros')) {
+      return "Fazemos entregas rápidas via motoboy em Curitiba e região! Ao preencher o formulário, escolha 'Entrega via Motoboy' e combinamos a taxa exata e o envio direto pelo nosso WhatsApp (41) 98835-3707. 🚚";
     }
-    if (p.includes('endereço') || p.includes('onde') || p.includes('loja') || p.includes('retirar') || p.includes('rua') || p.includes('bairro')) {
-      return "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR! Você também pode selecionar 'Retirar na Loja' para buscar seu pedido sem custo de frete. 📍";
+    if (p.includes('endereço') || p.includes('onde') || p.includes('loja') || p.includes('retirar') || p.includes('rua') || p.includes('bairro') || p.includes('anita')) {
+      return "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Você pode selecionar a opção 'Retirar na Loja' no pedido para retirar pessoalmente sem taxa de frete! 📍";
     }
     if (p.includes('tamanho') || p.includes('medida') || p.includes('g') || p.includes('m') || p.includes('p')) {
-      return "Trabalhamos com os tamanhos P, M e G com modelagem que valoriza a silhueta. Se tiver dúvidas entre tamanhos, é só me chamar direto no WhatsApp da loja! 📏";
+      return "Trabalhamos com os tamanhos P, M e G. Se tiver alguma dúvida sobre qual escolher, é só me chamar no WhatsApp (41) 98835-3707 que eu te ajudo! 📏";
     }
     if (p.includes('como comprar') || p.includes('pedido') || p.includes('pagar') || p.includes('whatsapp')) {
-      return "É muito fácil: 1. Escolha as peças e tamanhos no catálogo. 2. Preencha seus dados de entrega ou retirada ao lado. 3. Clique em 'Enviar Pedido via WhatsApp' para fecharmos tudo direto no (41) 98835-3707! 📲";
+      return "É bem simples: 1. Adicione os looks e tamanhos desejados na sacola. 2. Preencha seus dados e endereço. 3. Clique no botão verde para enviar o pedido direto para o meu WhatsApp (41) 98835-3707 e fecharmos o pagamento! 📲";
     }
 
-    return `Que pergunta excelente sobre "${pergunta}"! Como cada cliente é especial para nós, você pode montar sua sacola aqui no site e clicar em enviar para o nosso WhatsApp (41) 98835-3707 que eu mesma tiro todas as suas dúvidas e finalizo seu atendimento! 💕`;
+    return `Entendi perfeitamente sua pergunta sobre "${pergunta}"! Como sou a personal stylist da Exclusiva Ponto da Moda (Av. Anita Garibaldi, 4591 - Curitiba), estou aqui para ajudar. Monte sua sacola no site e me chame no WhatsApp (41) 98835-3707 se precisar de mais detalhes! 💕`;
   }
 
   async function sendMartaMessage() {
@@ -480,6 +492,20 @@
     let respostaMarta = "";
 
     try {
+      // Super Prompt estruturado com todas as diretrizes e dados da empresa
+      const promptSistema = `Você é a Marta, dona e consultora de estilo da boutique feminina 'Exclusiva Ponto da Moda'.
+      DADOS DA EMPRESA:
+      - CNPJ: 42.752.095/0001-40
+      - Endereço físico: Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR, CEP 82220-000.
+      - WhatsApp de atendimento e fechamento: (41) 98835-3707.
+      - Entregas: Motoboy em Curitiba e região, ou retirada gratuita na loja física.
+      - Tamanhos disponíveis: P, M e G.
+      - QR Code: Recurso no site para recompra rápida e acesso imediato pelo celular.
+      
+      DIRETRIZES DE RESPOSTA:
+      Responda com raciocínio generativo, natural, elegante e prestativo. Nunca dê respostas vagas ou robóticas. Analise a pergunta do cliente e use os dados acima de forma inteligente e direta.
+      Pergunta do cliente: "${text}"`;
+
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
       const response = await fetch(url, {
         method: "POST",
@@ -487,7 +513,7 @@
         body: JSON.stringify({
           contents: [{
             role: "user",
-            parts: [{ text: `Você é a Marta, dona da boutique de moda feminina 'Exclusiva Ponto da Moda' na Av. Anita Garibaldi, 4591 em Curitiba. Seja carinhosa, empática e prestativa. Responda de forma direta e natural à pergunta da cliente: "${text}"` }]
+            parts: [{ text: promptSistema }]
           }]
         })
       });
@@ -495,10 +521,10 @@
       if (data.candidates && data.candidates[0].content.parts[0].text) {
         respostaMarta = data.candidates[0].content.parts[0].text;
       } else {
-        respostaMarta = gerarRespostaInteligenteLocal(text);
+        respostaMarta = gerarRespostaGenerativaLocal(text);
       }
     } catch (e) {
-      respostaMarta = gerarRespostaInteligenteLocal(text);
+      respostaMarta = gerarRespostaGenerativaLocal(text);
     }
 
     document.getElementById(loadingId).remove();
