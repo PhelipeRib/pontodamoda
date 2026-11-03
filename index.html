@@ -28,12 +28,10 @@
     * { box-sizing: border-box; margin: 0; font-family: 'Montserrat', sans-serif; transition: background 0.2s, color 0.2s, border-color 0.2s; }
     body { background: var(--bg); color: var(--tx); min-height: 100vh; padding-bottom: 40px; }
 
-    /* CABEÇALHO AMPLIADO E IMPONENTE */
     header { background: var(--cd); border-bottom: 2px solid var(--bd); padding: 20px 28px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(220, 180, 185, 0.2); }
     .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
     
     .brand { display: flex; align-items: center; gap: 16px; }
-    
     .brand-logo-img { 
       width: 68px; 
       height: 68px; 
@@ -59,7 +57,6 @@
     h2 { font-size: 1.15em; margin-bottom: 6px; color: var(--tx); display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; }
     p.sub { color: var(--mu); font-size: 0.84em; margin-bottom: 20px; }
 
-    /* BANNER DE INSTRUÇÃO INTUITIVA */
     .instruction-banner {
       background: linear-gradient(135deg, rgba(240, 196, 201, 0.4), rgba(184, 151, 66, 0.15));
       border: 1.5px dashed var(--rosé-dark);
@@ -130,36 +127,95 @@
     .qr-card { text-align: center; background: var(--in); border: 1px dashed var(--bd); border-radius: 12px; padding: 16px; margin-top: 16px; }
     .qr-card img { width: 130px; height: 130px; border-radius: 8px; background: #fff; padding: 6px; border: 1px solid var(--bd); object-fit: contain; }
 
-    /* WIDGET CHAT FLUTUANTE DA MARTA (IA) */
-    .marta-fab {
+    /* ==========================================================
+       AVATAR 3D FLUTUANTE DA MARTA (WIDGET VISUAL IMERSIVO)
+    ========================================================== */
+    .marta-3d-wrapper {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: linear-gradient(135deg, var(--rosé-dark), var(--ac));
-      color: #fff;
-      border-radius: 50px;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      box-shadow: 0 6px 25px rgba(184, 151, 66, 0.4);
       z-index: 1000;
-      border: 2px solid #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
     }
-    .marta-fab img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
-    .marta-fab span { font-weight: 800; font-size: 0.88em; letter-spacing: 0.5px; }
 
+    .marta-speech-bubble {
+      background: var(--cd);
+      border: 2px solid var(--rosé-dark);
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.8em;
+      font-weight: 600;
+      color: var(--tx);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      max-width: 240px;
+      position: relative;
+      animation: fadeInBubble 0.4s ease;
+    }
+    .marta-speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      right: 26px;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid var(--rosé-dark);
+    }
+
+    .marta-avatar-3d {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid var(--ac);
+      box-shadow: 0 8px 25px rgba(184, 151, 66, 0.5), inset 0 0 15px rgba(255,255,255,0.6);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      transform: perspective(600px) rotateY(-5deg) rotateX(5deg);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: floatAvatar 3.5s ease-in-out infinite;
+    }
+    .marta-avatar-3d:hover {
+      transform: scale(1.1) rotateY(0deg) rotateX(0deg);
+      box-shadow: 0 12px 30px rgba(184, 151, 66, 0.7);
+    }
+    .marta-avatar-3d img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .marta-online-dot {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 14px;
+      height: 14px;
+      background: #25d366;
+      border: 2px solid #fff;
+      border-radius: 50%;
+    }
+
+    @keyframes floatAvatar {
+      0%, 100% { transform: translateY(0px) rotateY(-5deg); }
+      50% { transform: translateY(-8px) rotateY(5deg); }
+    }
+
+    /* JANELA DO CHAT */
     .marta-chat-window {
       position: fixed;
-      bottom: 90px;
+      bottom: 110px;
       right: 24px;
-      width: 350px;
+      width: 360px;
       height: 480px;
       background: var(--cd);
-      border: 1px solid var(--bd);
+      border: 1.5px solid var(--bd);
       border-radius: 16px;
-      box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.22);
       z-index: 1001;
       display: none;
       flex-direction: column;
@@ -174,13 +230,13 @@
       justify-content: space-between;
     }
     .marta-chat-header-profile { display: flex; align-items: center; gap: 10px; }
-    .marta-chat-header-profile img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
+    .marta-chat-header-profile img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
     .marta-chat-messages { flex: 1; padding: 14px; overflow-y: auto; background: var(--bg); display: flex; flex-direction: column; gap: 10px; font-size: 0.85em; }
-    .chat-bubble { max-width: 80%; padding: 10px 14px; border-radius: 12px; line-height: 1.4; }
+    .chat-bubble { max-width: 82%; padding: 10px 14px; border-radius: 12px; line-height: 1.4; }
     .chat-bubble.marta { background: var(--cd); border: 1px solid var(--bd); color: var(--tx); align-self: flex-start; }
     .chat-bubble.user { background: var(--rosé-dark); color: #fff; align-self: flex-end; }
     .marta-chat-input-area { padding: 10px; background: var(--cd); border-top: 1px solid var(--bd); display: flex; gap: 8px; }
-    .marta-chat-input-area input { margin-bottom: 0; padding: 8px 12px; font-size: 0.82em; }
+    .marta-chat-input-area input { margin-bottom: 0; padding: 9px 12px; font-size: 0.82em; }
 
     footer { background: var(--cd); border-top: 1px solid var(--bd); padding: 40px 24px 20px; margin-top: 40px; }
     .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
@@ -224,7 +280,6 @@
       <h2><i class="fa-solid fa-shirt" style="color: var(--ac);"></i> Catálogo de Vestuário</h2>
       <p class="sub">Selecione o tamanho desejado e clique em <b>Adicionar</b> para montar sua sacola de looks.</p>
       
-      <!-- BANNER DE INSTRUÇÃO INTUITIVA -->
       <div class="instruction-banner">
         <i class="fa-solid fa-circle-info"></i>
         <div>
@@ -307,16 +362,23 @@
   </div>
 </main>
 
-<!-- WIDGET FLUTUANTE DA ASSISTENTE IA (MARTA) -->
-<div class="marta-fab" onclick="toggleMartaChat()">
-  <img src="image_891661.jpg" alt="Marta IA" onerror="this.src='https://via.placeholder.com/42?text=Marta'">
-  <span>Falar com a Marta 💬</span>
+<!-- ==========================================================
+     AVATAR 3D FLUTUANTE DA MARTA + CHAT GEMINI 2.5/3.6+
+========================================================== -->
+<div class="marta-3d-wrapper">
+  <div class="marta-speech-bubble" id="martaSpeechBubble">
+    Olá! Precisa de ajuda com algum look? ✨
+  </div>
+  <div class="marta-avatar-3d" onclick="toggleMartaChat()" title="Falar com a Marta">
+    <img src="image_891661.jpg" alt="Marta" onerror="this.src='https://via.placeholder.com/72?text=Marta'">
+    <div class="marta-online-dot"></div>
+  </div>
 </div>
 
 <div class="marta-chat-window" id="martaChatWindow">
   <div class="marta-chat-header">
     <div class="marta-chat-header-profile">
-      <img src="image_891661.jpg" alt="Marta" onerror="this.src='https://via.placeholder.com/36?text=Marta'">
+      <img src="image_891661.jpg" alt="Marta" onerror="this.src='https://via.placeholder.com/38?text=Marta'">
       <div>
         <div style="font-weight: 800; font-size: 0.9em;">Marta (Stylist Virtual)</div>
         <div style="font-size: 0.7em; opacity: 0.9;">Online • Exclusiva Ponto da Moda</div>
@@ -326,7 +388,7 @@
   </div>
   <div class="marta-chat-messages" id="martaChatMessages">
     <div class="chat-bubble marta">
-      Olá! Sou a assistente virtual da Exclusiva Ponto da Moda. Posso te ajudar a escolher looks, tirar dúvidas sobre tamanhos ou orientar sobre como enviar seu pedido pelo WhatsApp! Como posso te ajudar hoje? ✨
+      Oi! Sou a Marta, dona da Exclusiva Ponto da Moda. Posso te ajudar a escolher tamanhos (P, M, G), sugerir combinações ou tirar dúvidas sobre a retirada na Av. Anita Garibaldi! Como posso te ajudar? 💕
     </div>
   </div>
   <div class="marta-chat-input-area">
@@ -362,6 +424,20 @@
 <script>
   const GEMINI_API_KEY = "AQ.Ab8RN6IF2oqLPqDraM6_Vdu4feNEBH6A4EsuJ5A0ZMgiAIEcxw";
 
+  // Rotação inteligente de balões de fala da Marta no Avatar 3D
+  const martaTips = [
+    "Olá! Precisa de ajuda com algum look? ✨",
+    "Trabalhamos com os tamanhos P, M e G! 👗",
+    "Monte sua sacola e envie direto no nosso WhatsApp!",
+    "Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍"
+  ];
+  let tipIndex = 0;
+  setInterval(() => {
+    tipIndex = (tipIndex + 1) % martaTips.length;
+    const bubble = document.getElementById('martaSpeechBubble');
+    if(bubble) bubble.innerText = martaTips[tipIndex];
+  }, 6000);
+
   function toggleMartaChat() {
     const win = document.getElementById('martaChatWindow');
     win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
@@ -378,20 +454,21 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Pensando...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> A Marta está digitando...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    let respostaMarta = "Desculpe, tive um pico de atendimento agora! Mas você pode nos chamar diretamente no WhatsApp (41) 98835-3707 para tirar qualquer dúvida sobre os looks.";
+    let respostaMarta = "Que ótimo look! Para fechar o pedido ou tirar dúvidas detalhadas, chame a gente no WhatsApp (41) 98835-3707 que a equipe te atende na hora!";
 
     try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+      // Atualizado para utilizar gemini-2.5-flash (alta performance e estabilidade)
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{
             role: "user",
-            parts: [{ text: `Você é a Marta, dona da loja de vestuário feminino 'Exclusiva Ponto da Moda' em Curitiba (Av. Anita Garibaldi, 4591). Ajude a cliente com simpatia, dicas de looks, tamanhos (P, M, G) e explique que ela pode montar a sacola no site e clicar em enviar o pedido para o WhatsApp (41) 98835-3707. Pergunta da cliente: "${text}"` }]
+            parts: [{ text: `Você é a Marta, dona da loja de vestuário feminino 'Exclusiva Ponto da Moda' em Curitiba (Av. Anita Garibaldi, 4591 - Barreirinha). Seja extremamente carinhosa, elegante e prestativa. Ajude a cliente com dicas de moda, tamanhos P, M e G, e reforce que ela pode montar a sacola no site e clicar no botão verde para enviar o pedido direto para o WhatsApp (41) 98835-3707. Pergunta da cliente: "${text}"` }]
           }]
         })
       });
