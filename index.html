@@ -6,87 +6,105 @@
   <title>Exclusiva Ponto da Moda | Catálogo Inteligente B2C</title>
   
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%23c5a059' d='M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512 z'/></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   
   <style>
     :root {
-      --bg: #fff9fa;
+      --bg: #fff8f9;
       --cd: #ffffff;
-      --in: #fdf2f4;
+      --in: #fceeee;
       --ac: #b89742;
       --ac-hover: #9e7f35;
-      --rosé: #f3d1d5;
+      --rosé: #f0c4c9;
+      --rosé-dark: #d99b9f;
       --tx: #2d2124;
       --mu: #7c686d;
       --bd: #ebd4d7;
       --success: #25d366;
+      --ai-purple: #7c3aed;
     }
 
     * { box-sizing: border-box; margin: 0; font-family: 'Montserrat', sans-serif; transition: background 0.2s, color 0.2s, border-color 0.2s; }
     body { background: var(--bg); color: var(--tx); min-height: 100vh; padding-bottom: 40px; }
 
-    header { background: var(--cd); border-bottom: 1px solid var(--bd); padding: 16px 24px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(220, 180, 185, 0.15); }
+    /* CABEÇALHO AMPLIADO E IMPONENTE */
+    header { background: var(--cd); border-bottom: 2px solid var(--bd); padding: 20px 28px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(220, 180, 185, 0.2); }
     .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
     
-    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand { display: flex; align-items: center; gap: 16px; }
     
     .brand-logo-img { 
-      width: 56px; 
-      height: 56px; 
+      width: 68px; 
+      height: 68px; 
       border-radius: 50%; 
       object-fit: cover; 
-      border: 2px solid var(--ac);
-      box-shadow: 0 0 15px rgba(184, 151, 66, 0.4);
+      border: 3px solid var(--ac);
+      box-shadow: 0 0 18px rgba(184, 151, 66, 0.5);
       animation: floatLogo 3s ease-in-out infinite;
     }
     @keyframes floatLogo {
       0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-4px) scale(1.03); }
+      50% { transform: translateY(-4px) scale(1.04); }
     }
 
-    .brand-info h1 { font-size: 1.15em; font-weight: 700; color: var(--tx); letter-spacing: 1.5px; text-transform: uppercase; }
-    .brand-info p { font-size: 0.75em; color: var(--ac); font-weight: 600; display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+    .brand-info h1 { font-size: 1.4em; font-weight: 800; color: var(--tx); letter-spacing: 1.5px; text-transform: uppercase; }
+    .brand-info p { font-size: 0.82em; color: var(--ac); font-weight: 700; display: flex; align-items: center; gap: 6px; margin-top: 4px; }
 
     .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
     main { max-width: 1200px; margin: 28px auto 40px; padding: 0 20px; display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
 
-    .cd { background: var(--cd); border: 1px solid var(--bd); border-radius: 14px; padding: 24px; margin-bottom: 20px; box-shadow: 0 6px 20px rgba(220, 180, 185, 0.12); }
-    h2 { font-size: 1.1em; margin-bottom: 6px; color: var(--tx); display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-    p.sub { color: var(--mu); font-size: 0.82em; margin-bottom: 20px; }
+    .cd { background: var(--cd); border: 1px solid var(--bd); border-radius: 16px; padding: 24px; margin-bottom: 20px; box-shadow: 0 6px 20px rgba(220, 180, 185, 0.12); }
+    h2 { font-size: 1.15em; margin-bottom: 6px; color: var(--tx); display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; }
+    p.sub { color: var(--mu); font-size: 0.84em; margin-bottom: 20px; }
+
+    /* BANNER DE INSTRUÇÃO INTUITIVA */
+    .instruction-banner {
+      background: linear-gradient(135deg, rgba(240, 196, 201, 0.4), rgba(184, 151, 66, 0.15));
+      border: 1.5px dashed var(--rosé-dark);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      font-size: 0.85em;
+      color: var(--tx);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .instruction-banner i { font-size: 1.6em; color: var(--ac); }
 
     .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .filter-btn { background: var(--in); border: 1px solid var(--bd); padding: 7px 14px; border-radius: 20px; font-size: 0.78em; font-weight: 600; cursor: pointer; color: var(--tx); }
-    .filter-btn.active { background: var(--rosé); color: #2d2124; border-color: #d8a8ad; font-weight: 700; }
+    .filter-btn { background: var(--in); border: 1px solid var(--bd); padding: 8px 16px; border-radius: 20px; font-size: 0.8em; font-weight: 600; cursor: pointer; color: var(--tx); }
+    .filter-btn.active { background: var(--rosé); color: #2d2124; border-color: var(--rosé-dark); font-weight: 800; }
 
-    label { display: block; font-size: 0.78em; color: var(--mu); margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    input, select, textarea { background: var(--in); border: 1px solid var(--bd); color: var(--tx); border-radius: 8px; padding: 11px 14px; width: 100%; font-size: 0.88em; margin-bottom: 14px; outline: none; }
+    label { display: block; font-size: 0.78em; color: var(--mu); margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    input, select, textarea { background: var(--in); border: 1px solid var(--bd); color: var(--tx); border-radius: 10px; padding: 12px 14px; width: 100%; font-size: 0.88em; margin-bottom: 14px; outline: none; }
     input:focus, select:focus, textarea:focus { border-color: var(--ac); box-shadow: 0 0 0 2px rgba(184, 151, 66, 0.25); }
 
-    .btn { background: var(--in); border: 1px solid var(--bd); color: var(--tx); border-radius: 8px; padding: 10px 16px; font-size: 0.83em; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+    .btn { background: var(--in); border: 1px solid var(--bd); color: var(--tx); border-radius: 10px; padding: 10px 16px; font-size: 0.83em; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
     .btn:hover { border-color: var(--ac); color: var(--ac); }
     .btn.pr { background: var(--tx); color: #fff !important; border-color: var(--tx); font-weight: 700; }
     .btn.pr:hover { background: var(--ac); border-color: var(--ac); }
-    .btn.success { background: var(--success); color: #fff !important; border-color: var(--success); font-weight: 700; }
+    .btn.success { background: var(--success); color: #fff !important; border-color: var(--success); font-weight: 800; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
     .btn.success:hover { filter: brightness(1.1); }
     .btn.dn { color: #dc2626; border-color: transparent; }
     .btn.dn:hover { background: rgba(220, 38, 38, 0.1); }
 
     .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
-    .product-card { background: var(--cd); border: 1px solid var(--bd); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
-    .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(220, 180, 185, 0.25); }
-    .product-img-wrap { position: relative; width: 100%; height: 250px; background: var(--in); overflow: hidden; }
+    .product-card { background: var(--cd); border: 1px solid var(--bd); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+    .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(220, 180, 185, 0.3); }
+    .product-img-wrap { position: relative; width: 100%; height: 260px; background: var(--in); overflow: hidden; }
     .product-img { width: 100%; height: 100%; object-fit: cover; }
-    .product-badge { position: absolute; top: 10px; left: 10px; background: var(--rosé); color: #4a3539; font-size: 0.7em; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; }
+    .product-badge { position: absolute; top: 10px; left: 10px; background: var(--rosé); color: #4a3539; font-size: 0.72em; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; }
     
     .product-info { padding: 14px; display: flex; flex-direction: column; flex: 1; }
-    .product-title { font-size: 0.88em; font-weight: 600; margin-bottom: 6px; color: var(--tx); line-height: 1.3; }
-    .product-price { font-size: 1.05em; color: var(--ac); font-weight: 700; margin-bottom: 10px; }
+    .product-title { font-size: 0.9em; font-weight: 700; margin-bottom: 6px; color: var(--tx); line-height: 1.3; }
+    .product-price { font-size: 1.1em; color: var(--ac); font-weight: 800; margin-bottom: 10px; }
     
     .size-selector { display: flex; gap: 6px; margin-bottom: 12px; }
-    .size-btn { border: 1px solid var(--bd); background: var(--in); color: var(--tx); padding: 4px 10px; font-size: 0.75em; font-weight: 600; cursor: pointer; border-radius: 4px; }
-    .size-btn.selected { background: var(--rosé); color: #2d2124; border-color: #d8a8ad; font-weight: 700; }
+    .size-btn { border: 1px solid var(--bd); background: var(--in); color: var(--tx); padding: 5px 12px; font-size: 0.78em; font-weight: 700; cursor: pointer; border-radius: 6px; }
+    .size-btn.selected { background: var(--rosé-dark); color: #fff; border-color: var(--rosé-dark); }
 
     .tb-wrap { overflow-x: auto; margin-top: 10px; }
     table { width: 100%; border-collapse: collapse; font-size: 0.84em; text-align: left; }
@@ -97,8 +115,72 @@
     .total-box span { font-size: 0.85em; color: var(--mu); font-weight: 600; }
     .total-box strong { font-size: 1.3em; color: var(--ac); font-weight: 800; }
 
+    .disclaimer-box {
+      background: rgba(184, 151, 66, 0.08);
+      border: 1px solid rgba(184, 151, 66, 0.3);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.78em;
+      color: var(--mu);
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+    .disclaimer-box i { color: var(--ac); margin-right: 4px; }
+
     .qr-card { text-align: center; background: var(--in); border: 1px dashed var(--bd); border-radius: 12px; padding: 16px; margin-top: 16px; }
     .qr-card img { width: 130px; height: 130px; border-radius: 8px; background: #fff; padding: 6px; border: 1px solid var(--bd); object-fit: contain; }
+
+    /* WIDGET CHAT FLUTUANTE DA MARTA (IA) */
+    .marta-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: linear-gradient(135deg, var(--rosé-dark), var(--ac));
+      color: #fff;
+      border-radius: 50px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 25px rgba(184, 151, 66, 0.4);
+      z-index: 1000;
+      border: 2px solid #fff;
+    }
+    .marta-fab img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
+    .marta-fab span { font-weight: 800; font-size: 0.88em; letter-spacing: 0.5px; }
+
+    .marta-chat-window {
+      position: fixed;
+      bottom: 90px;
+      right: 24px;
+      width: 350px;
+      height: 480px;
+      background: var(--cd);
+      border: 1px solid var(--bd);
+      border-radius: 16px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+      z-index: 1001;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .marta-chat-header {
+      background: linear-gradient(135deg, var(--rosé-dark), var(--ac));
+      color: #fff;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .marta-chat-header-profile { display: flex; align-items: center; gap: 10px; }
+    .marta-chat-header-profile img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
+    .marta-chat-messages { flex: 1; padding: 14px; overflow-y: auto; background: var(--bg); display: flex; flex-direction: column; gap: 10px; font-size: 0.85em; }
+    .chat-bubble { max-width: 80%; padding: 10px 14px; border-radius: 12px; line-height: 1.4; }
+    .chat-bubble.marta { background: var(--cd); border: 1px solid var(--bd); color: var(--tx); align-self: flex-start; }
+    .chat-bubble.user { background: var(--rosé-dark); color: #fff; align-self: flex-end; }
+    .marta-chat-input-area { padding: 10px; background: var(--cd); border-top: 1px solid var(--bd); display: flex; gap: 8px; }
+    .marta-chat-input-area input { margin-bottom: 0; padding: 8px 12px; font-size: 0.82em; }
 
     footer { background: var(--cd); border-top: 1px solid var(--bd); padding: 40px 24px 20px; margin-top: 40px; }
     .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
@@ -112,6 +194,7 @@
     @media(max-width: 960px) { 
       main { grid-template-columns: 1fr; margin-top: 16px; padding: 0 12px; } 
       .footer-container { grid-template-columns: 1fr; }
+      .marta-chat-window { width: 90vw; right: 5vw; }
     }
   </style>
 </head>
@@ -120,7 +203,7 @@
 <header>
   <div class="header-container">
     <div class="brand">
-      <img src="logo.jpg" alt="Exclusiva Logo" class="brand-logo-img" onerror="this.src='https://via.placeholder.com/56?text=EX'">
+      <img src="logo.jpg" alt="Exclusiva Logo" class="brand-logo-img" onerror="this.src='https://via.placeholder.com/68?text=EX'">
       <div class="brand-info">
         <h1>Exclusiva Ponto da Moda</h1>
         <p><i class="fa-solid fa-location-dot"></i> Av. Anita Garibaldi, 4591 - Curitiba/PR</p>
@@ -128,8 +211,8 @@
     </div>
 
     <div class="header-actions">
-      <a href="https://api.whatsapp.com/send?phone=5541988353707&text=Olá!%20Vim%20pelo%20catálogo%20online%20e%20gostaria%20de%20atendimento." target="_blank" class="btn success">
-        <i class="fa-brands fa-whatsapp"></i> WhatsApp da Loja
+      <a href="https://api.whatsapp.com/send?phone=5541988353707&text=Olá!%20Vim%20pelo%20catálogo%20online%20e%20gostaria%20de%20atendimento." target="_blank" class="btn success" style="padding: 12px 20px; font-size: 0.9em;">
+        <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
       </a>
     </div>
   </div>
@@ -139,8 +222,16 @@
   <div class="col-main">
     <div class="cd">
       <h2><i class="fa-solid fa-shirt" style="color: var(--ac);"></i> Catálogo de Vestuário</h2>
-      <p class="sub">Navegue pelas nossas categorias, selecione o tamanho e monte sua sacola.</p>
+      <p class="sub">Selecione o tamanho desejado e clique em <b>Adicionar</b> para montar sua sacola de looks.</p>
       
+      <!-- BANNER DE INSTRUÇÃO INTUITIVA -->
+      <div class="instruction-banner">
+        <i class="fa-solid fa-circle-info"></i>
+        <div>
+          <b>Como Comprar:</b> Escolha suas peças e tamanhos favoritos no catálogo abaixo. Em seguida, preencha seus dados ao lado e clique no botão verde para <b>enviar o pedido direto pelo WhatsApp</b> com muita praticidade!
+        </div>
+      </div>
+
       <div class="filter-tabs">
         <button class="filter-btn active" onclick="filtrarCategoria('todos', this)">Todos</button>
         <button class="filter-btn" onclick="filtrarCategoria('Blusas', this)">Blusas & Croppeds</button>
@@ -156,7 +247,7 @@
     <div class="cd">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <h2><i class="fa-solid fa-bag-shopping" style="color: var(--ac);"></i> Sacola de Compras</h2>
-        <span class="badge" id="count-itens" style="background: var(--rosé); color: #4a3539; padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.75em;">0 Itens</span>
+        <span class="badge" id="count-itens" style="background: var(--rosé); color: #4a3539; padding: 4px 10px; border-radius: 20px; font-weight: 800; font-size: 0.75em;">0 Itens</span>
       </div>
 
       <div class="tb-wrap" id="tabela-itens-container">
@@ -172,8 +263,8 @@
 
   <div class="col-side">
     <div class="cd" style="position: sticky; top: 90px;">
-      <h2><i class="fa-solid fa-user-check" style="color: var(--ac);"></i> Finalizar Pedido</h2>
-      <p class="sub">Preencha seus dados para enviar direto ao WhatsApp.</p>
+      <h2><i class="fa-solid fa-paper-plane" style="color: var(--ac);"></i> Concluir Pedido</h2>
+      <p class="sub">Preencha seus dados e envie para o WhatsApp da loja.</p>
 
       <form id="form-fechar-pedido" onsubmit="enviarPedidoB2C(event)">
         <label>Seu Nome Completo *</label>
@@ -194,12 +285,15 @@
         <label>Observações do Pedido</label>
         <textarea id="cli-obs" rows="2" placeholder="Dúvidas sobre tamanho ou cor..."></textarea>
 
-        <button type="submit" id="btn-enviar-final" class="btn success" style="width: 100%; padding: 14px; font-size: 0.95em; margin-top: 6px;">
-          <i class="fa-brands fa-whatsapp"></i> Enviar Pedido via WhatsApp
+        <button type="submit" id="btn-enviar-final" class="btn success" style="width: 100%; padding: 14px; font-size: 1em; margin-top: 6px;">
+          <i class="fa-brands fa-whatsapp">✨ Enviar Pedido via WhatsApp</i>
         </button>
+
+        <div class="disclaimer-box">
+          <i class="fa-solid fa-triangle-exclamation"></i> <b>Nota Importante:</b> Todo o processo de montagem é feito por este site. Ao clicar em enviar, o pedido será direcionado automaticamente para o WhatsApp da nossa atendente para cálculo de frete e fechamento do pagamento.
+        </div>
       </form>
       
-      <!-- QR CODE CORRIGIDO COM O NOME EXATO DO SEU ARQUIVO NO GIT -->
       <div class="qr-card">
         <h3 style="font-size: 0.85em; color: var(--tx); margin-bottom: 4px;">
           <i class="fa-solid fa-qrcode" style="color: var(--ac);"></i> QR Code de Recompra Rápida
@@ -212,6 +306,34 @@
     </div>
   </div>
 </main>
+
+<!-- WIDGET FLUTUANTE DA ASSISTENTE IA (MARTA) -->
+<div class="marta-fab" onclick="toggleMartaChat()">
+  <img src="image_891661.jpg" alt="Marta IA" onerror="this.src='https://via.placeholder.com/42?text=Marta'">
+  <span>Falar com a Marta 💬</span>
+</div>
+
+<div class="marta-chat-window" id="martaChatWindow">
+  <div class="marta-chat-header">
+    <div class="marta-chat-header-profile">
+      <img src="image_891661.jpg" alt="Marta" onerror="this.src='https://via.placeholder.com/36?text=Marta'">
+      <div>
+        <div style="font-weight: 800; font-size: 0.9em;">Marta (Stylist Virtual)</div>
+        <div style="font-size: 0.7em; opacity: 0.9;">Online • Exclusiva Ponto da Moda</div>
+      </div>
+    </div>
+    <button type="button" onclick="toggleMartaChat()" style="background:transparent; border:0; color:#fff; font-size:1.1em; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="marta-chat-messages" id="martaChatMessages">
+    <div class="chat-bubble marta">
+      Olá! Sou a assistente virtual da Exclusiva Ponto da Moda. Posso te ajudar a escolher looks, tirar dúvidas sobre tamanhos ou orientar sobre como enviar seu pedido pelo WhatsApp! Como posso te ajudar hoje? ✨
+    </div>
+  </div>
+  <div class="marta-chat-input-area">
+    <input type="text" id="martaUserInput" placeholder="Digite sua dúvida..." onkeypress="if(event.key==='Enter') sendMartaMessage()">
+    <button type="button" class="btn pr" onclick="sendMartaMessage()" style="padding: 8px 12px;"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
 
 <footer>
   <div class="footer-container">
@@ -226,7 +348,6 @@
       </p>
     </div>
 
-    <!-- MAPA CORRIGIDO EXATAMENTE PARA A AV. ANITA GARIBALDI, 4591 -->
     <div class="map-container">
       <iframe 
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.491325760829!2d-49.2562415!3d-25.3789547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dce1274533b8a3%3A0x6b8bc96d3f23f03a!2sAv.%20Anita%20Garibaldi%2C%204591%20-%20Barreirinha%2C%20Curitiba%20-%20PR%2C%2082220-000!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" 
@@ -239,6 +360,54 @@
 </footer>
 
 <script>
+  const GEMINI_API_KEY = "AQ.Ab8RN6IF2oqLPqDraM6_Vdu4feNEBH6A4EsuJ5A0ZMgiAIEcxw";
+
+  function toggleMartaChat() {
+    const win = document.getElementById('martaChatWindow');
+    win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
+  }
+
+  async function sendMartaMessage() {
+    const input = document.getElementById('martaUserInput');
+    const text = input.value.trim();
+    if(!text) return;
+
+    const msgContainer = document.getElementById('martaChatMessages');
+    msgContainer.innerHTML += `<div class="chat-bubble user">${text}</div>`;
+    input.value = "";
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+
+    const loadingId = "loading_" + Date.now();
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Pensando...</div>`;
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+
+    let respostaMarta = "Desculpe, tive um pico de atendimento agora! Mas você pode nos chamar diretamente no WhatsApp (41) 98835-3707 para tirar qualquer dúvida sobre os looks.";
+
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
+            role: "user",
+            parts: [{ text: `Você é a Marta, dona da loja de vestuário feminino 'Exclusiva Ponto da Moda' em Curitiba (Av. Anita Garibaldi, 4591). Ajude a cliente com simpatia, dicas de looks, tamanhos (P, M, G) e explique que ela pode montar a sacola no site e clicar em enviar o pedido para o WhatsApp (41) 98835-3707. Pergunta da cliente: "${text}"` }]
+          }]
+        })
+      });
+      const data = await response.json();
+      if (data.candidates && data.candidates[0].content.parts[0].text) {
+        respostaMarta = data.candidates[0].content.parts[0].text;
+      }
+    } catch (e) {
+      console.warn("Erro IA:", e);
+    }
+
+    document.getElementById(loadingId).remove();
+    msgContainer.innerHTML += `<div class="chat-bubble marta">${respostaMarta}</div>`;
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+  }
+
   const produtosCatalogo = [
     { id: 1, nome: "Saia Acetinada Midi Marrom", preco: 149.90, cat: "Vestidos", img: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=500&auto=format&fit=crop&q=60" },
     { id: 2, nome: "Conjunto Top & Calça Nude Alfaiataria", preco: 239.90, cat: "Conjuntos", img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=60" },
@@ -344,7 +513,7 @@
 
     html += '</tbody></table>';
     container.innerHTML = html;
-    totalDisplay.innerText = `R$ ${totalGeral.toFixed(2).replace('.', ', ')}`;
+    totalDisplay.innerText = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
   }
 
   function enviarPedidoB2C(event) {
