@@ -126,7 +126,7 @@
     .qr-card { text-align: center; background: var(--in); border: 1px dashed var(--bd); border-radius: 12px; padding: 16px; margin-top: 16px; }
     .qr-card img { width: 130px; height: 130px; border-radius: 8px; background: #fff; padding: 6px; border: 1px solid var(--bd); object-fit: contain; }
 
-    /* AVATAR FLUTUANTE DE ALTA DEFINIÇÃO - MARTA */
+    /* AVATAR REAL DA MARTA (FLUTUANTE) */
     .marta-3d-wrapper {
       position: fixed;
       bottom: 24px;
@@ -171,7 +171,7 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      background: #2c1a12;
+      background: #18151a;
       animation: floatAvatar 3.5s ease-in-out infinite;
     }
     .marta-avatar-3d:hover {
@@ -182,6 +182,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: top center;
     }
     .marta-online-dot {
       position: absolute;
@@ -223,7 +224,7 @@
       justify-content: space-between;
     }
     .marta-chat-header-profile { display: flex; align-items: center; gap: 12px; }
-    .marta-chat-header-profile img, .marta-chat-header-profile svg { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
+    .marta-chat-header-profile img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: top center; border: 2px solid #fff; }
     .marta-chat-messages { flex: 1; padding: 14px; overflow-y: auto; background: var(--bg); display: flex; flex-direction: column; gap: 10px; font-size: 0.86em; }
     .chat-bubble { max-width: 82%; padding: 11px 15px; border-radius: 14px; line-height: 1.45; }
     .chat-bubble.marta { background: var(--cd); border: 1px solid var(--bd); color: var(--tx); align-self: flex-start; }
@@ -355,44 +356,13 @@
   </div>
 </main>
 
-<!-- AVATAR DA MARTA (SVG VETORIAL EMBUTIDO + SUPORTE A FOTO REAL) -->
+<!-- AVATAR DA MARTA (FOTO REAL EXATA) -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
   </div>
   <div class="marta-avatar-3d" onclick="toggleMartaChat()" title="Falar com a Marta">
-    <img id="martaAvatarImg" src="marta.png" alt="Marta Stylist" onerror="this.style.display='none'; document.getElementById('martaSvgFallback').style.display='block';">
-    
-    <!-- SVG HD com a ilustração realista da Marta (mulher elegante, cabelo preto longo, vestido escuro) -->
-    <svg id="martaSvgFallback" style="display:none; width:100%; height:100%;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8d5b4c"/><stop offset="100%" stop-color="#6e4235"/></linearGradient>
-        <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#121013"/><stop offset="100%" stop-color="#050505"/></linearGradient>
-      </defs>
-      <circle cx="50" cy="50" r="50" fill="#2c1d22"/>
-      <!-- Cabelo fundo -->
-      <path d="M 22 45 C 18 70, 20 90, 32 100 L 68 100 C 80 90, 82 70, 78 45 Z" fill="url(#hair)"/>
-      <!-- Corpo / Vestido Preto -->
-      <path d="M 28 82 L 40 68 L 60 68 L 72 82 L 80 100 L 20 100 Z" fill="#18151a"/>
-      <!-- Pescoço -->
-      <path d="M 43 55 L 57 55 L 58 70 L 42 70 Z" fill="url(#skin)"/>
-      <!-- Colar Dourado -->
-      <path d="M 41 64 Q 50 72 59 64" stroke="#b89742" stroke-width="2.5" fill="none"/>
-      <!-- Rosto -->
-      <ellipse cx="50" cy="48" rx="17" ry="20" fill="url(#skin)"/>
-      <!-- Cabelo Frente -->
-      <path d="M 32 38 C 30 18, 70 18, 68 38 C 65 24, 35 24, 32 38 Z" fill="url(#hair)"/>
-      <path d="M 33 36 C 26 48, 24 68, 30 85 C 34 70, 38 52, 38 42 Z" fill="url(#hair)"/>
-      <path d="M 67 36 C 74 48, 76 68, 70 85 C 66 70, 62 52, 62 42 Z" fill="url(#hair)"/>
-      <!-- Olhos e Maquiagem -->
-      <ellipse cx="44" cy="46" rx="2.5" ry="1.8" fill="#120c0a"/>
-      <ellipse cx="56" cy="46" rx="2.5" ry="1.8" fill="#120c0a"/>
-      <path d="M 40 43 Q 44 41 48 44" stroke="#000" stroke-width="1.2" fill="none"/>
-      <path d="M 52 44 Q 56 41 60 43" stroke="#000" stroke-width="1.2" fill="none"/>
-      <!-- Boca / Batom -->
-      <path d="M 45 57 Q 50 62 55 57 Q 50 60 45 57 Z" fill="#b34b56"/>
-    </svg>
-
+    <img src="marta.png" alt="Marta Stylist" onerror="this.src='logo.jpg'">
     <div class="marta-online-dot"></div>
   </div>
 </div>
@@ -400,14 +370,7 @@
 <div class="marta-chat-window" id="martaChatWindow">
   <div class="marta-chat-header">
     <div class="marta-chat-header-profile">
-      <div style="width:38px; height:38px; border-radius:50%; overflow:hidden; border:2px solid #fff; background:#2c1d22;">
-        <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
-          <circle cx="50" cy="50" r="50" fill="#2c1d22"/>
-          <path d="M 22 45 C 18 70, 20 90, 32 100 L 68 100 C 80 90, 82 70, 78 45 Z" fill="#121013"/>
-          <ellipse cx="50" cy="48" rx="17" ry="20" fill="#8d5b4c"/>
-          <path d="M 32 38 C 30 18, 70 18, 68 38 C 65 24, 35 24, 32 38 Z" fill="#121013"/>
-        </svg>
-      </div>
+      <img src="marta.png" alt="Marta" onerror="this.src='logo.jpg'">
       <div>
         <div style="font-weight: 800; font-size: 0.9em;">Marta (Stylist Virtual)</div>
         <div style="font-size: 0.7em; opacity: 0.9;">Online • Exclusiva Ponto da Moda</div>
@@ -471,33 +434,33 @@
     win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  // MOTOR INTELIGENTE LOCAL (Garante dinamismo imediato caso a API Gemini REST sofra bloqueio ou delay)
+  // MOTOR INTELIGENTE HÍBRIDO (Garante respostas naturais, contextuais e inteligentes baseadas no input do cliente)
   function gerarRespostaInteligenteLocal(pergunta) {
     const p = pergunta.toLowerCase();
 
     if (p.includes('cropped') || p.includes('blusa') || p.includes('top')) {
-      return "Temos croppeds e blusas lindas! Você encontra modelos como o Cropped Decote Assimétrico Off-White (R$ 89,90) e o Blazer Tailored Preto na nossa categoria de Blusas. É só selecionar o tamanho P, M ou G e adicionar na sacola! ✨";
+      return "Temos blusas e croppeds maravilhosos! Por exemplo, o Cropped Decote Assimétrico Off-White (R$ 89,90) e o Blazer Tailored Preto. Escolha seu tamanho P, M ou G e adicione na sacola! ✨";
     }
     if (p.includes('calça') || p.includes('jeans') || p.includes('pantalona')) {
-      return "Nossas calças têm um caimento impecável! Temos a Calça Jeans Flare Premium (R$ 189,90) e a Calça Pantalona em Alfaiataria Nude (R$ 169,90). Qual o seu tamanho habitual? 👖";
+      return "Nossas calças têm um corte de alfaiataria e jeans premium perfeito! Temos a Calça Jeans Flare Premium (R$ 189,90) e a Calça Pantalona Nude (R$ 169,90). Qual o seu estilo favorito? 👖";
     }
     if (p.includes('vestido') || p.includes('saia') || p.includes('conjunto') || p.includes('macacão')) {
-      return "Para ocasiões especiais ou dia a dia, recomendo o nosso Vestido Midi Transpasse Rosê (R$ 199,90) ou a Saia Acetinada Midi Marrom (R$ 149,90)! Eles vestem super bem do P ao G. 👗";
+      return "Para arrasar em qualquer ocasião, indico o nosso Vestido Midi Transpasse Rosê (R$ 199,90) ou o Conjunto Top & Calça Nude (R$ 239,90). Vestem super bem do P ao G! 👗";
     }
     if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('envio')) {
-      return "Entregamos por motoboy em toda Curitiba e região metropolitana! Você escolhe 'Entrega via Motoboy' ao preencher o formulário ao lado e calculamos a taxa exata na hora pelo WhatsApp (41) 98835-3707! 🚚";
+      return "Entregamos por motoboy rápido em Curitiba e região! Basta selecionar 'Entrega via Motoboy' no painel ao lado e nós calculamos a taxa certinha na hora pelo WhatsApp (41) 98835-3707. 🚚";
     }
     if (p.includes('endereço') || p.includes('onde') || p.includes('loja') || p.includes('retirar') || p.includes('rua') || p.includes('bairro')) {
-      return "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, em Curitiba/PR! Você pode escolher a opção 'Retirar na Loja' no pedido para economizar no frete! 📍";
+      return "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR! Você também pode selecionar 'Retirar na Loja' para buscar seu pedido sem custo de frete. 📍";
     }
     if (p.includes('tamanho') || p.includes('medida') || p.includes('g') || p.includes('m') || p.includes('p')) {
-      return "Trabalhamos com a grade padrão do P ao G. Nossos tecidos possuem excelente caimento e elasticidade! Caso tenha dúvida entre dois tamanhos, me chame no Whats que te ajudo a medir! 📏";
+      return "Trabalhamos com os tamanhos P, M e G com modelagem que valoriza a silhueta. Se tiver dúvidas entre tamanhos, é só me chamar direto no WhatsApp da loja! 📏";
     }
     if (p.includes('como comprar') || p.includes('pedido') || p.includes('pagar') || p.includes('whatsapp')) {
-      return "É super prático! 1. Selecione os tamanhos e clique em 'Adicionar' nas peças. 2. Preencha seu nome e endereço no painel ao lado. 3. Clique no botão verde 'Enviar Pedido via WhatsApp' para concluir tudo diretamente comigo no (41) 98835-3707! 📲";
+      return "É muito fácil: 1. Escolha as peças e tamanhos no catálogo. 2. Preencha seus dados de entrega ou retirada ao lado. 3. Clique em 'Enviar Pedido via WhatsApp' para fecharmos tudo direto no (41) 98835-3707! 📲";
     }
 
-    return `Entendi perfeitamente sua dúvida sobre "${pergunta}"! Como temos peças exclusivas e atendimento personalizado, você pode montar sua sacola aqui no site e nos enviar direto pelo WhatsApp (41) 98835-3707 para tirar todas as dúvidas antes de fechar! 💕`;
+    return `Que pergunta excelente sobre "${pergunta}"! Como cada cliente é especial para nós, você pode montar sua sacola aqui no site e clicar em enviar para o nosso WhatsApp (41) 98835-3707 que eu mesma tiro todas as suas dúvidas e finalizo seu atendimento! 💕`;
   }
 
   async function sendMartaMessage() {
@@ -524,7 +487,7 @@
         body: JSON.stringify({
           contents: [{
             role: "user",
-            parts: [{ text: `Você é a Marta, dona da boutique de moda feminina 'Exclusiva Ponto da Moda' na Av. Anita Garibaldi, 4591 em Curitiba. Responda com simpatia e foco em vendas. Pergunta da cliente: "${text}"` }]
+            parts: [{ text: `Você é a Marta, dona da boutique de moda feminina 'Exclusiva Ponto da Moda' na Av. Anita Garibaldi, 4591 em Curitiba. Seja carinhosa, empática e prestativa. Responda de forma direta e natural à pergunta da cliente: "${text}"` }]
           }]
         })
       });
