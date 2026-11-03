@@ -22,7 +22,6 @@
       --mu: #7c686d;
       --bd: #ebd4d7;
       --success: #25d366;
-      --ai-purple: #7c3aed;
     }
 
     * { box-sizing: border-box; margin: 0; font-family: 'Montserrat', sans-serif; transition: background 0.2s, color 0.2s, border-color 0.2s; }
@@ -128,7 +127,7 @@
     .qr-card img { width: 130px; height: 130px; border-radius: 8px; background: #fff; padding: 6px; border: 1px solid var(--bd); object-fit: contain; }
 
     /* ==========================================================
-       AVATAR 3D FLUTUANTE DA MARTA (WIDGET VISUAL IMERSIVO)
+       AVATAR 3D FLUTUANTE DA MARTA (EXATAMENTE COMO O EXEMPLO)
     ========================================================== */
     .marta-3d-wrapper {
       position: fixed;
@@ -147,18 +146,17 @@
       padding: 10px 14px;
       border-radius: 14px;
       font-size: 0.8em;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--tx);
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      max-width: 240px;
+      max-width: 250px;
       position: relative;
-      animation: fadeInBubble 0.4s ease;
     }
     .marta-speech-bubble::after {
       content: '';
       position: absolute;
       bottom: -8px;
-      right: 26px;
+      right: 28px;
       width: 0;
       height: 0;
       border-left: 8px solid transparent;
@@ -167,21 +165,19 @@
     }
 
     .marta-avatar-3d {
-      width: 72px;
-      height: 72px;
+      width: 76px;
+      height: 76px;
       border-radius: 50%;
       border: 3px solid var(--ac);
-      box-shadow: 0 8px 25px rgba(184, 151, 66, 0.5), inset 0 0 15px rgba(255,255,255,0.6);
+      box-shadow: 0 8px 25px rgba(184, 151, 66, 0.5);
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      background: #000;
-      transform: perspective(600px) rotateY(-5deg) rotateX(5deg);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: #f7e8e8;
       animation: floatAvatar 3.5s ease-in-out infinite;
     }
     .marta-avatar-3d:hover {
-      transform: scale(1.1) rotateY(0deg) rotateX(0deg);
+      transform: scale(1.1);
       box-shadow: 0 12px 30px rgba(184, 151, 66, 0.7);
     }
     .marta-avatar-3d img {
@@ -201,14 +197,13 @@
     }
 
     @keyframes floatAvatar {
-      0%, 100% { transform: translateY(0px) rotateY(-5deg); }
-      50% { transform: translateY(-8px) rotateY(5deg); }
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
     }
 
-    /* JANELA DO CHAT */
     .marta-chat-window {
       position: fixed;
-      bottom: 110px;
+      bottom: 115px;
       right: 24px;
       width: 360px;
       height: 480px;
@@ -363,14 +358,15 @@
 </main>
 
 <!-- ==========================================================
-     AVATAR 3D FLUTUANTE DA MARTA + CHAT GEMINI 2.5/3.6+
+     AVATAR FLUTUANTE DA MARTA 3D (COM FALLBACK GARANTIDO)
 ========================================================== -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
-    Olá! Precisa de ajuda com algum look? ✨
+    Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
   </div>
   <div class="marta-avatar-3d" onclick="toggleMartaChat()" title="Falar com a Marta">
-    <img src="image_891661.jpg" alt="Marta" onerror="this.src='https://via.placeholder.com/72?text=Marta'">
+    <!-- Busca a imagem marta-avatar.png e tem fallback direto para SVG da personagem 3D caso o arquivo falhe -->
+    <img id="martaAvatarImg" src="marta-avatar.png" alt="Marta 3D" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%235c3c2e\'/><circle cx=\'50\' cy=\'35\' r=\'18\' fill=\'%23704838\'/><circle cx=\'50\' cy=\'70\' r=\'28\' fill=\'%2338527a\'/><circle cx=\'42\' cy=\'32\' r=\'2\' fill=\'%23000\'/><circle cx=\'58\' cy=\'32\' r=\'2\' fill=\'%23000\'/><path d=\'M 44 42 Q 50 48 56 42\' stroke=\'%23fff\' stroke-width=\'2\' fill=\'none\'/></svg>'">
     <div class="marta-online-dot"></div>
   </div>
 </div>
@@ -378,7 +374,7 @@
 <div class="marta-chat-window" id="martaChatWindow">
   <div class="marta-chat-header">
     <div class="marta-chat-header-profile">
-      <img src="image_891661.jpg" alt="Marta" onerror="this.src='https://via.placeholder.com/38?text=Marta'">
+      <img src="marta-avatar.png" alt="Marta" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%235c3c2e\'/></svg>'">
       <div>
         <div style="font-weight: 800; font-size: 0.9em;">Marta (Stylist Virtual)</div>
         <div style="font-size: 0.7em; opacity: 0.9;">Online • Exclusiva Ponto da Moda</div>
@@ -388,7 +384,7 @@
   </div>
   <div class="marta-chat-messages" id="martaChatMessages">
     <div class="chat-bubble marta">
-      Oi! Sou a Marta, dona da Exclusiva Ponto da Moda. Posso te ajudar a escolher tamanhos (P, M, G), sugerir combinações ou tirar dúvidas sobre a retirada na Av. Anita Garibaldi! Como posso te ajudar? 💕
+      Oi! Sou a Marta. Posso te ajudar a escolher tamanhos (P, M, G), sugerir combinações ou tirar dúvidas sobre a retirada na Av. Anita Garibaldi! Como posso te ajudar? 💕
     </div>
   </div>
   <div class="marta-chat-input-area">
@@ -424,19 +420,19 @@
 <script>
   const GEMINI_API_KEY = "AQ.Ab8RN6IF2oqLPqDraM6_Vdu4feNEBH6A4EsuJ5A0ZMgiAIEcxw";
 
-  // Rotação inteligente de balões de fala da Marta no Avatar 3D
+  // Rotação dinâmica de mensagens da Marta
   const martaTips = [
+    "Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍",
     "Olá! Precisa de ajuda com algum look? ✨",
     "Trabalhamos com os tamanhos P, M e G! 👗",
-    "Monte sua sacola e envie direto no nosso WhatsApp!",
-    "Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍"
+    "Monte sua sacola e envie direto no nosso WhatsApp!"
   ];
   let tipIndex = 0;
   setInterval(() => {
     tipIndex = (tipIndex + 1) % martaTips.length;
     const bubble = document.getElementById('martaSpeechBubble');
     if(bubble) bubble.innerText = martaTips[tipIndex];
-  }, 6000);
+  }, 5000);
 
   function toggleMartaChat() {
     const win = document.getElementById('martaChatWindow');
@@ -460,7 +456,7 @@
     let respostaMarta = "Que ótimo look! Para fechar o pedido ou tirar dúvidas detalhadas, chame a gente no WhatsApp (41) 98835-3707 que a equipe te atende na hora!";
 
     try {
-      // Atualizado para utilizar gemini-2.5-flash (alta performance e estabilidade)
+      // Endpoint Gemini v1beta utilizando gemini-2.5-flash
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
       const response = await fetch(url, {
         method: "POST",
@@ -468,7 +464,7 @@
         body: JSON.stringify({
           contents: [{
             role: "user",
-            parts: [{ text: `Você é a Marta, dona da loja de vestuário feminino 'Exclusiva Ponto da Moda' em Curitiba (Av. Anita Garibaldi, 4591 - Barreirinha). Seja extremamente carinhosa, elegante e prestativa. Ajude a cliente com dicas de moda, tamanhos P, M e G, e reforce que ela pode montar a sacola no site e clicar no botão verde para enviar o pedido direto para o WhatsApp (41) 98835-3707. Pergunta da cliente: "${text}"` }]
+            parts: [{ text: `Você é a Marta, dona da loja de vestuário feminino 'Exclusiva Ponto da Moda' em Curitiba (Av. Anita Garibaldi, 4591 - Barreirinha). Seja carinhosa, elegante e prestativa. Responda em no máximo 2 frases curtas. Ajude com tamanhos (P, M, G) e reforce que ela pode enviar o pedido montado para o WhatsApp (41) 98835-3707. Pergunta da cliente: "${text}"` }]
           }]
         })
       });
@@ -477,7 +473,7 @@
         respostaMarta = data.candidates[0].content.parts[0].text;
       }
     } catch (e) {
-      console.warn("Erro IA:", e);
+      console.warn("Erro na API da IA:", e);
     }
 
     document.getElementById(loadingId).remove();
