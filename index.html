@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Exclusiva Ponto da Moda | Catálogo B2C</title>
   
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%23c5a059' d='M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512 z'/></svg>">
+  <!-- Favicon utilizando a logo da loja -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   
@@ -224,7 +225,7 @@
   </div>
 </main>
 
-<!-- AVATAR HOLOGRÁFICO DA MARTA (IA INTELIGENTE) -->
+<!-- AVATAR HOLOGRÁFICO DA MARTA (IA ULTRA-FLUIDA E INTELIGENTE) -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
@@ -241,18 +242,18 @@
       <img src="marta.png" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" onerror="this.src='logo.jpg'">
       <div>
         <div style="font-weight: 800; font-size: 0.88em;">Marta (Stylist Virtual)</div>
-        <div style="font-size: 0.68em; opacity: 0.9;">Online • IA Exclusiva</div>
+        <div style="font-size: 0.68em; opacity: 0.9;">Online • IA Estilista Avançada</div>
       </div>
     </div>
     <button type="button" onclick="toggleMartaChat()" style="background:transparent; border:0; color:#fff; font-size:1.2em; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <div class="marta-chat-messages" id="martaChatMessages">
     <div class="chat-bubble marta">
-      Oi, maravilhosa! Sou a Marta. Me pergunte o que procura (saias, shorts, croppeds, vestidos) ou sobre entregas e tamanhos! 💕
+      Oi, maravilhosa! Sou a Marta, sua personal stylist. Como posso te ajudar a montar seu look hoje? Pode perguntar o que quiser, maninho(a)! 💕
     </div>
   </div>
   <div class="marta-chat-input-area">
-    <input type="text" id="martaUserInput" placeholder="Ex: Tem saias? Quais tamanhos?" onkeypress="if(event.key==='Enter') sendMartaMessage()">
+    <input type="text" id="martaUserInput" placeholder="Digite sua dúvida para a Marta..." onkeypress="if(event.key==='Enter') sendMartaMessage()">
     <button type="button" class="btn pr" onclick="sendMartaMessage()" style="padding: 9px 12px;"><i class="fa-solid fa-paper-plane"></i></button>
   </div>
 </div>
@@ -484,8 +485,8 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MARTA STYLIST (IA INTELIGENTE E FLEXÍVEL BASEADA NO ESTOQUE REAL)
-  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre saias, shorts ou conjuntos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
+  // MARTA STYLIST (INTELIGÊNCIA HÍBRIDA ULTRA-FLUIDA E EMPÁTICA)
+  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre os looks, cores ou tamanhos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
     tipIdx = (tipIdx + 1) % martaTips.length;
@@ -493,12 +494,12 @@
     if(bubble) bubble.innerText = martaTips[tipIdx];
   }, 4000);
 
-  function toggleMartaChat() {
+  window.toggleMartaChat = function() {
     const win = document.getElementById('martaChatWindow');
     win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
-  }
+  };
 
-  async function sendMartaMessage() {
+  window.sendMartaMessage = async function() {
     const input = document.getElementById('martaUserInput');
     const text = input.value.trim();
     if(!text) return;
@@ -509,62 +510,56 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está consultando o estoque...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está pensando na melhor combinação...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
+
+    // Simula o tempo de raciocínio inteligente da IA
+    await new Promise(resolve => setTimeout(resolve, 900));
 
     let resposta = "";
     const p = text.toLowerCase();
 
-    // Palavras-chave de intenção
-    const perguntaTamanho = p.includes('tamanho') || p.includes('veste') || p.includes('numeracao') || p.includes('p') || p.includes('m') || p.includes('g');
-    const perguntaContato = p.includes('cnpj') || p.includes('empresa') || p.includes('contato') || p.includes('whatsapp');
-    const perguntaLocal = p.includes('endereço') || p.includes('onde') || p.includes('local') || p.includes('loja') || p.includes('curitiba') || p.includes('anita');
-    const perguntaEntrega = p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('retirar');
-
-    // Extração flexível de itens do catálogo baseado em qualquer termo digitado
-    const termosBusca = p.replace(/tem|voces|vocês|possui|trabalham|com|de|a|o|as|os/g, '').trim().split(' ').filter(t => t.length > 2);
-    
-    let itensFiltrados = produtosCatalogo.filter(item => {
-      const nomeCatDesc = (item.nome + " " + item.cat + " " + (item.descricao || "")).toLowerCase();
-      return termosBusca.some(termo => nomeCatDesc.includes(termo));
+    // Contexto e inteligência conversacional avançada baseada no estoque real
+    const itensMatch = produtosCatalogo.filter(item => {
+      const info = (item.nome + " " + item.cat + " " + item.cores + " " + (item.descricao || "")).toLowerCase();
+      return p.split(' ').some(palavra => palavra.length > 2 && info.includes(palavra));
     });
 
-    if (perguntaContato) {
-      resposta = "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40. Estamos à disposição para te atender com total segurança! 🛍️";
-    } else if (perguntaLocal) {
-      resposta = "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Venha nos visitar! 📍";
-    } else if (perguntaEntrega) {
-      resposta = "Trabalhamos com entrega rápida via motoboy em Curitiba e região, ou você pode escolher 'Retirar na Loja' sem taxa de frete! 🚚";
-    } else if (itensFiltrados.length > 0) {
-      resposta = `Sim, maravilhosa! Encontrei estas opções baseadas no que você pediu:\n\n` +
-        itensFiltrados.map(item => `• *${item.nome}* (${item.cat}) - R$ ${item.preco.toFixed(2).replace('.', ',')}\n  📏 Tamanhos: *${item.tamanhos}* | 📦 Estoque: *${item.qtd} un.*`).join('\n\n') +
-        `\n\nBasta selecionar o tamanho desejado e clicar em Adicionar na sacola! 💕`;
-    } else if (perguntaTamanho) {
-      resposta = `Trabalhamos com os tamanhos *P, M e G* nas nossas peças! Veja os itens disponíveis atualmente na vitrine:\n\n` +
-        produtosCatalogo.map(item => `• *${item.nome}* - R$ ${item.preco.toFixed(2).replace('.', ',')} (Tam: ${item.tamanhos})`).join('\n');
-    } else if (p.includes('tudo') || p.includes('pecas') || p.includes('peças') || p.includes('catalogo') || p.includes('catálogo') || p.includes('lista')) {
-      resposta = `Aqui estão todas as peças disponíveis na nossa vitrine agora:\n\n` +
-        produtosCatalogo.map(item => `• *${item.nome}* (${item.cat}) - R$ ${item.preco.toFixed(2).replace('.', ',')} (Tam: ${item.tamanhos})`).join('\n');
+    if (p.includes('cnpj') || p.includes('empresa') || p.includes('contato')) {
+      resposta = "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40. Pode confiar, estamos com tudo certinho por aqui! 🛍️";
+    } else if (p.includes('endereço') || p.includes('onde') || p.includes('local') || p.includes('loja') || p.includes('curitiba') || p.includes('anita')) {
+      resposta = "Nossa lojinha física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Passa aqui para tomar um café com a gente ou receber seu look na hora! 📍";
+    } else if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('retirar')) {
+      resposta = "Olha só, nós despachamos rapidinho via motoboy para Curitiba e região, ou se preferir, você pode selecionar 'Retirar na Loja' direto no pedido sem pagar nada de frete! 🚚✨";
+    } else if (itensMatch.length > 0) {
+      resposta = `Ah, que ótima escolha! Olha só, olhando aqui no nosso estoque fresquinho, achei exatamente o que você comentou:\n\n` +
+        itensMatch.map(item => `• *${item.nome}* (${item.cat}) — **R$ ${item.preco.toFixed(2).replace('.', ',')}**\n  🎨 Cores: *${item.cores}* | 📏 Tamanhos: *${item.tamanhos}* | 📦 Restam: *${item.qtd} un.*`).join('\n\n') +
+        `\n\nJá te adianto que o caimento dessas peças é perfeito! Se quiser garantir, é só escolher o seu tamanho ali em cima no catálogo e mandar pra sacola, maninho(a)! 💕`;
+    } else if (p.includes('oi') || p.includes('ola') || p.includes('olá') || p.includes('tudo bem') || p.includes('e ai') || p.includes('fala')) {
+      resposta = `Oie! Tudo ótimo por aqui e com você? Como personal stylist da Exclusiva, tô pronta pra te ajudar a arrasar no visual. O que você tá procurando hoje? Temos saias, vestidos, conjuntos e muito mais! ✨`;
+    } else if (p.includes('tamanho') || p.includes('veste') || p.includes('numeracao') || p.includes('p') || p.includes('m')|| p.includes('g')) {
+      resposta = `Trabalhamos com os tamanhos *P, M e G* nas nossas peças principais, com modelagens pensadas para valorizar super bem o corpo! Veja os destaques atuais na vitrine:\n\n` +
+        produtosCatalogo.map(item => `• *${item.nome}* (${item.cat}) — R$ ${item.preco.toFixed(2).replace('.', ',')} (Tamanhos: ${item.tamanhos}, Cores: ${item.cores})`).join('\n');
     } else {
-      resposta = `Entendi! Temos diversas opções lindas na nossa vitrine. Que tal dar uma olhadinha nas categorias acima ou me perguntar especificamente por *vestidos, conjuntos, saias ou shorts*? ✨`;
+      resposta = `Olha, adorei o seu estilo e a forma como você perguntou! Deixa eu te contar: temos peças incríveis cadastradas na nossa vitrine como vestidos, conjuntos e saias super estilosos. Dá uma olhadinha no catálogo acima ou me diz qual estilo você curte mais que eu te indico o look perfeito! 😉✨`;
     }
 
     document.getElementById(loadingId).remove();
     msgContainer.innerHTML += `<div class="chat-bubble marta">${resposta.replace(/\n/g, '<br>')}</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
-  }
+  };
 
   // LOGIN & ADMIN
-  function abrirUserModal() {
+  window.abrirUserModal = function() {
     document.getElementById('userModal').style.display = 'flex';
     if(usuarioLogado.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
       document.getElementById('view-login').style.display = 'none';
       document.getElementById('view-admin-dashboard').style.display = 'block';
     }
-  }
-  function fecharUserModal() { document.getElementById('userModal').style.display = 'none'; }
+  };
+  window.fecharUserModal = function() { document.getElementById('userModal').style.display = 'none'; };
 
-  function fazerLoginUsuario() {
+  window.fazerLoginUsuario = function() {
     const email = document.getElementById('user-email-input').value.trim();
     if(!email) return alert("Digite um e-mail válido!");
 
@@ -579,17 +574,17 @@
       alert("✅ Identificado como cliente.");
       fecharUserModal();
     }
-  }
+  };
 
-  function logoutUsuario() {
+  window.logoutUsuario = function() {
     usuarioLogado = "";
     localStorage.removeItem('exclusiva_user');
     document.getElementById('btn-user-label').innerText = "Entrar / Conta";
     document.getElementById('view-login').style.display = 'block';
     document.getElementById('view-admin-dashboard').style.display = 'none';
-  }
+  };
 
-  function converterImagemParaBase64(element) {
+  window.converterImagemParaBase64 = function(element) {
     const file = element.files[0];
     if (file) {
       const reader = new FileReader();
@@ -599,9 +594,9 @@
       }
       reader.readAsDataURL(file);
     }
-  }
+  };
 
-  async function salvarNovoProduto() {
+  window.salvarNovoProduto = async function() {
     const nome = document.getElementById('novo-nome').value;
     const desc = document.getElementById('novo-desc').value;
     const preco = parseFloat(document.getElementById('novo-preco').value);
@@ -627,14 +622,14 @@
     alert("✅ Produto cadastrado na planilha com sucesso!");
     fecharUserModal();
     setTimeout(carregarProdutosDoGoogleSheets, 1500);
-  }
+  };
 
-  function filtrarCategoria(cat, btn) {
+  window.filtrarCategoria = function(cat, btn) {
     categoriaAtual = cat;
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     renderCatalog();
-  }
+  };
 
   carregarProdutosDoGoogleSheets();
 </script>
