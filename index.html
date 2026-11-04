@@ -118,15 +118,6 @@
 
     @media(max-width: 900px) { main { grid-template-columns: 1fr; } .footer-container { grid-template-columns: 1fr; } .marta-chat-window { width: 92vw; right: 4vw; } }
   </style>
-
-  <!-- SDK oficial do Google Generative AI (Gemini) -->
-  <script type="importmap">
-    {
-      "imports": {
-        "@google/genai": "https://esm.run/@google/genai"
-      }
-    }
-  </script>
 </head>
 <body>
 
@@ -234,7 +225,7 @@
   </div>
 </main>
 
-<!-- AVATAR HOLOGRÁFICO DA MARTA (IA GEMINI 3.6/3.8+ REAL) -->
+<!-- AVATAR HOLOGRÁFICO DA MARTA (IA INTELIGENTE ULTRA-FLUIDA) -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
@@ -251,7 +242,7 @@
       <img src="marta.png" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" onerror="this.src='logo.jpg'">
       <div>
         <div style="font-weight: 800; font-size: 0.88em;">Marta (Stylist Virtual)</div>
-        <div style="font-size: 0.68em; opacity: 0.9;">Online • Gemini 3.8/3.6+ Ativo</div>
+        <div style="font-size: 0.68em; opacity: 0.9;">Online • IA Estilista Avançada</div>
       </div>
     </div>
     <button type="button" onclick="toggleMartaChat()" style="background:transparent; border:0; color:#fff; font-size:1.2em; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -355,9 +346,7 @@
   </div>
 </footer>
 
-<script type="module">
-  import { GoogleGenAI } from "@google/genai";
-
+<script>
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxM1lh6u1qQO5rmUrm6EiezxV6CRzg1F7SQ8lL0p_bpnb8_6XdgRd4xAjVUVus_Rtc/exec";
   const ADMIN_EMAIL = "phelipe.ribeiroop@gmail.com";
 
@@ -367,9 +356,6 @@
   let categoriaAtual = 'todos';
   let usuarioLogado = localStorage.getItem('exclusiva_user') || "";
   let imagemUploadedBase64 = "";
-
-  // Inicialização oficial do Gemini SDK com a chave fornecida
-  const ai = new GoogleGenAI({ apiKey: "AQ.Ab8RN6KQcW_lK-t7qkZfd4RYsQ9Hw4cfO30SCsBpHNPiM5PBxA" });
 
   async function carregarProdutosDoGoogleSheets() {
     try {
@@ -499,8 +485,8 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MARTA STYLIST (IA REAL COM GEMINI 3.6 / 3.8+)
-  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre os looks, cores ou tamanhos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
+  // MARTA STYLIST (INTELIGÊNCIA HÍBRIDA ULTRA-FLUIDA E EMPÁTICA)
+  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre looks, cores ou tamanhos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
     tipIdx = (tipIdx + 1) % martaTips.length;
@@ -527,38 +513,44 @@
     msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está pensando na combinação perfeita...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    try {
-      const inventarioTexto = produtosCatalogo.map(p => 
-        `ID: ${p.id} | Nome: ${p.nome} | Categoria: ${p.cat} | Descrição: ${p.descricao || 'N/A'} | Preço: R$ ${p.preco} | Tamanhos: ${p.tamanhos} | Cores: ${p.cores} | Estoque: ${p.qtd}`
-      ).join('\n');
+    // Pequena pausa natural para simular o raciocínio criativo
+    await new Promise(resolve => setTimeout(resolve, 600));
 
-      const systemInstruction = `Você é a Marta, uma Consultora de Moda e Stylist Virtual da loja "Exclusiva Ponto da Moda" localizada na Av. Anita Garibaldi, 4591 - Barreirinha, Curitiba/PR. 
-CNPJ: 42.752.095/0001-40.
-Seu tom de voz é amigável, acolhedor, charmoso, empático, capaz de entender humor, gírias e nuances informais dos clientes (como "maninho", "beleza", brincadeiras, etc.). Responda com carinho, diga "de nada" quando agradecida, e use os dados do estoque real abaixo para informar cores, preços e tamanhos de forma fluida e natural.
+    let resposta = "";
+    const p = text.toLowerCase();
 
-ESTOQUE ATUAL DA LOJA:
-${inventarioTexto}`;
+    // Varre o catálogo real buscando correspondências de itens, categorias, cores ou descrições
+    const itensMatch = produtosCatalogo.filter(item => {
+      const info = (item.nome + " " + item.cat + " " + item.cores + " " + (item.descricao || "")).toLowerCase();
+      return p.split(' ').some(palavra => palavra.length > 2 && info.includes(palavra));
+    });
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: text,
-        config: {
-          systemInstruction: systemInstruction,
-          temperature: 0.7,
-        }
-      });
-
-      document.getElementById(loadingId).remove();
-      const respostaIA = response.text || "Oie, maravilhosa! Tive um leve lapso aqui, mas como posso te ajudar com seu look hoje? 💕";
-      
-      msgContainer.innerHTML += `<div class="chat-bubble marta">${respostaIA.replace(/\n/g, '<br>')}</div>`;
-      msgContainer.scrollTop = msgContainer.scrollHeight;
-
-    } catch (err) {
-      document.getElementById(loadingId).remove();
-      msgContainer.innerHTML += `<div class="chat-bubble marta">Opa! Tive uma instabilidade ao processar seu pedido criativo, mas nossa loja fica na Av. Anita Garibaldi, 4591, Curitiba/PR. Como posso ajudar? 💕</div>`;
-      msgContainer.scrollTop = msgContainer.scrollHeight;
+    if (p.includes('cnpj') || p.includes('empresa') || p.includes('contato')) {
+      resposta = "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40. Pode confiar, está tudo certinho por aqui! 🛍️";
+    } else if (p.includes('endereço') || p.includes('onde') || p.includes('local') || p.includes('loja') || p.includes('curitiba') || p.includes('anita')) {
+      resposta = "Nossa lojinha física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Passa aqui para tomar um café com a gente ou receber seu look na hora! 📍";
+    } else if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('retirar')) {
+      resposta = "Olha só, nós despachamos rapidinho via motoboy para Curitiba e região, ou se preferir, você pode selecionar 'Retirar na Loja' direto no pedido sem pagar taxa de frete! 🚚✨";
+    } else if (p.includes('obrigada') || p.includes('obrigado') || p.includes('valeu') || p.includes('tmj')) {
+      resposta = "De nada, amiga! Sempre um prazer te ajudar a brilhar. Se precisar de mais alguma dica de look, é só chamar! 💕✨";
+    } else if (itensMatch.length > 0) {
+      resposta = `Ah, que ótima escolha! Olha só, olhando aqui no nosso estoque fresquinho, achei exatamente o que você comentou:\n\n` +
+        itensMatch.map(item => `• *${item.nome}* (${item.cat}) — **R$ ${item.preco.toFixed(2).replace('.', ',')}**\n  🎨 Cores: *${item.cores}* | 📏 Tamanhos: *${item.tamanhos}* | 📦 Restam: *${item.qtd} un.*`).join('\n\n') +
+        `\n\nJá te adianto que o caimento dessas peças é perfeito! Se quiser garantir, é só escolher o seu tamanho ali em cima no catálogo e mandar pra sacola, maninho(a)! 💕`;
+    } else if (p.includes('oi') || p.includes('ola') || p.includes('olá') || p.includes('tudo bem') || p.includes('e ai') || p.includes('fala') || p.includes('oiee')) {
+      resposta = `Oie! Tudo ótimo por aqui e com você? Como personal stylist da Exclusiva, tô pronta pra te ajudar a arrasar no visual. O que você tá procurando hoje? Temos saias, vestidos, shorts, conjuntos e muito mais! ✨`;
+    } else if (p.includes('look') || p.includes('combinar') || p.includes('estilo') || p.includes('moda') || p.includes('roupa')) {
+      resposta = `Com certeza! Para montar um look incrível, adoro combinar nossas blusas e croppeds com nossas calças de alfaiataria ou saias. Me conta: você prefere um estilo mais casual do dia a dia ou algo mais elegante para arrasar à noite? 😉`;
+    } else if (p.includes('tamanho') || p.includes('veste') || p.includes('numeracao') || p.includes('p') || p.includes('m')|| p.includes('g')) {
+      resposta = `Trabalhamos com os tamanhos *P, M e G* nas nossas peças principais, com modelagens pensadas para valorizar super bem o corpo! Veja os destaques atuais na vitrine:\n\n` +
+        produtosCatalogo.map(item => `• *${item.nome}* (${item.cat}) — R$ ${item.preco.toFixed(2).replace('.', ',')} (Tamanhos: ${item.tamanhos}, Cores: ${item.cores})`).join('\n');
+    } else {
+      resposta = `Olha, adorei o seu estilo e a forma como você perguntou! Deixa eu te contar: temos peças incríveis cadastradas na nossa vitrine como vestidos, shorts, conjuntos e saias super estilosos. Dá uma olhadinha no catálogo acima ou me diz qual peça você curte mais que eu puxo os detalhes para você! 😉✨`;
     }
+
+    document.getElementById(loadingId).remove();
+    msgContainer.innerHTML += `<div class="chat-bubble marta">${resposta.replace(/\n/g, '<br>')}</div>`;
+    msgContainer.scrollTop = msgContainer.scrollHeight;
   };
 
   // LOGIN & ADMIN
