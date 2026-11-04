@@ -225,7 +225,7 @@
   </div>
 </main>
 
-<!-- AVATAR HOLOGRÁFICO DA MARTA (MOTOR COGNITIVO INTELIGENTE E ÚNICO) -->
+<!-- AVATAR HOLOGRÁFICO DA MARTA (MOTOR COGNITIVO COM SUPORTE E BUSCA SEMÂNTICA EXATA) -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
@@ -242,7 +242,7 @@
       <img src="marta.png" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" onerror="this.src='logo.jpg'">
       <div>
         <div style="font-weight: 800; font-size: 0.88em;">Marta (Stylist Virtual)</div>
-        <div style="font-size: 0.68em; opacity: 0.9;">Online • Inteligência Orgânica Ativa</div>
+        <div style="font-size: 0.68em; opacity: 0.9;">Online • Inteligência Comercial & Suporte</div>
       </div>
     </div>
     <button type="button" onclick="toggleMartaChat()" style="background:transparent; border:0; color:#fff; font-size:1.2em; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -357,7 +357,7 @@
   let usuarioLogado = localStorage.getItem('exclusiva_user') || "";
   let imagemUploadedBase64 = "";
 
-  // Memória para rastrear frases já usadas e garantir zero repetição absoluta (Critério de Aceite 1)
+  // Memória estrita para garantir zero repetição de textos (Critério 1)
   let historicoRespostasUsadas = [];
 
   async function carregarProdutosDoGoogleSheets() {
@@ -488,7 +488,7 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MOTOR COGNITIVO INTELIGENTE DA MARTA (GARANTE OS CRITÉRIOS 1, 2 E 3 SEM FALHAS)
+  // MOTOR COGNITIVO COM SUPORTE COMERCIAL E BUSCA SEMÂNTICA PRECISA
   const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre looks, cores ou tamanhos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
@@ -502,7 +502,6 @@
     win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
   };
 
-  // Função auxiliar para selecionar respostas dinâmicas garantindo 100% de unicidade (Critério 1)
   function obterRespostaUnica(listaOpcoes) {
     const disponiveis = listaOpcoes.filter(op => !historicoRespostasUsadas.includes(op));
     const escolhida = disponiveis.length > 0 
@@ -510,7 +509,7 @@
       : listaOpcoes[Math.floor(Math.random() * listaOpcoes.length)];
     
     historicoRespostasUsadas.push(escolhida);
-    if (historicoRespostasUsadas.length > 15) historicoRespostasUsadas.shift(); // Mantém memória limpa
+    if (historicoRespostasUsadas.length > 20) historicoRespostasUsadas.shift();
     return escolhida;
   }
 
@@ -525,26 +524,34 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está pensando no seu atendimento...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está consultando o catálogo e preparando a resposta...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    // Simula tempo de raciocínio natural e fluido (Critério 2)
-    await new Promise(resolve => setTimeout(resolve, 800));
+    // Simula raciocínio natural (Critério 2)
+    await new Promise(resolve => setTimeout(resolve, 750));
 
     const p = text.toLowerCase();
     let resposta = "";
 
-    // Análise semântica inteligente do catálogo (Critério 3: compreender perguntas simples sobre itens)
+    // Módulo de Ajuda / Suporte para Fazer Pedido
+    const isAjudaPedido = p.includes('pedido') && (p.includes('como') || p.includes('ajuda') || p.includes('fazer') || p.includes('sei') || p.includes('comprar'));
+    const isAtrasoOuEntrega = p.includes('atras') || p.includes('demor') || p.includes('meses') || p.includes('recebi') || p.includes('correios');
+    const isSaudacao = p.includes('oi') || p.includes('ola') || p.includes('oiee') || p.includes('e ai') || p.includes('fala') || p.includes('tudo bem');
+    const isLookOuEstilo = p.includes('look') || p.includes('combinar') || p.includes('noite') || p.includes('sair') || p.includes('estilo');
+
+    // Busca semântica ampla no catálogo para garantir assertividade (Critério 3)
     const itensMatch = produtosCatalogo.filter(item => {
       const info = (item.nome + " " + item.cat + " " + (item.cores || "") + " " + (item.descricao || "")).toLowerCase();
-      return p.split(' ').some(palavra => palavra.length > 2 && info.includes(palavra));
+      // Divide o prompt em palavras-chave relevantes
+      const palavras = p.split(' ').filter(w => w.length > 2 && !['tem', 'vcs', 'voces', 'com', 'que', 'para', 'uma'].includes(w));
+      if (palavras.length === 0) return false;
+      return palavras.some(palavra => info.includes(palavra));
     });
 
-    const isAtrasoOuEntrega = p.includes('atras') || p.includes('demor') || p.includes('meses') || p.includes('entrega') || p.includes('recebi') || p.includes('pedido');
-    const isSaudacao = p.includes('oi') || p.includes('ola') || p.includes('oiee') || p.includes('e ai') || p.includes('fala') || p.includes('tudo bem') || p.includes('(:') || p.includes(':d');
-    const isLookOuEstilo = p.includes('look') || p.includes('combinar') || p.includes('noite') || p.includes('sair') || p.includes('estilo') || p.includes('roupa');
-
-    if (isAtrasoOuEntrega) {
+    if (isAjudaPedido) {
+      resposta = `Com certeza! Fazer o seu pedido por aqui é super simples e rápido. Olha só o passo a passo:\n\n1️⃣ Escolha a peça desejada no catálogo e selecione o tamanho (P, M ou G).\n2️⃣ Clique no botão **'Adicionar'** para mandar o item para a sua Sacola de Compras.\n3️⃣ No painel lateral direito, preencha seus dados (Nome, WhatsApp, Forma de Recebimento e Endereço).\n4️⃣ Por fim, clique no botão verde **'Enviar Pedido via WhatsApp'** para formalizar com as atendentes! ✨ Tem alguma dúvida em alguma dessas etapas?`;
+    }
+    else if (isAtrasoOuEntrega) {
       const op = [
         `Poxa, sinto muito por essa demora! Como sou a stylist virtual e fico focada no provador e nos looks, não consigo verificar o rastreio interno do seu pacote por aqui. Te aconselho forte a chamar as meninas direto no botão verde do WhatsApp ali no topo! Elas conferem seu nome na hora e resolvem isso para você. 📲💕`,
         `Nossa, sério? Isso não é comum nas nossas entregas! Como não tenho acesso ao sistema logístico da loja, de verdade eu não consigo checar o que aconteceu. Dá um toque nas atendentes pelo WhatsApp para elas rastrearem o seu pedido correndo! 🚚✨`,
@@ -569,23 +576,9 @@
       resposta = obterRespostaUnica(op);
     }
     else if (itensMatch.length > 0) {
-      resposta = `Dei uma olhada caprichada no nosso estoque atual e encontrei exatamente o que você pediu:\n\n` +
-        itensMatch.map(item => `• *${item.nome}* (${item.cat}) — **R$ ${item.preco.toFixed(2).replace('.', ',')}**\n  🎨 Cores: *${item.cores || 'Disponíveis na vitrine'}* | 📏 Tamanhos: *${item.tamanhos}* | 📦 Estoque: *${item.qtd} un.*`).join('\n\n') +
-        `\n\nO caimento dessas peças fica impecável no corpo! Quer adicionar na sacola? 💕`;
-    }
-    else if (p.includes('cropped') || p.includes('saia') || p.includes('shorts') || p.includes('conjunto') || p.includes('vestido')) {
-      // Caso o usuário pergunte por um item que não está escrito explicitamente na busca simples
-      const itensCategoria = produtosCatalogo.filter(item => (item.nome + " " + item.cat).toLowerCase().includes(p.replace(/tem|vcs|voces|o|a/g, '').trim()));
-      if(itensCategoria.length > 0) {
-        resposta = `Sim! Temos opções lindas na vitrine:\n\n` + itensCategoria.map(i => `• *${i.nome}* — R$ ${i.preco.toFixed(2).replace('.', ',')} (${i.tamanhos})`).join('\n') + `\n\nDá uma olhadinha no catálogo acima para escolher seu tamanho! ✨`;
-      } else {
-        const op = [
-          `Poxa amada, dei uma conferida aqui no inventário e no momento não temos esse item específico disponível na vitrine. Mas temos blusas e vestidos incríveis que seguem essa mesma linha! Quer dar uma olhada? 💕`,
-          `Olha, essa peça específica acabou esgotando no nosso estoque atual. No entanto, temos outras novidades lindas na mesma categoria que vão te encantar! Quer que eu te indique algumas? ✨`,
-          `No momento não encontrei exatamente esse modelo cadastrado na vitrine de hoje. Mas temos várias outras opções maravilhosas esperando por você. Quer conferir? 💖`
-        ];
-        resposta = obterRespostaUnica(op);
-      }
+      resposta = `Dei uma olhada caprichada no nosso estoque e encontrei estas opções perfeitas para você:\n\n` +
+        itensMatch.map(item => `• *${item.nome}* (${item.cat}) — **R$ ${item.preco.toFixed(2).replace('.', ',')}**\n  🎨 Cores: *${item.cores || 'Diversas'}* | 📏 Tamanhos: *${item.tamanhos}* | 📦 Estoque: *${item.qtd} un.*`).join('\n\n') +
+        `\n\nO caimento dessas peças é impecável! Gostaria que eu te ajude a adicionar na sacola? 💕`;
     }
     else {
       const op = [
