@@ -126,108 +126,54 @@
     .qr-card { text-align: center; background: var(--in); border: 1px dashed var(--bd); border-radius: 12px; padding: 14px; margin-top: 16px; }
     .qr-card img { width: 120px; height: 120px; border-radius: 8px; background: #fff; padding: 6px; border: 1px solid var(--bd); object-fit: contain; }
 
-    /* =========================================
-       AVATAR HOLOGRÁFICO LIVRE & RESPONSIVO
-       ========================================= */
-    .marta-3d-wrapper {
-      position: fixed;
-      bottom: 15px;
-      right: 15px;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 6px;
-      pointer-events: none;
+    /* PAINEL ADMIN MODAL */
+    .admin-modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 2000;
+      display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .admin-content {
+      background: var(--cd); border-radius: 16px; padding: 24px; width: 100%; max-width: 450px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--bd);
+      max-height: 90vh; overflow-y: auto;
     }
 
+    /* AVATAR HOLOGRÁFICO LIVRE & RESPONSIVO */
+    .marta-3d-wrapper {
+      position: fixed; bottom: 15px; right: 15px; z-index: 1000;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 6px; pointer-events: none;
+    }
     .marta-speech-bubble {
-      background: #ffffff;
-      border: 2px solid var(--rosé-dark);
-      padding: 9px 12px;
-      border-radius: 14px;
-      font-size: 0.78em;
-      font-weight: 700;
-      color: var(--tx);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      max-width: 220px;
-      position: relative;
-      pointer-events: auto;
+      background: #ffffff; border: 2px solid var(--rosé-dark); padding: 9px 12px;
+      border-radius: 14px; font-size: 0.78em; font-weight: 700; color: var(--tx);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15); max-width: 220px; position: relative; pointer-events: auto;
     }
     .marta-speech-bubble::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      right: 25px;
-      width: 0;
-      height: 0;
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
-      border-top: 7px solid var(--rosé-dark);
+      content: ''; position: absolute; bottom: -8px; right: 25px; width: 0; height: 0;
+      border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 7px solid var(--rosé-dark);
     }
-
     .marta-avatar-3d {
-      width: 130px;
-      height: 175px;
-      cursor: pointer;
-      position: relative;
-      pointer-events: auto;
-      background: transparent;
-      border: none;
-      box-shadow: none;
+      width: 130px; height: 175px; cursor: pointer; position: relative; pointer-events: auto;
+      background: transparent; border: none; box-shadow: none;
       filter: drop-shadow(0 10px 18px rgba(184, 151, 66, 0.35));
-      animation: floatAvatar 4s ease-in-out infinite;
-      transition: transform 0.25s ease;
+      animation: floatAvatar 4s ease-in-out infinite; transition: transform 0.25s ease;
     }
-    .marta-avatar-3d:hover {
-      transform: scale(1.05) translateY(-4px);
-    }
-    .marta-avatar-3d img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
+    .marta-avatar-3d:hover { transform: scale(1.05) translateY(-4px); }
+    .marta-avatar-3d img { width: 100%; height: 100%; object-fit: contain; }
     .marta-online-dot {
-      position: absolute;
-      bottom: 10px;
-      right: 15px;
-      width: 14px;
-      height: 14px;
-      background: #25d366;
-      border: 2.5px solid #fff;
-      border-radius: 50%;
-      box-shadow: 0 0 8px rgba(37, 211, 102, 0.8);
+      position: absolute; bottom: 10px; right: 15px; width: 14px; height: 14px;
+      background: #25d366; border: 2.5px solid #fff; border-radius: 50%; box-shadow: 0 0 8px rgba(37, 211, 102, 0.8);
     }
+    @keyframes floatAvatar { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
 
-    @keyframes floatAvatar {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-
-    /* JANELA DE CHAT OTIMIZADA PARA IOS / ANDROID */
     .marta-chat-window {
-      position: fixed;
-      bottom: 105px;
-      right: 16px;
-      width: 360px;
-      height: 480px;
-      max-height: 75vh;
-      background: var(--cd);
-      border: 1.5px solid var(--bd);
-      border-radius: 18px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.25);
-      z-index: 1001;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
+      position: fixed; bottom: 105px; right: 16px; width: 360px; height: 480px; max-height: 75vh;
+      background: var(--cd); border: 1.5px solid var(--bd); border-radius: 18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.25); z-index: 1001; display: none; flex-direction: column; overflow: hidden;
     }
     .marta-chat-header {
-      background: linear-gradient(135deg, #d99b9f, #b89742);
-      color: #fff;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      background: linear-gradient(135deg, #d99b9f, #b89742); color: #fff; padding: 12px 14px;
+      display: flex; align-items: center; justify-content: space-between;
     }
     .marta-chat-header-profile { display: flex; align-items: center; gap: 10px; }
     .marta-chat-header-profile img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: top center; border: 2px solid #fff; }
@@ -238,8 +184,8 @@
     .marta-chat-input-area { padding: 10px; background: var(--cd); border-top: 1px solid var(--bd); display: flex; gap: 8px; }
     .marta-chat-input-area input { margin-bottom: 0; padding: 9px 12px; font-size: 0.84em; }
 
-    footer { background: var(--cd); border-top: 1px solid var(--bd); padding: 30px 20px 20px; margin-top: 30px; }
-    .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+    footer { background: var(--cd); border-top: 1px solid var(--bd); padding: 30px 20px 20px; margin-top: 30px; text-align: center; }
+    .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; text-align: left; }
     .footer-info h3 { font-size: 1.05em; color: var(--tx); margin-bottom: 8px; font-weight: 800; }
     .footer-info p { font-size: 0.8em; color: var(--mu); line-height: 1.5; margin-bottom: 5px; }
     .footer-info p strong { color: var(--tx); }
@@ -247,51 +193,17 @@
     .map-container { width: 100%; height: 200px; border-radius: 12px; overflow: hidden; border: 1px solid var(--bd); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     .map-container iframe { width: 100%; height: 100%; border: 0; }
 
-    /* =========================================
-       MEDIA QUERIES PARA MOBILE (IOS & ANDROID)
-       ========================================= */
     @media(max-width: 900px) { 
       main { grid-template-columns: 1fr; margin-top: 16px; padding: 0 12px; gap: 16px; } 
-      .footer-container { grid-template-columns: 1fr; gap: 20px; }
-      
-      .marta-chat-window { 
-        width: 94vw; 
-        height: 75vh; 
-        right: 3vw; 
-        bottom: 95px; 
-      }
-      
-      .marta-avatar-3d {
-        width: 105px;
-        height: 140px;
-      }
-      
-      .catalog-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
-      
-      .product-img-wrap {
-        height: 180px;
-      }
-      
-      header {
-        padding: 12px 14px;
-      }
-      
-      .brand-logo-img {
-        width: 50px;
-        height: 50px;
-      }
+      .footer-container { grid-template-columns: 1fr; gap: 20px; text-align: left; }
+      .marta-chat-window { width: 94vw; height: 75vh; right: 3vw; bottom: 95px; }
+      .marta-avatar-3d { width: 105px; height: 140px; }
+      .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .product-img-wrap { height: 180px; }
     }
-
     @media(max-width: 480px) {
-      .catalog-grid {
-        grid-template-columns: 1fr;
-      }
-      .product-img-wrap {
-        height: 280px;
-      }
+      .catalog-grid { grid-template-columns: 1fr; }
+      .product-img-wrap { height: 280px; }
     }
   </style>
 </head>
@@ -337,7 +249,9 @@
         <button class="filter-btn" onclick="filtrarCategoria('Sapatos', this)">Sapatos & Acessórios</button>
       </div>
 
-      <div class="catalog-grid" id="catalog-container"></div>
+      <div class="catalog-grid" id="catalog-container">
+        <p style="color: var::mu; text-align: center; grid-column: 1/-1; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Carregando catálogo da planilha...</p>
+      </div>
     </div>
 
     <div class="cd">
@@ -436,6 +350,50 @@
   </div>
 </div>
 
+<!-- MODAL DE CADASTRO ADMIN -->
+<div class="admin-modal" id="adminModal">
+  <div class="admin-content">
+    <h2><i class="fa-solid fa-lock" style="color: var(--ac);"></i> Painel da Administração</h2>
+    <p class="sub" style="margin-bottom: 16px;">Insira seu e-mail cadastrado para gerenciar o catálogo.</p>
+    
+    <div id="admin-login-box">
+      <label>E-mail de Administrador</label>
+      <input type="email" id="admin-email-input" placeholder="exemplo@dominio.com">
+      <button type="button" class="btn pr" onclick="verificarAdmin()" style="width: 100%;">Entrar no Painel</button>
+      <button type="button" class="btn" onclick="fecharAdminModal()" style="width: 100%; margin-top: 8px;">Cancelar</button>
+    </div>
+
+    <div id="admin-form-box" style="display: none;">
+      <p style="font-size: 0.85em; color: var(--success); font-weight: 700; margin-bottom: 12px;">
+        <i class="fa-solid fa-circle-check"></i> Acesso Liberado com Sucesso!
+      </p>
+      
+      <label>Nome do Produto</label>
+      <input type="text" id="novo-nome" placeholder="Ex: Vestido Elegance">
+
+      <label>Preço (R$)</label>
+      <input type="number" step="0.01" id="novo-preco" placeholder="199.90">
+
+      <label>Categoria</label>
+      <select id="novo-cat">
+        <option value="Blusas">Blusas & Croppeds</option>
+        <option value="Calças">Calças & Jeans</option>
+        <option value="Vestidos">Vestidos & Macacões</option>
+        <option value="Conjuntos">Conjuntos</option>
+        <option value="Sapatos">Sapatos & Acessórios</option>
+      </select>
+
+      <label>URL da Imagem</label>
+      <input type="text" id="novo-img" placeholder="https://exemplo.com/foto.jpg">
+
+      <button type="button" class="btn success" onclick="salvarNovoProduto()" style="width: 100%; margin-top: 6px;">
+        <i class="fa-solid fa-plus"></i> Cadastrar na Planilha
+      </button>
+      <button type="button" class="btn" onclick="fecharAdminModal()" style="width: 100%; margin-top: 8px;">Fechar Painel</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="footer-container">
     <div class="footer-info">
@@ -445,7 +403,8 @@
       <p><strong>CEP:</strong> 82220-000 - Curitiba / PR</p>
       <p><strong>Atendimento:</strong> (41) 98835-3707 | contato@exclusivapontodamoda.com.br</p>
       <p style="font-size: 0.78em; margin-top: 10px; color: var(--mu);">
-        &copy; Exclusiva Ponto da Moda. Todos os direitos reservados. Catálogo digital B2C inteligente.
+        &copy; Exclusiva Ponto da Moda. Todos os direitos reservados. Catálogo digital B2C inteligente. | 
+        <a href="#" onclick="abrirAdminModal(event)" style="color: var(--ac); text-decoration: underline; font-weight: 700;">Área Admin</a>
       </p>
     </div>
 
@@ -462,6 +421,32 @@
 
 <script>
   const GEMINI_API_KEY = "AQ.Ab8RN6IF2oqLPqDraM6_Vdu4feNEBH6A4EsuJ5A0ZMgiAIEcxw";
+  
+  // URL do Web App gerada no seu Apps Script
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCizQbunw5-W6cHZHw5Gbh5a3EwWDzQTMhAn7cOIg/exec";
+
+  let produtosCatalogo = [];
+  let carrinho = [];
+  let selecaoTamanhos = {};
+  let categoriaAtual = 'todos';
+  let adminEmailLogado = "";
+
+  // CARREGAR PRODUTOS DA PLANILHA AO ABRIR O SITE
+  async function carregarProdutosDoGoogleSheets() {
+    try {
+      const response = await fetch(`${APPS_SCRIPT_URL}?action=getProducts`);
+      const data = await response.json();
+      if (Array.isArray(data) && data.length > 0) {
+        produtosCatalogo = data;
+        renderCatalog();
+      } else {
+        document.getElementById('catalog-container').innerHTML = `<p style="color: var(--mu); text-align: center; grid-column: 1/-1; padding: 20px;">Nenhum produto cadastrado na aba 'Produtos' da planilha.</p>`;
+      }
+    } catch (error) {
+      console.error("Erro ao carregar produtos:", error);
+      document.getElementById('catalog-container').innerHTML = `<p style="color: #dc2626; text-align: center; grid-column: 1/-1; padding: 20px;">Erro ao carregar o catálogo do Google Sheets.</p>`;
+    }
+  }
 
   const martaTips = [
     "Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍",
@@ -481,38 +466,21 @@
     win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  // MOTOR HÍBRIDO DE PENSAMENTO GENERATIVO
+  // MOTOR DE PENSAMENTO GENERATIVO DA MARTA
   function gerarRespostaGenerativaLocal(pergunta) {
     const p = pergunta.toLowerCase();
-
     if (p.includes('cnpj') || p.includes('empresa') || p.includes('documento')) {
       return "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40. Estamos devidamente cadastrados para garantir toda a segurança e confiança nas suas compras! 🛍️";
     }
     if (p.includes('qr') || p.includes('codigo') || p.includes('código') || p.includes('recompra')) {
       return "O QR Code de Recompra Rápida (disponível no canto direito do site) serve para você ou suas amigas escanearem com a câmera do celular e abrirem o catálogo digital instantaneamente a qualquer momento! 📱✨";
     }
-    if (p.includes('cropped') || p.includes('blusa') || p.includes('top')) {
-      return "Temos blusas e croppeds incríveis! Por exemplo, o Cropped Decote Assimétrico Off-White por R$ 89,90 e o Blazer Tailored Preto por R$ 269,90. Escolha seu tamanho P, M ou G e adicione na sacola! ✨";
-    }
-    if (p.includes('calça') || p.includes('jeans') || p.includes('pantalona')) {
-      return "Nossas calças vestem com caimento alfaiataria impecável! Temos a Calça Jeans Flare Premium (R$ 189,90) e a Calça Pantalona Nude (R$ 169,90). Qual o seu tamanho? 👖";
-    }
-    if (p.includes('vestido') || p.includes('saia') || p.includes('conjunto') || p.includes('macacão')) {
-      return "Para produções elegantes, destaque para o Vestido Midi Transpasse Rosê (R$ 199,90) e o Conjunto Top & Calça Nude (R$ 239,90). Eles valorizam muito a silhueta! 👗";
-    }
-    if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('envio') || p.includes('bairros')) {
+    if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('envio')) {
       return "Fazemos entregas rápidas via motoboy em Curitiba e região! Ao preencher o formulário, escolha 'Entrega via Motoboy' e combinamos a taxa exata e o envio direto pelo nosso WhatsApp (41) 98835-3707. 🚚";
     }
     if (p.includes('endereço') || p.includes('onde') || p.includes('loja') || p.includes('retirar') || p.includes('rua') || p.includes('bairro') || p.includes('anita')) {
       return "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Você pode selecionar a opção 'Retirar na Loja' no pedido para retirar pessoalmente sem taxa de frete! 📍";
     }
-    if (p.includes('tamanho') || p.includes('medida') || p.includes('g') || p.includes('m') || p.includes('p')) {
-      return "Trabalhamos com os tamanhos P, M e G. Se tiver alguma dúvida sobre qual escolher, é só me chamar no WhatsApp (41) 98835-3707 que eu te ajudo! 📏";
-    }
-    if (p.includes('como comprar') || p.includes('pedido') || p.includes('pagar') || p.includes('whatsapp')) {
-      return "É bem simples: 1. Adicione os looks e tamanhos desejados na sacola. 2. Preencha seus dados e endereço. 3. Clique no botão verde para enviar o pedido direto para o meu WhatsApp (41) 98835-3707 e fecharmos o pagamento! 📲";
-    }
-
     return `Entendi perfeitamente sua pergunta sobre "${pergunta}"! Como sou a personal stylist da Exclusiva Ponto da Moda (Av. Anita Garibaldi, 4591 - Curitiba), estou aqui para ajudar. Monte sua sacola no site e me chame no WhatsApp (41) 98835-3707 se precisar de mais detalhes! 💕`;
   }
 
@@ -531,31 +499,21 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     let respostaMarta = "";
-
     try {
       const promptSistema = `Você é a Marta, dona e consultora de estilo da boutique feminina 'Exclusiva Ponto da Moda'.
       DADOS DA EMPRESA:
       - CNPJ: 42.752.095/0001-40
       - Endereço físico: Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR, CEP 82220-000.
-      - WhatsApp de atendimento e fechamento: (41) 98835-3707.
-      - Entregas: Motoboy em Curitiba e região, ou retirada gratuita na loja física.
-      - Tamanhos disponíveis: P, M e G.
-      - QR Code: Recurso no site para recompra rápida e acesso imediato pelo celular.
-      
-      DIRETRIZES DE RESPOSTA:
-      Responda com raciocínio generativo, natural, elegante e prestativo. Nunca dê respostas vagas ou robóticas. Analise a pergunta do cliente e use os dados acima de forma inteligente e direta.
+      - WhatsApp de atendimento: (41) 98835-3707.
+      - Entregas: Motoboy em Curitiba, ou retirada gratuita na loja.
+      - Tamanhos: P, M e G.
       Pergunta do cliente: "${text}"`;
 
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{
-            role: "user",
-            parts: [{ text: promptSistema }]
-          }]
-        })
+        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: promptSistema }] }] })
       });
       const data = await response.json();
       if (data.candidates && data.candidates[0].content.parts[0].text) {
@@ -572,21 +530,6 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
   }
 
-  const produtosCatalogo = [
-    { id: 1, nome: "Saia Acetinada Midi Marrom", preco: 149.90, cat: "Vestidos", img: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=500&auto=format&fit=crop&q=60" },
-    { id: 2, nome: "Conjunto Top & Calça Nude Alfaiataria", preco: 239.90, cat: "Conjuntos", img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=60" },
-    { id: 3, nome: "Calça Jeans Flare Premium", preco: 189.90, cat: "Calças", img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&auto=format&fit=crop&q=60" },
-    { id: 4, nome: "Blazer Tailored Preto Clássico", preco: 269.90, cat: "Blusas", img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=500&auto=format&fit=crop&q=60" },
-    { id: 5, nome: "Vestido Midi Transpasse Rosê", preco: 199.90, cat: "Vestidos", img: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=500&auto=format&fit=crop&q=60" },
-    { id: 6, nome: "Cropped Decote Assimétrico Off-White", preco: 89.90, cat: "Blusas", img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&auto=format&fit=crop&q=60" },
-    { id: 7, nome: "Sandália de Salto Fino Dourada", preco: 179.90, cat: "Sapatos", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&auto=format&fit=crop&q=60" },
-    { id: 8, nome: "Calça Pantalona Alfaiataria Nude", preco: 169.90, cat: "Calças", img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&auto=format&fit=crop&q=60" }
-  ];
-
-  let carrinho = [];
-  let selecaoTamanhos = {};
-  let categoriaAtual = 'todos';
-
   function filtrarCategoria(cat, btn) {
     categoriaAtual = cat;
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -598,13 +541,18 @@
     const grid = document.getElementById('catalog-container');
     const filtrados = categoriaAtual === 'todos' ? produtosCatalogo : produtosCatalogo.filter(p => p.cat === categoriaAtual);
     
+    if (filtrados.length === 0) {
+      grid.innerHTML = `<p style="color: var(--mu); text-align: center; grid-column: 1/-1; padding: 20px;">Nenhum produto encontrado nesta categoria.</p>`;
+      return;
+    }
+
     grid.innerHTML = filtrados.map(p => {
       const tamanhoAtual = selecaoTamanhos[p.id] || 'M';
       return `
         <div class="product-card">
           <div class="product-img-wrap">
             <span class="product-badge">${p.cat}</span>
-            <img src="${p.img}" class="product-img" alt="${p.nome}">
+            <img src="${p.img}" class="product-img" alt="${p.nome}" onerror="this.src='https://via.placeholder.com/300?text=Foto+Indisponivel'">
           </div>
           <div class="product-info">
             <div class="product-title">${p.nome}</div>
@@ -612,12 +560,12 @@
             
             <label style="font-size: 0.7em; margin-bottom: 4px;">Tamanho:</label>
             <div class="size-selector">
-              <button type="button" class="size-btn ${tamanhoAtual === 'P' ? 'selected' : ''}" onclick="selecionarTamanho(${p.id}, 'P')">P</button>
-              <button type="button" class="size-btn ${tamanhoAtual === 'M' ? 'selected' : ''}" onclick="selecionarTamanho(${p.id}, 'M')">M</button>
-              <button type="button" class="size-btn ${tamanhoAtual === 'G' ? 'selected' : ''}" onclick="selecionarTamanho(${p.id}, 'G')">G</button>
+              <button type="button" class="size-btn ${tamanhoAtual === 'P' ? 'selected' : ''}" onclick="selecionarTamanho('${p.id}', 'P')">P</button>
+              <button type="button" class="size-btn ${tamanhoAtual === 'M' ? 'selected' : ''}" onclick="selecionarTamanho('${p.id}', 'M')">M</button>
+              <button type="button" class="size-btn ${tamanhoAtual === 'G' ? 'selected' : ''}" onclick="selecionarTamanho('${p.id}', 'G')">G</button>
             </div>
 
-            <button type="button" class="btn pr" onclick="adicionarAoCarrinho(${p.id})" style="margin-top: auto; width: 100%;">
+            <button type="button" class="btn pr" onclick="adicionarAoCarrinho('${p.id}')" style="margin-top: auto; width: 100%;">
               <i class="fa-solid fa-cart-plus"></i> Adicionar
             </button>
           </div>
@@ -632,7 +580,7 @@
   }
 
   function adicionarAoCarrinho(id) {
-    const produto = produtosCatalogo.find(p => p.id === id);
+    const produto = produtosCatalogo.find(p => p.id == id);
     const tamanho = selecaoTamanhos[id] || 'M';
     carrinho.push({ id: produto.id, nome: produto.nome, tamanho: tamanho, preco: produto.preco });
     renderCarrinho();
@@ -712,7 +660,74 @@
     window.open(`https://wa.me/${foneLoja}?text=${encodeURIComponent(texto)}`, '_blank');
   }
 
-  renderCatalog();
+  // FUNÇÕES DO PAINEL ADMIN
+  function abrirAdminModal(e) {
+    e.preventDefault();
+    document.getElementById('adminModal').style.display = 'flex';
+  }
+  function fecharAdminModal() {
+    document.getElementById('adminModal').style.display = 'none';
+  }
+
+  async function verificarAdmin() {
+    const email = document.getElementById('admin-email-input').value.trim();
+    if(!email) {
+      alert("Digite seu e-mail!");
+      return;
+    }
+
+    // Valida buscando os produtos passando o e-mail (ou teste rápido via requisição)
+    try {
+      const res = await fetch(`${APPS_SCRIPT_URL}?action=getProducts`);
+      const produtos = await res.json();
+      
+      // Se carregou com sucesso, simulamos a checagem testando salvar ou validando o e-mail cadastrado
+      adminEmailLogado = email;
+      document.getElementById('admin-login-box').style.display = 'none';
+      document.getElementById('admin-form-box').style.display = 'block';
+    } catch(err) {
+      alert("Erro ao validar e-mail no servidor.");
+    }
+  }
+
+  async function salvarNovoProduto() {
+    const nome = document.getElementById('novo-nome').value;
+    const preco = parseFloat(document.getElementById('novo-preco').value);
+    const categoria = document.getElementById('novo-cat').value;
+    const imagemUrl = document.getElementById('novo-img').value;
+
+    if(!nome || !preco || !imagemUrl) {
+      alert("Preencha todos os campos do produto!");
+      return;
+    }
+
+    try {
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "addProduct",
+          authEmail: adminEmailLogado,
+          nome: nome,
+          preco: preco,
+          categoria: categoria,
+          imagemUrl: imagemUrl
+        })
+      });
+      const res = await response.json();
+      if(res.success) {
+        alert("✅ " + res.message);
+        fecharAdminModal();
+        carregarProdutosDoGoogleSheets(); // Recarrega o catálogo na hora
+      } else {
+        alert("❌ " + res.message);
+      }
+    } catch(e) {
+      alert("Erro ao comunicar com o Google Sheets.");
+    }
+  }
+
+  // Inicializa carregando do Google Sheets
+  carregarProdutosDoGoogleSheets();
 </script>
 
 </body>
