@@ -240,7 +240,7 @@
       <img src="marta.png" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" onerror="this.src='logo.jpg'">
       <div>
         <div style="font-weight: 800; font-size: 0.88em;">Marta (Stylist Virtual)</div>
-        <div style="font-size: 0.68em; opacity: 0.9;">Online • Gemini AI Conectado</div>
+        <div style="font-size: 0.68em; opacity: 0.9;">Online • Gemini AI Real (Via Proxy)</div>
       </div>
     </div>
     <button type="button" onclick="toggleMartaChat()" style="background:transparent; border:0; color:#fff; font-size:1.2em; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -482,7 +482,7 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MARTA STYLIST (INTEGRAÇÃO COM PROXY NO GOOGLE APPS SCRIPT)
+  // MARTA STYLIST (COMUNICAÇÃO COM O PROXY DO GOOGLE APPS SCRIPT)
   const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre looks, tamanhos ou como comprar! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
@@ -510,13 +510,11 @@
     msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está a pensar...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    // Constrói o resumo do estoque em texto
     const inventarioTexto = produtosCatalogo.length > 0 ? produtosCatalogo.map(p => 
       `- ${p.nome} (${p.cat}): R$ ${p.preco.toFixed(2)} | Cores: ${p.cores || 'Diversas'} | Tamanhos: ${p.tamanhos} | Estoque: ${p.qtd} un.`
     ).join('\n') : "Nenhum produto cadastrado no momento.";
 
     try {
-      // Envia a pergunta para o Google Apps Script (Backend) para evitar falhas de CORS
       const response = await fetch(APPS_SCRIPT_URL, {
         method: "POST",
         body: JSON.stringify({
