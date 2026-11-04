@@ -224,6 +224,7 @@
   </div>
 </main>
 
+<!-- AVATAR MARTA (MOTOR COGNITIVO COM GEMINI API REST NATIVA) -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
@@ -240,14 +241,14 @@
       <img src="marta.png" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" onerror="this.src='logo.jpg'">
       <div>
         <div style="font-weight: 800; font-size: 0.88em;">Marta (Stylist Virtual)</div>
-        <div style="font-size: 0.68em; opacity: 0.9;">Online • Atendimento Inteligente</div>
+        <div style="font-size: 0.68em; opacity: 0.9;">Online • Gemini AI Real (Sem Scripts)</div>
       </div>
     </div>
     <button type="button" onclick="toggleMartaChat()" style="background:transparent; border:0; color:#fff; font-size:1.2em; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <div class="marta-chat-messages" id="martaChatMessages">
     <div class="chat-bubble marta">
-      Oi, maravilhosa! Sou a Marta, sua personal stylist. Como posso te ajudar a montar seu look hoje? 💕
+      Oi, maravilhosa! Sou a Marta, sua personal stylist. Como posso te ajudar a montar seu look hoje, maninho(a)? 💕
     </div>
   </div>
   <div class="marta-chat-input-area">
@@ -256,6 +257,7 @@
   </div>
 </div>
 
+<!-- MODAL LOGIN / ADMIN -->
 <div class="user-modal" id="userModal">
   <div class="user-content">
     <div id="view-login">
@@ -346,6 +348,7 @@
 <script>
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxM1lh6u1qQO5rmUrm6EiezxV6CRzg1F7SQ8lL0p_bpnb8_6XdgRd4xAjVUVus_Rtc/exec";
   const ADMIN_EMAIL = "phelipe.ribeiroop@gmail.com";
+  const GEMINI_API_KEY = "AQ.Ab8RN6KQcW_lK-t7qkZfd4RYsQ9Hw4cfO30SCsBpHNPiM5PBxA";
 
   let produtosCatalogo = [];
   let carrinho = [];
@@ -353,6 +356,9 @@
   let categoriaAtual = 'todos';
   let usuarioLogado = localStorage.getItem('exclusiva_user') || "";
   let imagemUploadedBase64 = "";
+
+  // Histórico conversacional para a API REST (Garante zero repetição e contexto contínuo)
+  let historicoConversaGemini = [];
 
   async function carregarProdutosDoGoogleSheets() {
     try {
@@ -482,8 +488,8 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MOTOR DE BUSCA E RESPOSTA
-  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre qualquer produto ou como comprar! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
+  // MARTA STYLIST (INTELIGÊNCIA GENERATIVA REAL VIA API REST DO GEMINI)
+  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre looks, tamanhos ou como comprar! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
     tipIdx = (tipIdx + 1) % martaTips.length;
@@ -496,77 +502,73 @@
     win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
   };
 
-  // Normalização de texto para remoção de acentos e caracteres especiais
-  function normalizarTexto(txt) {
-    return txt.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-  }
-
   window.sendMartaMessage = async function() {
     const input = document.getElementById('martaUserInput');
-    const rawText = input.value.trim();
-    if(!rawText) return;
+    const text = input.value.trim();
+    if(!text) return;
 
     const msgContainer = document.getElementById('martaChatMessages');
-    msgContainer.innerHTML += `<div class="chat-bubble user">${rawText}</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble user">${text}</div>`;
     input.value = "";
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Consultando inventário...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está pensando na resposta...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    await new Promise(resolve => setTimeout(resolve, 300));
+    // Monta o inventário dinâmico em tempo real para a IA analisar sem erros
+    const inventarioTexto = produtosCatalogo.length > 0 ? produtosCatalogo.map(p => 
+      `- ${p.nome} (${p.cat}): R$ ${p.preco.toFixed(2)} | Cores: ${p.cores || 'Diversas'} | Tamanhos: ${p.tamanhos} | Estoque: ${p.qtd} un.`
+    ).join('\n') : "Nenhum produto cadastrado no momento.";
 
-    const p = normalizarTexto(rawText);
-    let resposta = "";
+    const systemInstruction = `Você é a Marta, consultora de moda e stylist virtual da loja "Exclusiva Ponto da Moda".
+INFORMAÇÕES DA LOJA:
+- Endereço Físico: Av. Anita Garibaldi, 4591 - Barreirinha, Curitiba/PR.
+- Telefone / WhatsApp: (41) 98835-3707.
 
-    // 1. Verificação de dúvida sobre como fazer o pedido (trata 'pedido', 'comprar', 'fazer pedido', 'peedido', 'peddo', etc.)
-    const intençãoPedido = p.includes('pedido') || p.includes('peedido') || p.includes('peddo') || p.includes('comprar') || p.includes('como faco') || p.includes('como comprar');
+REGRAS ABSOLUTAS:
+1. PENSAMENTO ORGÂNICO E ÚNICO: NUNCA repita respostas prontas, scripts engessados ou use frases padronizadas. Cada resposta deve ser gerada organicamente em tempo real com base estrita no que o cliente perguntou.
+2. ASSERTIVIDADE NO ESTOQUE: Analise rigorosamente a lista de estoque abaixo antes de responder. Se o cliente perguntar por croppeds, saias, vestidos ou calças, verifique se consta na lista e informe com precisão. Se não tiver, seja transparente e sugira alternativas.
+3. SUPORTE COMERCIAL: Se o cliente perguntar como fazer um pedido, explique o passo a passo de forma amigável: escolher a peça no catálogo, selecionar o tamanho, clicar em "Adicionar" para mandar para a sacola, preencher os dados no painel ao lado e clicar no botão verde para enviar o pedido direto pelo WhatsApp.
+4. PERGUNTAS GERAIS: Responda a qualquer dúvida com naturalidade (como clima, localização física da loja na Av. Anita Garibaldi, estilos, etc.).
+5. TOM: Acolhedor, empático, natural, fluido e prestativo.
 
-    if (intençãoPedido && (p.includes('como') || p.includes('ajuda') || p.includes('fazer') || p.includes('passo') || p.includes('posso') || p.includes('funciona'))) {
-      resposta = `É bem simples fazer seu pedido por aqui! Siga estes passos:\n\n1️⃣ Escolha a peça no catálogo e selecione o tamanho desejado.\n2️⃣ Clique no botão **'Adicionar'** para salvar na sua sacola.\n3️⃣ No painel ao lado (ou abaixo na tela do celular), preencha seu Nome, WhatsApp e Endereço.\n4️⃣ Clique em **'Enviar Pedido via WhatsApp'** para concluir com nossa equipe! ✨`;
-    } 
-    else {
-      // 2. Mapeamento de sinonímias de vestuário
-      let termosBusca = [];
-      if (p.includes('saia')) termosBusca.push('saia');
-      if (p.includes('cropped') || p.includes('croped')) termosBusca.push('cropped', 'blusa');
-      if (p.includes('vestido')) termosBusca.push('vestido');
-      if (p.includes('calca') || p.includes('jeans')) termosBusca.push('calca', 'jeans');
-      if (p.includes('conjunto')) termosBusca.push('conjunto');
-      if (p.includes('short')) termosBusca.push('short');
-      if (p.includes('sapato') || p.includes('acessorio')) termosBusca.push('sapato', 'acessorio');
+ESTOQUE ATUAL DA PLANILHA:
+${inventarioTexto}`;
 
-      // Se nenhum termo específico foi detectado, usa todas as palavras relevantes da mensagem
-      if (termosBusca.length === 0) {
-        termosBusca = p.split(/\s+/).filter(w => w.length > 2 && !['tem', 'vcs', 'voces', 'com', 'que', 'para', 'uma', 'produtos', 'catalogo', 'loja'].includes(w));
-      }
+    // Adiciona ao histórico conversacional da API REST
+    historicoConversaGemini.push({ role: "user", parts: [{ text: text }] });
 
-      // Busca no inventário ativo da planilha
-      const produtosEncontrados = produtosCatalogo.filter(item => {
-        const textoCompleto = normalizarTexto(item.nome + " " + item.cat + " " + (item.cores || "") + " " + (item.descricao || ""));
-        return termosBusca.some(termo => textoCompleto.includes(termo));
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemInstruction }] },
+          contents: historicoConversaGemini,
+          generationConfig: { temperature: 0.95 }
+        })
       });
 
-      if (produtosEncontrados.length > 0) {
-        resposta = `Temos sim! Confira as opções disponíveis no nosso estoque agora:\n\n` +
-          produtosEncontrados.map(item => `• **${item.nome}** (${item.cat})\n  💰 R$ ${item.preco.toFixed(2).replace('.', ',')} | 📏 Tam: ${item.tamanhos} | 📦 Est: ${item.qtd} un.`).join('\n\n') +
-          `\n\nVocê pode selecionar o tamanho e clicar em **Adicionar** direto no card acima! 💕`;
-      } 
-      else if (termosBusca.length > 0) {
-        resposta = `No momento não temos itens correspondentes a essa busca no estoque ativo da vitrine. Você pode verificar nossas categorias no topo do catálogo ou me perguntar sobre vestidos, conjuntos, calças e blusas! ✨`;
-      } 
-      else if (p.includes('oi') || p.includes('ola') || p.includes('oie') || p.includes('tudo bem')) {
-        resposta = `Olá! Como posso te ajudar a encontrar a peça ideal ou realizar seu pedido hoje? 💕`;
-      } 
-      else {
-        resposta = `Posso te ajudar a encontrar saias, croppeds, vestidos, calças ou te orientar sobre como fechar seu pedido. O que você procura no momento? ✨`;
-      }
-    }
+      const data = await response.json();
+      document.getElementById(loadingId).remove();
 
-    document.getElementById(loadingId).remove();
-    msgContainer.innerHTML += `<div class="chat-bubble marta">${resposta.replace(/\n/g, '<br>')}</div>`;
-    msgContainer.scrollTop = msgContainer.scrollHeight;
+      let respostaIA = "Amiga, tive um breve lapso aqui, mas como posso te ajudar a arrasar no visual hoje? 💕";
+      
+      if (data && data.candidates && data.candidates[0].content) {
+        respostaIA = data.candidates[0].content.parts[0].text;
+        // Salva a resposta no histórico para manter o fio da meada sem repetições
+        historicoConversaGemini.push({ role: "model", parts: [{ text: respostaIA }] });
+      }
+
+      msgContainer.innerHTML += `<div class="chat-bubble marta">${respostaIA.replace(/\n/g, '<br>')}</div>`;
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+
+    } catch (err) {
+      document.getElementById(loadingId).remove();
+      msgContainer.innerHTML += `<div class="chat-bubble marta">Amiga, deu uma oscilação rápida na minha conexão aqui! Nossa loja física fica na Av. Anita Garibaldi, 4591, Curitiba/PR. Quer falar direto com as meninas no WhatsApp? 💕</div>`;
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
   };
 
   // LOGIN & ADMIN
