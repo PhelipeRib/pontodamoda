@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Exclusiva Ponto da Moda | Catálogo B2C</title>
+  <title>Exclusiva Ponto da Moda | Catálogo B2C Inteligente</title>
   
-  <!-- Favicon com a logo da loja -->
   <link rel="icon" type="image/jpeg" href="logo.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -44,13 +43,13 @@
     .instruction-banner i { font-size: 1.5em; color: var(--ac); flex-shrink: 0; }
 
     .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
-    .filter-btn { background: var(--in); border: 1px solid var(--bd); padding: 8px 14px; border-radius: 20px; font-size: 0.78em; font-weight: 600; cursor: pointer; color: var(--tx); white-space: nowrap; font-family: 'Montserrat', sans-serif !important; }
+    .filter-btn { background: var(--in); border: 1px solid var(--bd); padding: 8px 14px; border-radius: 20px; font-size: 0.78em; font-weight: 600; cursor: pointer; color: var(--tx); white-space: nowrap; }
     .filter-btn.active { background: var(--rosé); color: #2d2124; border-color: var(--rosé-dark); font-weight: 800; }
 
     label { display: block; font-size: 0.76em; color: var(--mu); margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-    input, select, textarea { background: var(--in); border: 1px solid var(--bd); color: var(--tx); border-radius: 10px; padding: 12px; width: 100%; font-size: 0.88em; margin-bottom: 14px; outline: none; font-family: 'Montserrat', sans-serif !important; }
+    input, select, textarea { background: var(--in); border: 1px solid var(--bd); color: var(--tx); border-radius: 10px; padding: 12px; width: 100%; font-size: 0.88em; margin-bottom: 14px; outline: none; }
 
-    .btn { background: var(--in); border: 1px solid var(--bd); color: var(--tx); border-radius: 10px; padding: 10px 16px; font-size: 0.82em; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-family: 'Montserrat', sans-serif !important; }
+    .btn { background: var(--in); border: 1px solid var(--bd); color: var(--tx); border-radius: 10px; padding: 10px 16px; font-size: 0.82em; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
     .btn:hover { border-color: var(--ac); color: var(--ac); }
     .btn.pr { background: var(--tx); color: #fff !important; border-color: var(--tx); font-weight: 700; }
     .btn.pr:hover { background: var(--ac); border-color: var(--ac); }
@@ -70,7 +69,7 @@
     .product-price { font-size: 1.05em; color: var(--ac); font-weight: 800; margin-bottom: 8px; }
 
     .size-selector { display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap; }
-    .size-btn { border: 1px solid var(--bd); background: var(--in); color: var(--tx); padding: 4px 8px; font-size: 0.72em; font-weight: 700; cursor: pointer; border-radius: 6px; font-family: 'Montserrat', sans-serif !important; }
+    .size-btn { border: 1px solid var(--bd); background: var(--in); color: var(--tx); padding: 4px 8px; font-size: 0.72em; font-weight: 700; cursor: pointer; border-radius: 6px; }
     .size-btn.selected { background: var(--rosé-dark); color: #fff; border-color: var(--rosé-dark); }
 
     .tb-wrap { overflow-x: auto; margin-top: 10px; }
@@ -249,7 +248,7 @@
   </div>
   <div class="marta-chat-messages" id="martaChatMessages">
     <div class="chat-bubble marta">
-      Oi, maravilhosa! Sou a Marta, sua personal stylist. Como posso te ajudar a montar seu look hoje, maninho(a)? 💕
+      Oi, maravilhosa! Sou a Marta, sua personal stylist. Como posso te ajudar a montar seu look hoje? 💕
     </div>
   </div>
   <div class="marta-chat-input-area">
@@ -357,7 +356,7 @@
   let usuarioLogado = localStorage.getItem('exclusiva_user') || "";
   let imagemUploadedBase64 = "";
 
-  // Memória estrita para garantir zero repetição de textos (Critério 1)
+  // Memória anti-repetição para a IA da Marta
   let historicoRespostasUsadas = [];
 
   async function carregarProdutosDoGoogleSheets() {
@@ -488,7 +487,7 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MOTOR COGNITIVO COM SUPORTE COMERCIAL E BUSCA SEMÂNTICA PRECISA
+  // MOTOR COGNITIVO DA MARTA COM BUSCA DE ESTOQUE E ANTI-REPETIÇÃO
   const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre looks, cores ou tamanhos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
@@ -509,7 +508,7 @@
       : listaOpcoes[Math.floor(Math.random() * listaOpcoes.length)];
     
     historicoRespostasUsadas.push(escolhida);
-    if (historicoRespostasUsadas.length > 20) historicoRespostasUsadas.shift();
+    if (historicoRespostasUsadas.length > 15) historicoRespostasUsadas.shift();
     return escolhida;
   }
 
@@ -524,69 +523,67 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está consultando o catálogo e preparando a resposta...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está consultando o catálogo...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    // Simula raciocínio natural (Critério 2)
-    await new Promise(resolve => setTimeout(resolve, 750));
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const p = text.toLowerCase();
     let resposta = "";
 
-    // Módulo de Ajuda / Suporte para Fazer Pedido
-    const isAjudaPedido = p.includes('pedido') && (p.includes('como') || p.includes('ajuda') || p.includes('fazer') || p.includes('sei') || p.includes('comprar'));
-    const isAtrasoOuEntrega = p.includes('atras') || p.includes('demor') || p.includes('meses') || p.includes('recebi') || p.includes('correios');
-    const isSaudacao = p.includes('oi') || p.includes('ola') || p.includes('oiee') || p.includes('e ai') || p.includes('fala') || p.includes('tudo bem');
+    const isCnpj = p.includes('cnpj') || p.includes('documento') || p.includes('empresa');
+    const isLocalizacao = p.includes('onde') || p.includes('endereço') || p.includes('local') || p.includes('anita') || p.includes('curitiba') || p.includes('retirar');
+    const isAjudaPedido = p.includes('pedido') && (p.includes('como') || p.includes('ajuda') || p.includes('fazer') || p.includes('comprar'));
+    const isAtrasoOuEntrega = p.includes('atras') || p.includes('demor') || p.includes('recebi') || p.includes('motoboy') || p.includes('frete');
+    const isSaudacao = p.includes('oi') || p.includes('ola') || p.includes('oiee') || p.includes('e ai') || p.includes('fala');
     const isLookOuEstilo = p.includes('look') || p.includes('combinar') || p.includes('noite') || p.includes('sair') || p.includes('estilo');
 
-    // Busca semântica ampla no catálogo para garantir assertividade (Critério 3)
+    // Filtro semântico direto no catálogo carregado da planilha
+    const termosBusca = p.split(' ').filter(w => w.length > 2 && !['tem', 'vcs', 'voces', 'com', 'que', 'para', 'uma', 'algum', 'alguma'].includes(w));
     const itensMatch = produtosCatalogo.filter(item => {
       const info = (item.nome + " " + item.cat + " " + (item.cores || "") + " " + (item.descricao || "")).toLowerCase();
-      // Divide o prompt em palavras-chave relevantes
-      const palavras = p.split(' ').filter(w => w.length > 2 && !['tem', 'vcs', 'voces', 'com', 'que', 'para', 'uma'].includes(w));
-      if (palavras.length === 0) return false;
-      return palavras.some(palavra => info.includes(palavra));
+      if (termosBusca.length === 0) return false;
+      return termosBusca.some(termo => info.includes(termo));
     });
 
-    if (isAjudaPedido) {
-      resposta = `Com certeza! Fazer o seu pedido por aqui é super simples e rápido. Olha só o passo a passo:\n\n1️⃣ Escolha a peça desejada no catálogo e selecione o tamanho (P, M ou G).\n2️⃣ Clique no botão **'Adicionar'** para mandar o item para a sua Sacola de Compras.\n3️⃣ No painel lateral direito, preencha seus dados (Nome, WhatsApp, Forma de Recebimento e Endereço).\n4️⃣ Por fim, clique no botão verde **'Enviar Pedido via WhatsApp'** para formalizar com as atendentes! ✨ Tem alguma dúvida em alguma dessas etapas?`;
+    if (isCnpj) {
+      resposta = `O CNPJ da Exclusiva Ponto da Moda é **42.752.095/0001-40**. Segurança e total transparência para você! ✨`;
+    }
+    else if (isLocalizacao) {
+      resposta = `Nossa loja física fica na **Av. Anita Garibaldi, 4591 - Barreirinha, Curitiba/PR**. Venha nos visitar ou escolha entrega via motoboy! 📍🚚`;
+    }
+    else if (isAjudaPedido) {
+      resposta = `Fazer seu pedido é muito fácil:\n\n1️⃣ Escolha a peça e o tamanho (P, M, G) no catálogo.\n2️⃣ Clique em **'Adicionar'** para mandar o item para a Sacola.\n3️⃣ Preencha seus dados no painel ao lado e clique em **'Enviar Pedido via WhatsApp'**! 💕`;
     }
     else if (isAtrasoOuEntrega) {
-      const op = [
-        `Poxa, sinto muito por essa demora! Como sou a stylist virtual e fico focada no provador e nos looks, não consigo verificar o rastreio interno do seu pacote por aqui. Te aconselho forte a chamar as meninas direto no botão verde do WhatsApp ali no topo! Elas conferem seu nome na hora e resolvem isso para você. 📲💕`,
-        `Nossa, sério? Isso não é comum nas nossas entregas! Como não tenho acesso ao sistema logístico da loja, de verdade eu não consigo checar o que aconteceu. Dá um toque nas atendentes pelo WhatsApp para elas rastrearem o seu pedido correndo! 🚚✨`,
-        `Poxa vida, que chato essa situação! Me desculpe pelo transtorno. O melhor caminho agora é mandar mensagem no WhatsApp da loja para a equipe verificar o status exato da sua entrega com todo o suporte necessário. 💛`
-      ];
-      resposta = obterRespostaUnica(op);
-    }
-    else if (isSaudacao) {
-      const op = [
-        `Oie! Que alegria ter você aqui conversando comigo. O que você gostaria de descobrir ou montar de visual hoje? ✨`,
-        `Oin! Tudo ótimo por aqui, e com você? Me conta qual é a sua ideia de look para hoje para a gente arrasar! 💕`,
-        `Oieee! Pronta para renovar o visual? Me diga o que você está procurando e eu te ajudo a garimpar as melhores peças! 💃`
-      ];
-      resposta = obterRespostaUnica(op);
-    }
-    else if (isLookOuEstilo) {
-      const op = [
-        `Adoro essa proposta! Para um visual marcante, gosto muito de misturar nossas saias ou calças de alfaiataria com uma blusa leve. Você prefere um estilo casual para o dia a dia ou algo mais sofisticado para a noite? ✨`,
-        `Com certeza! Combinar conforto e elegância é o nosso forte. Você quer focar em algo fresquinho para agora ou busca uma produção poderosa para sair? 🥂`,
-        `Fechado! Para acertar em cheio no look, podemos apostar nos nossos conjuntos ou vestidos. Qual cor ou vibe faz mais o seu estilo hoje? 🖤`
-      ];
-      resposta = obterRespostaUnica(op);
+      resposta = `As entregas via motoboy em Curitiba são super rápidas! Para qualquer dúvida de rastreio ou prazo, chame a equipe diretamente no botão verde do WhatsApp no topo da página. 📲✨`;
     }
     else if (itensMatch.length > 0) {
-      resposta = `Dei uma olhada caprichada no nosso estoque e encontrei estas opções perfeitas para você:\n\n` +
-        itensMatch.map(item => `• *${item.nome}* (${item.cat}) — **R$ ${item.preco.toFixed(2).replace('.', ',')}**\n  🎨 Cores: *${item.cores || 'Diversas'}* | 📏 Tamanhos: *${item.tamanhos}* | 📦 Estoque: *${item.qtd} un.*`).join('\n\n') +
-        `\n\nO caimento dessas peças é impecável! Gostaria que eu te ajude a adicionar na sacola? 💕`;
+      resposta = `Encontrei estas opções no nosso estoque para você:\n\n` +
+        itensMatch.map(item => `• *${item.nome}* (${item.cat}) — **R$ ${item.preco.toFixed(2).replace('.', ',')}**\n  🎨 Cores: *${item.cores || 'Padrão'}* | 📏 Tamanhos: *${item.tamanhos}* | 📦 Estoque: *${item.qtd} un.*`).join('\n\n') +
+        `\n\nDeseja adicionar alguma dessas peças na sua sacola? 💕`;
+    }
+    else if (isSaudacao) {
+      const opcoesSaudacao = [
+        `Oie! Que alegria ter você por aqui. O que você gostaria de descobrir ou montar de visual hoje? ✨`,
+        `Oin! Tudo ótimo por aqui. Me conta qual é a sua ideia de look para hoje para a gente arrasar! 💕`,
+        `Oieee! Pronta para renovar o visual? Me diga o que você está procurando e eu te ajudo a garimpar! 💃`
+      ];
+      resposta = obterRespostaUnica(opcoesSaudacao);
+    }
+    else if (isLookOuEstilo) {
+      const opcoesLook = [
+        `Adoro essa proposta! Para um visual marcante, gosto muito de misturar nossas saias ou conjuntos. Você prefere algo casual ou mais sofisticado para a noite? ✨`,
+        `Com certeza! Combinar conforto e elegância é o nosso forte. Quer focar em algo fresquinho ou numa produção poderosa para sair? 🥂`
+      ];
+      resposta = obterRespostaUnica(opcoesLook);
     }
     else {
-      const op = [
-        `Nossa, achei super interessante o que você comentou! Aqui na Exclusiva a gente preza muito pelo caimento e conforto de cada peça. Quer dar uma olhada nas nossas categorias principais logo acima? ✨`,
-        `Entendi perfeitamente! Para te orientar da melhor forma, temos novidades lindas na vitrine. Se quiser tirar qualquer dúvida sobre tamanhos ou pagamentos, as meninas te atendem super rápido no WhatsApp da loja! 💖`,
-        `Que legal! Adoro conversar sobre moda com você. Você pode filtrar as peças por categoria no topo da página ou me dizer qual estilo você ama usar que eu te ajudo a garimpar! 😉`
+      const opcoesFallback = [
+        `Temos peças lindas nas categorias de **Vestidos, Calças, Blusas e Conjuntos** logo acima no catálogo! Se preferir, chame as meninas no WhatsApp da loja para tirar dúvidas rápidas! 💖`,
+        `Que tal dar uma olhada nas nossas novidades filtrando pelas categorias no topo da página? Se precisar de ajuda com tamanhos, estou por aqui! 😉`
       ];
-      resposta = obterRespostaUnica(op);
+      resposta = obterRespostaUnica(opcoesFallback);
     }
 
     document.getElementById(loadingId).remove();
