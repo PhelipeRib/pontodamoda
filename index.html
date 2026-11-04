@@ -248,11 +248,11 @@
   </div>
   <div class="marta-chat-messages" id="martaChatMessages">
     <div class="chat-bubble marta">
-      Oi, maravilhosa! Sou a Marta. Posso te ajudar com tamanhos, fotos, entregas em Curitiba ou dúvidas de estilo! O que procura hoje? 💕
+      Oi, maravilhosa! Sou a Marta. Me pergunte quais peças temos no estoque, tamanhos ou opções de entregas em Curitiba! 💕
     </div>
   </div>
   <div class="marta-chat-input-area">
-    <input type="text" id="martaUserInput" placeholder="Pergunte sobre entregas, tamanhos..." onkeypress="if(event.key==='Enter') sendMartaMessage()">
+    <input type="text" id="martaUserInput" placeholder="Ex: Tem saias? Quais os conjuntos?" onkeypress="if(event.key==='Enter') sendMartaMessage()">
     <button type="button" class="btn pr" onclick="sendMartaMessage()" style="padding: 9px 12px;"><i class="fa-solid fa-paper-plane"></i></button>
   </div>
 </div>
@@ -485,12 +485,13 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MARTA STYLIST (IA)
-  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Precisa de ajuda com tamanhos? ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
+  // MARTA STYLIST (IA COM LEITURA REAL DA PLANILHA/CATÁLOGO)
+  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte quais peças temos no estoque! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
     tipIdx = (tipIdx + 1) % martaTips.length;
-    document.getElementById('martaSpeechBubble').innerText = martaTips[tipIdx];
+    const bubble = document.getElementById('martaSpeechBubble');
+    if(bubble) bubble.innerText = martaTips[tipIdx];
   }, 4000);
 
   function toggleMartaChat() {
@@ -509,14 +510,39 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está digitando...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está conferindo o estoque...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    let resposta = "Nossa loja fica na Av. Anita Garibaldi, 4591 - Curitiba/PR. Aceitamos pedidos via WhatsApp e entregamos via Motoboy!";
-    if(text.toLowerCase().includes('cnpj')) resposta = "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40 💕";
+    let resposta = "";
+    const p = text.toLowerCase();
+
+    // Filtra busca por termo especifico no catalogo
+    const itensEncontrados = produtosCatalogo.filter(item => 
+      item.nome.toLowerCase().includes(p) || 
+      item.cat.toLowerCase().includes(p) || 
+      (item.descricao && item.descricao.toLowerCase().includes(p))
+    );
+
+    if (p.includes('cnpj') || p.includes('empresa')) {
+      resposta = "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40 🛍️";
+    } else if (p.includes('endereço') || p.includes('onde') || p.includes('local') || p.includes('loja')) {
+      resposta = "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Venha nos visitar ou peça com entrega via motoboy! 📍";
+    } else if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy')) {
+      resposta = "Fazemos entregas rápidas via motoboy em Curitiba e região, ou você pode optar por retirar diretamente na nossa loja na Av. Anita Garibaldi! 🚚";
+    } else if (itensEncontrados.length > 0) {
+      resposta = `Encontrei a(s) seguinte(s) opção(ões) no nosso estoque para você:\n\n` + 
+        itensEncontrados.map(item => `• *${item.nome}* (${item.cat}): R$ ${item.preco.toFixed(2).replace('.', ',')} (Tamanhos: ${item.tamanhos} | Estoque: ${item.qtd})`).join('\n') +
+        `\n\nBasta selecionar o tamanho desejado e clicar em Adicionar! 💕`;
+    } else if (produtosCatalogo.length > 0) {
+      resposta = `Atualmente temos as seguintes opções de destaque na vitrine:\n\n` +
+        produtosCatalogo.map(item => `• *${item.nome}* (${item.cat}) - R$ ${item.preco.toFixed(2).replace('.', ',')}`).join('\n') +
+        `\n\nVocê pode me perguntar sobre tamanhos ou escolher a peça direto na sacola! ✨`;
+    } else {
+      resposta = "No momento o estoque está sendo atualizado na planilha, mas me pergunte sobre entregas ou local da loja física! 💕";
+    }
 
     document.getElementById(loadingId).remove();
-    msgContainer.innerHTML += `<div class="chat-bubble marta">${resposta}</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta">${resposta.replace(/\n/g, '<br>')}</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
   }
 
