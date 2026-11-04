@@ -224,7 +224,7 @@
   </div>
 </main>
 
-<!-- AVATAR HOLOGRÁFICO DA MARTA (IA) -->
+<!-- AVATAR HOLOGRÁFICO DA MARTA (IA INTELIGENTE) -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
@@ -248,11 +248,11 @@
   </div>
   <div class="marta-chat-messages" id="martaChatMessages">
     <div class="chat-bubble marta">
-      Oi, maravilhosa! Sou a Marta. Me pergunte quais peças temos no estoque, tamanhos ou opções de entregas em Curitiba! 💕
+      Oi, maravilhosa! Sou a Marta. Me pergunte o que procura (saias, shorts, croppeds, vestidos) ou sobre entregas e tamanhos! 💕
     </div>
   </div>
   <div class="marta-chat-input-area">
-    <input type="text" id="martaUserInput" placeholder="Ex: Tem saias? Quais os conjuntos?" onkeypress="if(event.key==='Enter') sendMartaMessage()">
+    <input type="text" id="martaUserInput" placeholder="Ex: Tem saias? Quais tamanhos?" onkeypress="if(event.key==='Enter') sendMartaMessage()">
     <button type="button" class="btn pr" onclick="sendMartaMessage()" style="padding: 9px 12px;"><i class="fa-solid fa-paper-plane"></i></button>
   </div>
 </div>
@@ -466,7 +466,6 @@
 
     let mensagemWhats = `✨ *NOVO PEDIDO - EXCLUSIVA PONTO DA MODA* ✨\n\n👤 *Cliente:* ${nome}\n📞 *Whats:* ${whats}\n🚚 *Entrega:* ${entrega}\n📍 *Endereço:* ${endereco}\n\n🛍️ *Itens:*\n${textoItens}\n💰 *Total:* R$ ${totalGeral.toFixed(2)}`;
 
-    // Salvar Pedido na aba Vendas e Dar Baixa no Estoque
     fetch(APPS_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
@@ -485,8 +484,8 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MARTA STYLIST (IA COM LEITURA REAL DA PLANILHA/CATÁLOGO)
-  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte quais peças temos no estoque! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
+  // MARTA STYLIST (IA INTELIGENTE E FLEXÍVEL BASEADA NO ESTOQUE REAL)
+  const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre saias, shorts ou conjuntos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
     tipIdx = (tipIdx + 1) % martaTips.length;
@@ -510,35 +509,44 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está conferindo o estoque...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está consultando o estoque...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     let resposta = "";
     const p = text.toLowerCase();
 
-    // Filtra busca por termo especifico no catalogo
-    const itensEncontrados = produtosCatalogo.filter(item => 
-      item.nome.toLowerCase().includes(p) || 
-      item.cat.toLowerCase().includes(p) || 
-      (item.descricao && item.descricao.toLowerCase().includes(p))
-    );
+    // Palavras-chave de intenção
+    const perguntaTamanho = p.includes('tamanho') || p.includes('veste') || p.includes('numeracao') || p.includes('p') || p.includes('m') || p.includes('g');
+    const perguntaContato = p.includes('cnpj') || p.includes('empresa') || p.includes('contato') || p.includes('whatsapp');
+    const perguntaLocal = p.includes('endereço') || p.includes('onde') || p.includes('local') || p.includes('loja') || p.includes('curitiba') || p.includes('anita');
+    const perguntaEntrega = p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('retirar');
 
-    if (p.includes('cnpj') || p.includes('empresa')) {
-      resposta = "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40 🛍️";
-    } else if (p.includes('endereço') || p.includes('onde') || p.includes('local') || p.includes('loja')) {
-      resposta = "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Venha nos visitar ou peça com entrega via motoboy! 📍";
-    } else if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy')) {
-      resposta = "Fazemos entregas rápidas via motoboy em Curitiba e região, ou você pode optar por retirar diretamente na nossa loja na Av. Anita Garibaldi! 🚚";
-    } else if (itensEncontrados.length > 0) {
-      resposta = `Encontrei a(s) seguinte(s) opção(ões) no nosso estoque para você:\n\n` + 
-        itensEncontrados.map(item => `• *${item.nome}* (${item.cat}): R$ ${item.preco.toFixed(2).replace('.', ',')} (Tamanhos: ${item.tamanhos} | Estoque: ${item.qtd})`).join('\n') +
-        `\n\nBasta selecionar o tamanho desejado e clicar em Adicionar! 💕`;
-    } else if (produtosCatalogo.length > 0) {
-      resposta = `Atualmente temos as seguintes opções de destaque na vitrine:\n\n` +
-        produtosCatalogo.map(item => `• *${item.nome}* (${item.cat}) - R$ ${item.preco.toFixed(2).replace('.', ',')}`).join('\n') +
-        `\n\nVocê pode me perguntar sobre tamanhos ou escolher a peça direto na sacola! ✨`;
+    // Extração flexível de itens do catálogo baseado em qualquer termo digitado
+    const termosBusca = p.replace(/tem|voces|vocês|possui|trabalham|com|de|a|o|as|os/g, '').trim().split(' ').filter(t => t.length > 2);
+    
+    let itensFiltrados = produtosCatalogo.filter(item => {
+      const nomeCatDesc = (item.nome + " " + item.cat + " " + (item.descricao || "")).toLowerCase();
+      return termosBusca.some(termo => nomeCatDesc.includes(termo));
+    });
+
+    if (perguntaContato) {
+      resposta = "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40. Estamos à disposição para te atender com total segurança! 🛍️";
+    } else if (perguntaLocal) {
+      resposta = "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Venha nos visitar! 📍";
+    } else if (perguntaEntrega) {
+      resposta = "Trabalhamos com entrega rápida via motoboy em Curitiba e região, ou você pode escolher 'Retirar na Loja' sem taxa de frete! 🚚";
+    } else if (itensFiltrados.length > 0) {
+      resposta = `Sim, maravilhosa! Encontrei estas opções baseadas no que você pediu:\n\n` +
+        itensFiltrados.map(item => `• *${item.nome}* (${item.cat}) - R$ ${item.preco.toFixed(2).replace('.', ',')}\n  📏 Tamanhos: *${item.tamanhos}* | 📦 Estoque: *${item.qtd} un.*`).join('\n\n') +
+        `\n\nBasta selecionar o tamanho desejado e clicar em Adicionar na sacola! 💕`;
+    } else if (perguntaTamanho) {
+      resposta = `Trabalhamos com os tamanhos *P, M e G* nas nossas peças! Veja os itens disponíveis atualmente na vitrine:\n\n` +
+        produtosCatalogo.map(item => `• *${item.nome}* - R$ ${item.preco.toFixed(2).replace('.', ',')} (Tam: ${item.tamanhos})`).join('\n');
+    } else if (p.includes('tudo') || p.includes('pecas') || p.includes('peças') || p.includes('catalogo') || p.includes('catálogo') || p.includes('lista')) {
+      resposta = `Aqui estão todas as peças disponíveis na nossa vitrine agora:\n\n` +
+        produtosCatalogo.map(item => `• *${item.nome}* (${item.cat}) - R$ ${item.preco.toFixed(2).replace('.', ',')} (Tam: ${item.tamanhos})`).join('\n');
     } else {
-      resposta = "No momento o estoque está sendo atualizado na planilha, mas me pergunte sobre entregas ou local da loja física! 💕";
+      resposta = `Entendi! Temos diversas opções lindas na nossa vitrine. Que tal dar uma olhadinha nas categorias acima ou me perguntar especificamente por *vestidos, conjuntos, saias ou shorts*? ✨`;
     }
 
     document.getElementById(loadingId).remove();
