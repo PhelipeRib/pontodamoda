@@ -118,15 +118,6 @@
 
     @media(max-width: 900px) { main { grid-template-columns: 1fr; } .footer-container { grid-template-columns: 1fr; } .marta-chat-window { width: 92vw; right: 4vw; } }
   </style>
-
-  <!-- SDK oficial do Google Generative AI (Gemini) -->
-  <script type="importmap">
-    {
-      "imports": {
-        "@google/genai": "https://esm.run/@google/genai"
-      }
-    }
-  </script>
 </head>
 <body>
 
@@ -226,7 +217,7 @@
           <i class="fa-solid fa-qrcode" style="color: var(--ac);"></i> QR Code de Recompra Rápida
         </h3>
         <p style="font-size: 0.72em; color: var(--mu); margin-bottom: 10px;">
-          Acesse el catálogo instantaneamente pelo celular.
+          Acesse o catálogo instantaneamente pelo celular.
         </p>
         <img src="qrcode.png" alt="QR Code Exclusiva" onerror="this.src='https://via.placeholder.com/120?text=QR+Code'">
       </div>
@@ -234,7 +225,7 @@
   </div>
 </main>
 
-<!-- AVATAR HOLOGRÁFICO DA MARTA (GEMINI SDK API REAL) -->
+<!-- AVATAR HOLOGRÁFICO DA MARTA (GEMINI API REST NATIVA) -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
@@ -251,7 +242,7 @@
       <img src="marta.png" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" onerror="this.src='logo.jpg'">
       <div>
         <div style="font-weight: 800; font-size: 0.88em;">Marta (Stylist Virtual)</div>
-        <div style="font-size: 0.68em; opacity: 0.9;">Online • Gemini AI Ativa</div>
+        <div style="font-size: 0.68em; opacity: 0.9;">Online • Gemini API Real</div>
       </div>
     </div>
     <button type="button" onclick="toggleMartaChat()" style="background:transparent; border:0; color:#fff; font-size:1.2em; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -355,11 +346,10 @@
   </div>
 </footer>
 
-<script type="module">
-  import { GoogleGenAI } from "@google/genai";
-
+<script>
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxM1lh6u1qQO5rmUrm6EiezxV6CRzg1F7SQ8lL0p_bpnb8_6XdgRd4xAjVUVus_Rtc/exec";
   const ADMIN_EMAIL = "phelipe.ribeiroop@gmail.com";
+  const GEMINI_API_KEY = "AQ.Ab8RN6KQcW_lK-t7qkZfd4RYsQ9Hw4cfO30SCsBpHNPiM5PBxA";
 
   let produtosCatalogo = [];
   let carrinho = [];
@@ -368,9 +358,8 @@
   let usuarioLogado = localStorage.getItem('exclusiva_user') || "";
   let imagemUploadedBase64 = "";
 
-  // Instância oficial do SDK Gemini
-  const ai = new GoogleGenAI({ apiKey: "AQ.Ab8RN6KQcW_lK-t7qkZfd4RYsQ9Hw4cfO30SCsBpHNPiM5PBxA" });
-  let chatSession = null;
+  // Histórico conversacional para manter contexto sem repetir respostas
+  let historicoChatAPI = [];
 
   async function carregarProdutosDoGoogleSheets() {
     try {
@@ -379,7 +368,6 @@
       if (Array.isArray(data) && data.length > 0) {
         produtosCatalogo = data;
         renderCatalog();
-        initMartaChatSession(); // Inicializa o chat inteligente com os dados atualizados da planilha
       } else {
         document.getElementById('catalog-container').innerHTML = `<p style="text-align: center; grid-column: 1/-1;">Nenhum produto cadastrado na aba 'Produtos' da planilha.</p>`;
       }
@@ -501,37 +489,7 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // CONFIGURAÇÃO DA SESSÃO INTELIGENTE COM O GEMINI
-  function initMartaChatSession() {
-    const inventarioTexto = produtosCatalogo.map(p => 
-      `• Nome: ${p.nome} | Categoria: ${p.cat} | Descrição: ${p.descricao || 'N/A'} | Preço: R$ ${p.preco} | Tamanhos: ${p.tamanhos} | Cores: ${p.cores} | Estoque: ${p.qtd}`
-    ).join('\n');
-
-    const systemInstruction = `Você é a Marta, Consultora de Moda e Stylist Virtual da loja "Exclusiva Ponto da Moda", localizada na Av. Anita Garibaldi, 4591 - Barreirinha, Curitiba/PR (CNPJ: 42.752.095/0001-40).
-
-REGRAS ABSOLUTAS E INEGOCIÁVEIS:
-1. PENSAMENTO FLUIDO E ÚNICO: NUNCA repita a mesma resposta ou use frases prontas engessadas. Cada resposta deve ser pensada na hora, adaptada organicamente ao prompt exato do usuário, demonstrando alta inteligência, sagacidade e dinamismo conversacional.
-2. COMPREENSÃO DE CATÁLOGO: Analise rigorosamente a lista de estoque abaixo. Se o cliente perguntar se tem um item específico (ex: cropped, saia, shorts), verifique se ele consta na lista. Se tiver, informe com entusiasmo os detalhes, preços e cores. Se não tiver, diga com naturalidade que esgotou ou não está na vitrine atual, oferecendo alternativas similares da loja.
-3. EMPATIA E JOGO DE CINTURA: Para dúvidas sobre entregas, prazos ou pedidos passados (onde você não tem acesso ao sistema interno), demonstre empatia genuína e oriente o cliente a chamar a equipe diretamente pelo botão verde do WhatsApp no topo da página, variando o vocabulário a cada vez.
-4. TOM DE VOZ: Empático, acolhedor, charmoso, informal, compreendendo gírias ("maninho", "amiga", etc.) e respondendo com carinho.
-
-INVENTÁRIO ATUALIZADO DA PLANILHA:
-${inventarioTexto}`;
-
-    try {
-      chatSession = ai.models.chats.create({
-        model: 'gemini-2.5-flash',
-        config: {
-          systemInstruction: systemInstruction,
-          temperature: 0.9, // Máxima criatividade e variação fluida
-        }
-      });
-    } catch(err) {
-      console.error("Erro ao iniciar o chat do Gemini:", err);
-    }
-  }
-
-  // MARTA STYLIST (BALÃO FLUTUANTE)
+  // MARTA STYLIST (MOTOR COGNITIVO COM GEMINI API REST NATIVA)
   const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre looks, cores ou tamanhos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
@@ -556,24 +514,56 @@ ${inventarioTexto}`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está analisando o catálogo para você...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está pensando na resposta...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    try {
-      if (!chatSession) {
-        initMartaChatSession();
-      }
+    // Monta o inventário atual da planilha para dar contexto real à IA
+    const inventarioTexto = produtosCatalogo.length > 0 ? produtosCatalogo.map(p => 
+      `- ${p.nome} (${p.cat}): R$ ${p.preco.toFixed(2)} | Cores: ${p.cores || 'Diversas'} | Tamanhos: ${p.tamanhos} | Estoque: ${p.qtd} un.`
+    ).join('\n') : "Nenhum produto carregado no momento.";
 
-      const response = await chatSession.sendMessage({ message: text });
+    const systemInstruction = `Você é a Marta, consultora de moda e stylist virtual da loja "Exclusiva Ponto da Moda", localizada na Av. Anita Garibaldi, 4591 - Barreirinha, Curitiba/PR.
+
+REGRAS INEGOCIÁVEIS:
+1. PENSAMENTO FLUIDO E ÚNICO: NUNCA repita respostas ou use frases robóticas decoradas. Cada resposta deve ser criada organicamente em tempo real, adaptando-se perfeitamente ao estilo, gírias e teor do prompt do usuário.
+2. ANÁLISE DE CATÁLOGO: Leia atentamente a lista de estoque abaixo. Se o usuário perguntar sobre croppeds, saias, shorts, vestidos ou qualquer peça, verifique na lista. Se houver, informe preço, cores e tamanhos. Se não houver, explique com naturalidade que esgotou ou não está na vitrine, sugerindo alternativas parecidas.
+3. EMPATIA E SUPORTE DE ENTREGA: Se o usuário reclamar de atrasos, prazos ou entregas (onde você não tem acesso ao painel de rastreio), demonstre empatia humana genuína e oriente-o a chamar a equipe diretamente pelo botão verde do WhatsApp no topo da página.
+4. TOM: Acolhedor, charmoso, empático e natural.
+
+ESTOQUE ATUAL DA LOJA:
+${inventarioTexto}`;
+
+    // Adiciona ao histórico conversacional
+    historicoChatAPI.push({ role: "user", parts: [{ text: text }] });
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemInstruction }] },
+          contents: historicoChatAPI,
+          generationConfig: { temperature: 0.9 }
+        })
+      });
+
+      const data = await response.json();
       document.getElementById(loadingId).remove();
 
-      const respostaIA = response.text || "Amiga, tive um breve lapso aqui, mas como posso te ajudar a arrasar no visual hoje? 💕";
+      let respostaIA = "Amiga, tive um breve lapso aqui, mas como posso te ajudar a arrasar no visual hoje? 💕";
+      
+      if (data && data.candidates && data.candidates[0].content) {
+        respostaIA = data.candidates[0].content.parts[0].text;
+        // Salva a resposta no histórico para manter contexto contínuo
+        historicoChatAPI.push({ role: "model", parts: [{ text: respostaIA }] });
+      }
+
       msgContainer.innerHTML += `<div class="chat-bubble marta">${respostaIA.replace(/\n/g, '<br>')}</div>`;
       msgContainer.scrollTop = msgContainer.scrollHeight;
 
     } catch (err) {
       document.getElementById(loadingId).remove();
-      msgContainer.innerHTML += `<div class="chat-bubble marta">Poxa, tive uma instabilidade momentânea na conexão com a IA, mas nossa loja física fica na Av. Anita Garibaldi, 4591, Curitiba/PR. Quer falar direto com as meninas no WhatsApp? 💕</div>`;
+      msgContainer.innerHTML += `<div class="chat-bubble marta">Poxa, tive uma oscilação na rede aqui, mas nossa loja física fica na Av. Anita Garibaldi, 4591, Curitiba/PR. Quer falar direto com as meninas no WhatsApp? 💕</div>`;
       msgContainer.scrollTop = msgContainer.scrollHeight;
     }
   };
