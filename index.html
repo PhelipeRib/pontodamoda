@@ -225,7 +225,7 @@
   </div>
 </main>
 
-<!-- AVATAR HOLOGRÁFICO DA MARTA (IA INTELIGENTE ULTRA-FLUIDA) -->
+<!-- AVATAR HOLOGRÁFICO DA MARTA (IA EMPÁTICA E SAGAZ) -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
@@ -485,7 +485,7 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MARTA STYLIST (INTELIGÊNCIA HÍBRIDA ULTRA-FLUIDA E EMPÁTICA)
+  // MARTA STYLIST (MOTOR CONVERSACIONAL SAGAZ E EMPÁTICO)
   const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre looks, cores ou tamanhos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
@@ -510,42 +510,55 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está pensando na combinação perfeita...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está analisando...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    // Pequena pausa natural para simular o raciocínio criativo
-    await new Promise(resolve => setTimeout(resolve, 600));
+    // Tempo de raciocínio natural
+    await new Promise(resolve => setTimeout(resolve, 700));
 
     let resposta = "";
     const p = text.toLowerCase();
 
-    // Varre o catálogo real buscando correspondências de itens, categorias, cores ou descrições
+    // 1. ANÁLISE DE PROBLEMAS COM ENTREGA / RECLAMAÇÕES / ATRASOS
+    const isProblemaEntrega = p.includes('demorar') || p.includes('demora') || p.includes('atraso') || p.includes('atrasado') || 
+                              p.includes('3 meses') || p.includes('meses') || p.includes('dias') || p.includes('cade') || 
+                              p.includes('cadê') || p.includes('rastreio') || p.includes('pedido') || p.includes('chegou');
+
+    // 2. BUSCA DE PEÇAS ESPECÍFICAS
+    const termosBusca = p.replace(/tem|voces|vocês|possui|trabalham|com|de|a|o|as|os/g, '').trim().split(' ').filter(t => t.length > 2);
     const itensMatch = produtosCatalogo.filter(item => {
-      const info = (item.nome + " " + item.cat + " " + item.cores + " " + (item.descricao || "")).toLowerCase();
-      return p.split(' ').some(palavra => palavra.length > 2 && info.includes(palavra));
+      const info = (item.nome + " " + item.cat + " " + (item.cores || "") + " " + (item.descricao || "")).toLowerCase();
+      return termosBusca.some(termo => info.includes(termo));
     });
 
-    if (p.includes('cnpj') || p.includes('empresa') || p.includes('contato')) {
-      resposta = "O CNPJ da Exclusiva Ponto da Moda é 42.752.095/0001-40. Pode confiar, está tudo certinho por aqui! 🛍️";
-    } else if (p.includes('endereço') || p.includes('onde') || p.includes('local') || p.includes('loja') || p.includes('curitiba') || p.includes('anita')) {
-      resposta = "Nossa lojinha física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Passa aqui para tomar um café com a gente ou receber seu look na hora! 📍";
-    } else if (p.includes('frete') || p.includes('entrega') || p.includes('motoboy') || p.includes('retirar')) {
-      resposta = "Olha só, nós despachamos rapidinho via motoboy para Curitiba e região, ou se preferir, você pode selecionar 'Retirar na Loja' direto no pedido sem pagar taxa de frete! 🚚✨";
-    } else if (p.includes('obrigada') || p.includes('obrigado') || p.includes('valeu') || p.includes('tmj')) {
-      resposta = "De nada, amiga! Sempre um prazer te ajudar a brilhar. Se precisar de mais alguma dica de look, é só chamar! 💕✨";
-    } else if (itensMatch.length > 0) {
-      resposta = `Ah, que ótima escolha! Olha só, olhando aqui no nosso estoque fresquinho, achei exatamente o que você comentou:\n\n` +
-        itensMatch.map(item => `• *${item.nome}* (${item.cat}) — **R$ ${item.preco.toFixed(2).replace('.', ',')}**\n  🎨 Cores: *${item.cores}* | 📏 Tamanhos: *${item.tamanhos}* | 📦 Restam: *${item.qtd} un.*`).join('\n\n') +
-        `\n\nJá te adianto que o caimento dessas peças é perfeito! Se quiser garantir, é só escolher o seu tamanho ali em cima no catálogo e mandar pra sacola, maninho(a)! 💕`;
-    } else if (p.includes('oi') || p.includes('ola') || p.includes('olá') || p.includes('tudo bem') || p.includes('e ai') || p.includes('fala') || p.includes('oiee')) {
-      resposta = `Oie! Tudo ótimo por aqui e com você? Como personal stylist da Exclusiva, tô pronta pra te ajudar a arrasar no visual. O que você tá procurando hoje? Temos saias, vestidos, shorts, conjuntos e muito mais! ✨`;
-    } else if (p.includes('look') || p.includes('combinar') || p.includes('estilo') || p.includes('moda') || p.includes('roupa')) {
-      resposta = `Com certeza! Para montar um look incrível, adoro combinar nossas blusas e croppeds com nossas calças de alfaiataria ou saias. Me conta: você prefere um estilo mais casual do dia a dia ou algo mais elegante para arrasar à noite? 😉`;
-    } else if (p.includes('tamanho') || p.includes('veste') || p.includes('numeracao') || p.includes('p') || p.includes('m')|| p.includes('g')) {
-      resposta = `Trabalhamos com os tamanhos *P, M e G* nas nossas peças principais, com modelagens pensadas para valorizar super bem o corpo! Veja os destaques atuais na vitrine:\n\n` +
-        produtosCatalogo.map(item => `• *${item.nome}* (${item.cat}) — R$ ${item.preco.toFixed(2).replace('.', ',')} (Tamanhos: ${item.tamanhos}, Cores: ${item.cores})`).join('\n');
-    } else {
-      resposta = `Olha, adorei o seu estilo e a forma como você perguntou! Deixa eu te contar: temos peças incríveis cadastradas na nossa vitrine como vestidos, shorts, conjuntos e saias super estilosos. Dá uma olhadinha no catálogo acima ou me diz qual peça você curte mais que eu puxo os detalhes para você! 😉✨`;
+    if (isProblemaEntrega) {
+      resposta = `Poxa, sinto muito por essa situação! Nossas entregas em Curitiba costumam ser super rápidas via motoboy. Como sou a estilista virtual e não tenho acesso ao sistema de rastreamento de pedidos, te conselho forte a chamar as meninas direto no botão verde do **WhatsApp** ali no topo! Elas conseguem checar seu nome na hora e resolver para você! 📲💕`;
+    } 
+    else if (p.includes('cropped') && itensMatch.length === 0) {
+      resposta = `Poxa, amada! Dei uma olhada aqui no nosso estoque e no momento não temos croppeds disponíveis na vitrine. Mas temos blusas maravilhosas e conjuntos lindos que caem super bem! Quer que eu te mostre alguma dessas opções? ✨`;
+    }
+    else if (itensMatch.length > 0) {
+      resposta = `Ah, que ótima escolha! Olhando aqui no estoque fresquinho da loja, encontrei exatamente o que você pediu:\n\n` +
+        itensMatch.map(item => `• *${item.nome}* (${item.cat}) — **R$ ${item.preco.toFixed(2).replace('.', ',')}**\n  🎨 Cores: *${item.cores || 'Conferir na vitrine'}* | 📏 Tamanhos: *${item.tamanhos}* | 📦 Restam: *${item.qtd} un.*`).join('\n\n') +
+        `\n\nO caimento dessas peças fica impecável! Quer ajuda para combinar com outra peça? 💕`;
+    }
+    else if (p.includes('obrigada') || p.includes('obrigado') || p.includes('valeu') || p.includes('tmj') || p.includes('brigado')) {
+      resposta = `De nada, amada! Fico super feliz em ajudar. Se precisar de mais alguma dica de look ou combinar cores, é só me chamar! 😉✨`;
+    }
+    else if (p.includes('oi') || p.includes('ola') || p.includes('olá') || p.includes('oiee') || p.includes('e ai') || p.includes('fala')) {
+      resposta = `Oie! Tudo ótimo por aqui e com você? Como personal stylist da Exclusiva, tô pronta pra te ajudar a arrasar no visual. Me conta, o que você tá procurando hoje? ✨`;
+    }
+    else if (p.includes('look') || p.includes('combinar') || p.includes('estilo') || p.includes('ajuda')) {
+      resposta = `Com o maior prazer! Para montar um look perfeito, adoro combinar nossas saias ou calças de alfaiataria com blusas leves. Me conta: você quer um visual pro dia a dia ou algo mais arrumado pra sair à noite? 💃`;
+    }
+    else if (p.includes('tamanho') || p.includes('veste') || p.includes('p') || p.includes('m') || p.includes('g')) {
+      resposta = `Nossas peças trabalham principalmente com os tamanhos *P, M e G*, com cortes que valorizam muito bem a silhueta! Você pode escolher o tamanho direto nos botõezinhos do catálogo acima antes de mandar pra sacola! 📏✨`;
+    }
+    else if (p.includes('endereço') || p.includes('onde') || p.includes('loja') || p.includes('curitiba') || p.includes('anita')) {
+      resposta = "Nossa loja física fica na Av. Anita Garibaldi, 4591 - Bairro Barreirinha, Curitiba/PR. Pode vir tomar um café com a gente! 📍";
+    }
+    else {
+      resposta = `Hum, deixa eu ver! Não achei exatamente esses termos na vitrine agora, mas temos vestidos, saias e conjuntos incríveis disponíveis. Se quiser tirar alguma dúvida sobre entregas ou atendimento da loja, também pode chamar a nossa equipe pelo WhatsApp! Como posso te ajudar melhor? 💕`;
     }
 
     document.getElementById(loadingId).remove();
