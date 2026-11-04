@@ -32,18 +32,10 @@
     
     .brand { display: flex; align-items: center; gap: 14px; }
     .brand-logo-img { 
-      width: 60px; 
-      height: 60px; 
-      border-radius: 50%; 
-      object-fit: cover; 
-      border: 3px solid var(--ac);
-      box-shadow: 0 0 18px rgba(184, 151, 66, 0.5);
-      animation: floatLogo 3s ease-in-out infinite;
+      width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid var(--ac);
+      box-shadow: 0 0 18px rgba(184, 151, 66, 0.5); animation: floatLogo 3s ease-in-out infinite;
     }
-    @keyframes floatLogo {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-4px) scale(1.04); }
-    }
+    @keyframes floatLogo { 0%, 100% { transform: translateY(0px) scale(1); } 50% { transform: translateY(-4px) scale(1.04); } }
 
     .brand-info h1 { font-size: 1.25em; font-weight: 800; color: var(--tx); letter-spacing: 1.2px; text-transform: uppercase; }
     .brand-info p { font-size: 0.78em; color: var(--ac); font-weight: 700; display: flex; align-items: center; gap: 6px; margin-top: 3px; }
@@ -58,15 +50,8 @@
 
     .instruction-banner {
       background: linear-gradient(135deg, rgba(240, 196, 201, 0.4), rgba(184, 151, 66, 0.15));
-      border: 1.5px dashed var(--rosé-dark);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 18px;
-      font-size: 0.82em;
-      color: var(--tx);
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      border: 1.5px dashed var(--rosé-dark); border-radius: 12px; padding: 12px 16px;
+      margin-bottom: 18px; font-size: 0.82em; color: var(--tx); display: flex; align-items: center; gap: 12px;
     }
     .instruction-banner i { font-size: 1.5em; color: var(--ac); flex-shrink: 0; }
 
@@ -112,33 +97,26 @@
     .total-box strong { font-size: 1.25em; color: var(--ac); font-weight: 800; }
 
     .disclaimer-box {
-      background: rgba(184, 151, 66, 0.08);
-      border: 1px solid rgba(184, 151, 66, 0.3);
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 0.76em;
-      color: var(--mu);
-      margin-top: 14px;
-      line-height: 1.5;
+      background: rgba(184, 151, 66, 0.08); border: 1px solid rgba(184, 151, 66, 0.3); border-radius: 10px; padding: 12px; font-size: 0.76em; color: var(--mu); margin-top: 14px; line-height: 1.5;
     }
     .disclaimer-box i { color: var(--ac); margin-right: 4px; }
 
     .qr-card { text-align: center; background: var(--in); border: 1px dashed var(--bd); border-radius: 12px; padding: 14px; margin-top: 16px; }
     .qr-card img { width: 120px; height: 120px; border-radius: 8px; background: #fff; padding: 6px; border: 1px solid var(--bd); object-fit: contain; }
 
-    /* PAINEL ADMIN MODAL */
-    .admin-modal {
+    /* MODAL DE CONTA / LOGIN / PAINEL */
+    .user-modal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.5); z-index: 2000;
       display: none; align-items: center; justify-content: center; padding: 16px;
     }
-    .admin-content {
-      background: var(--cd); border-radius: 16px; padding: 24px; width: 100%; max-width: 450px;
+    .user-content {
+      background: var(--cd); border-radius: 16px; padding: 24px; width: 100%; max-width: 480px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--bd);
       max-height: 90vh; overflow-y: auto;
     }
 
-    /* AVATAR HOLOGRÁFICO LIVRE & RESPONSIVO */
+    /* AVATAR HOLOGRÁFICO LIVRE */
     .marta-3d-wrapper {
       position: fixed; bottom: 15px; right: 15px; z-index: 1000;
       display: flex; flex-direction: column; align-items: flex-end; gap: 6px; pointer-events: none;
@@ -220,6 +198,9 @@
     </div>
 
     <div class="header-actions">
+      <button type="button" class="btn" onclick="abrirUserModal()" style="padding: 10px 14px; font-size: 0.82em; background: var(--in); border-color: var(--bd);">
+        <i class="fa-solid fa-user-circle" style="color: var(--ac);"></i> <span id="btn-user-label">Entrar / Conta</span>
+      </button>
       <a href="https://api.whatsapp.com/send?phone=5541988353707&text=Olá!%20Vim%20pelo%20catálogo%20online%20e%20gostaria%20de%20atendimento." target="_blank" class="btn success" style="padding: 10px 16px; font-size: 0.82em;">
         <i class="fa-brands fa-whatsapp"></i> WhatsApp
       </a>
@@ -250,7 +231,7 @@
       </div>
 
       <div class="catalog-grid" id="catalog-container">
-        <p style="color: var::mu; text-align: center; grid-column: 1/-1; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Carregando catálogo da planilha...</p>
+        <p style="color: var(--mu); text-align: center; grid-column: 1/-1; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Carregando catálogo da planilha...</p>
       </div>
     </div>
 
@@ -350,22 +331,32 @@
   </div>
 </div>
 
-<!-- MODAL DE CADASTRO ADMIN -->
-<div class="admin-modal" id="adminModal">
-  <div class="admin-content">
-    <h2><i class="fa-solid fa-lock" style="color: var(--ac);"></i> Painel da Administração</h2>
-    <p class="sub" style="margin-bottom: 16px;">Insira seu e-mail cadastrado para gerenciar o catálogo.</p>
-    
-    <div id="admin-login-box">
-      <label>E-mail de Administrador</label>
-      <input type="email" id="admin-email-input" placeholder="exemplo@dominio.com">
-      <button type="button" class="btn pr" onclick="verificarAdmin()" style="width: 100%;">Entrar no Painel</button>
-      <button type="button" class="btn" onclick="fecharAdminModal()" style="width: 100%; margin-top: 8px;">Cancelar</button>
+<!-- MODAL UNIFICADO DE LOGIN / HISTÓRICO / PAINEL ADMIN -->
+<div class="user-modal" id="userModal">
+  <div class="user-content">
+    <div id="view-login">
+      <h2><i class="fa-solid fa-user-lock" style="color: var(--ac);"></i> Identificação de Acesso</h2>
+      <p class="sub" style="margin-bottom: 16px;">Insira seu e-mail para ver seus pedidos ou gerenciar a loja.</p>
+      
+      <label>Seu E-mail</label>
+      <input type="email" id="user-email-input" placeholder="seu-email@dominio.com">
+      <button type="button" class="btn pr" onclick="fazerLoginUsuario()" style="width: 100%;">Entrar na Conta</button>
+      <button type="button" class="btn" onclick="fecharUserModal()" style="width: 100%; margin-top: 8px;">Fechar</button>
     </div>
 
-    <div id="admin-form-box" style="display: none;">
-      <p style="font-size: 0.85em; color: var(--success); font-weight: 700; margin-bottom: 12px;">
-        <i class="fa-solid fa-circle-check"></i> Acesso Liberado com Sucesso!
+    <!-- PAINEL DO CLIENTE (HISTÓRICO DE PEDIDOS) -->
+    <div id="view-client-dashboard" style="display: none;">
+      <h2><i class="fa-solid fa-bag-shopping" style="color: var(--ac);"></i> Meus Pedidos Realizados</h2>
+      <p class="sub" id="client-email-display" style="margin-bottom: 14px;"></p>
+      <div id="client-orders-list" style="margin-bottom: 16px; max-height: 250px; overflow-y: auto;"></div>
+      <button type="button" class="btn" onclick="logoutUsuario()" style="width: 100%;">Sair / Trocar Conta</button>
+    </div>
+
+    <!-- PAINEL ADMINISTRATIVO (DONA DA LOJA) -->
+    <div id="view-admin-dashboard" style="display: none;">
+      <h2><i class="fa-solid fa-screwdriver-wrench" style="color: var(--ac);"></i> Painel Administrativo</h2>
+      <p class="sub" style="margin-bottom: 12px; color: var(--success); font-weight: 700;">
+        <i class="fa-solid fa-circle-check"></i> Acesso Administrador Autorizado
       </p>
       
       <label>Nome do Produto</label>
@@ -389,7 +380,7 @@
       <button type="button" class="btn success" onclick="salvarNovoProduto()" style="width: 100%; margin-top: 6px;">
         <i class="fa-solid fa-plus"></i> Cadastrar na Planilha
       </button>
-      <button type="button" class="btn" onclick="fecharAdminModal()" style="width: 100%; margin-top: 8px;">Fechar Painel</button>
+      <button type="button" class="btn" onclick="logoutUsuario()" style="width: 100%; margin-top: 8px;">Sair da Administração</button>
     </div>
   </div>
 </div>
@@ -403,8 +394,7 @@
       <p><strong>CEP:</strong> 82220-000 - Curitiba / PR</p>
       <p><strong>Atendimento:</strong> (41) 98835-3707 | contato@exclusivapontodamoda.com.br</p>
       <p style="font-size: 0.78em; margin-top: 10px; color: var(--mu);">
-        &copy; Exclusiva Ponto da Moda. Todos os direitos reservados. Catálogo digital B2C inteligente. | 
-        <a href="#" onclick="abrirAdminModal(event)" style="color: var(--ac); text-decoration: underline; font-weight: 700;">Área Admin</a>
+        &copy; Exclusiva Ponto da Moda. Todos os direitos reservados. Catálogo digital B2C inteligente.
       </p>
     </div>
 
@@ -421,17 +411,15 @@
 
 <script>
   const GEMINI_API_KEY = "AQ.Ab8RN6IF2oqLPqDraM6_Vdu4feNEBH6A4EsuJ5A0ZMgiAIEcxw";
-  
-  // URL do Web App gerada no seu Apps Script
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCizQbunw5-W6cHZHw5Gbh5a3EwWDzQTMhAn7cOIg/exec";
 
   let produtosCatalogo = [];
   let carrinho = [];
   let selecaoTamanhos = {};
   let categoriaAtual = 'todos';
-  let adminEmailLogado = "";
+  let usuarioLogado = localStorage.getItem('exclusiva_user') || "";
 
-  // CARREGAR PRODUTOS DA PLANILHA AO ABRIR O SITE
+  // CARREGAR PRODUTOS DA PLANILHA
   async function carregarProdutosDoGoogleSheets() {
     try {
       const response = await fetch(`${APPS_SCRIPT_URL}?action=getProducts`);
@@ -446,6 +434,11 @@
       console.error("Erro ao carregar produtos:", error);
       document.getElementById('catalog-container').innerHTML = `<p style="color: #dc2626; text-align: center; grid-column: 1/-1; padding: 20px;">Erro ao carregar o catálogo do Google Sheets.</p>`;
     }
+  }
+
+  // ATUALIZAR BOTÃO DE CONTA AO CARREGAR
+  if(usuarioLogado) {
+    document.getElementById('btn-user-label').innerText = usuarioLogado.split('@')[0];
   }
 
   const martaTips = [
@@ -466,7 +459,6 @@
     win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  // MOTOR DE PENSAMENTO GENERATIVO DA MARTA
   function gerarRespostaGenerativaLocal(pergunta) {
     const p = pergunta.toLowerCase();
     if (p.includes('cnpj') || p.includes('empresa') || p.includes('documento')) {
@@ -660,34 +652,80 @@
     window.open(`https://wa.me/${foneLoja}?text=${encodeURIComponent(texto)}`, '_blank');
   }
 
-  // FUNÇÕES DO PAINEL ADMIN
-  function abrirAdminModal(e) {
-    e.preventDefault();
-    document.getElementById('adminModal').style.display = 'flex';
-  }
-  function fecharAdminModal() {
-    document.getElementById('adminModal').style.display = 'none';
+  // CONTROLE DO MODAL DE USUÁRIO / LOGIN / ADMIN
+  function abrirUserModal() {
+    document.getElementById('userModal').style.display = 'flex';
+    if(usuarioLogado) {
+      checarPermissaoEExibirPainel(usuarioLogado);
+    } else {
+      document.getElementById('view-login').style.display = 'block';
+      document.getElementById('view-client-dashboard').style.display = 'none';
+      document.getElementById('view-admin-dashboard').style.display = 'none';
+    }
   }
 
-  async function verificarAdmin() {
-    const email = document.getElementById('admin-email-input').value.trim();
+  function fecharUserModal() {
+    document.getElementById('userModal').style.display = 'none';
+  }
+
+  async function fazerLoginUsuario() {
+    const email = document.getElementById('user-email-input').value.trim();
     if(!email) {
-      alert("Digite seu e-mail!");
+      alert("⚠️ Digite um e-mail válido!");
       return;
     }
+    usuarioLogado = email;
+    localStorage.setItem('exclusiva_user', email);
+    document.getElementById('btn-user-label').innerText = email.split('@')[0];
+    checarPermissaoEExibirPainel(email);
+  }
 
-    // Valida buscando os produtos passando o e-mail (ou teste rápido via requisição)
+  async function checarPermissaoEExibirPainel(email) {
     try {
-      const res = await fetch(`${APPS_SCRIPT_URL}?action=getProducts`);
-      const produtos = await res.json();
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "loginUser", authEmail: email })
+      });
+      const res = await response.json();
       
-      // Se carregou com sucesso, simulamos a checagem testando salvar ou validando o e-mail cadastrado
-      adminEmailLogado = email;
-      document.getElementById('admin-login-box').style.display = 'none';
-      document.getElementById('admin-form-box').style.display = 'block';
-    } catch(err) {
-      alert("Erro ao validar e-mail no servidor.");
+      document.getElementById('view-login').style.display = 'none';
+
+      if(res.success && res.isAdmin) {
+        // É ADMIN (Dona da Loja)
+        document.getElementById('view-admin-dashboard').style.display = 'block';
+        document.getElementById('view-client-dashboard').style.display = 'none';
+      } else {
+        // É CLIENTE COMUM
+        document.getElementById('view-client-dashboard').style.display = 'block';
+        document.getElementById('view-admin-dashboard').style.display = 'none';
+        document.getElementById('client-email-display').innerText = `Logado como: ${email}`;
+        
+        const listDiv = document.getElementById('client-orders-list');
+        if(res.pedidos && res.pedidos.length > 0) {
+          listDiv.innerHTML = res.pedidos.map(p => `
+            <div style="background:var(--in); padding:10px; border-radius:8px; margin-bottom:8px; font-size:0.8em;">
+              <strong>Data:</strong> ${p.data}<br>
+              <strong>Itens:</strong> ${p.itens}<br>
+              <strong>Total:</strong> R$ ${p.total} (${p.status})
+            </div>
+          `).join('');
+        } else {
+          listDiv.innerHTML = `<p style="color:var(--mu); font-size:0.82em; font-style:italic;">Nenhum pedido registrado para este e-mail ainda.</p>`;
+        }
+      }
+    } catch(e) {
+      alert("❌ Erro ao validar e-mail no servidor.");
+      logoutUsuario();
     }
+  }
+
+  function logoutUsuario() {
+    usuarioLogado = "";
+    localStorage.removeItem('exclusiva_user');
+    document.getElementById('btn-user-label').innerText = "Entrar / Conta";
+    document.getElementById('view-login').style.display = 'block';
+    document.getElementById('view-client-dashboard').style.display = 'none';
+    document.getElementById('view-admin-dashboard').style.display = 'none';
   }
 
   async function salvarNovoProduto() {
@@ -697,7 +735,7 @@
     const imagemUrl = document.getElementById('novo-img').value;
 
     if(!nome || !preco || !imagemUrl) {
-      alert("Preencha todos os campos do produto!");
+      alert("⚠️ Preencha todos os campos do produto!");
       return;
     }
 
@@ -706,7 +744,7 @@
         method: "POST",
         body: JSON.stringify({
           action: "addProduct",
-          authEmail: adminEmailLogado,
+          authEmail: usuarioLogado,
           nome: nome,
           preco: preco,
           categoria: categoria,
@@ -716,17 +754,16 @@
       const res = await response.json();
       if(res.success) {
         alert("✅ " + res.message);
-        fecharAdminModal();
-        carregarProdutosDoGoogleSheets(); // Recarrega o catálogo na hora
+        fecharUserModal();
+        carregarProdutosDoGoogleSheets();
       } else {
         alert("❌ " + res.message);
       }
     } catch(e) {
-      alert("Erro ao comunicar com o Google Sheets.");
+      alert("❌ Erro ao comunicar com o Google Sheets.");
     }
   }
 
-  // Inicializa carregando do Google Sheets
   carregarProdutosDoGoogleSheets();
 </script>
 
