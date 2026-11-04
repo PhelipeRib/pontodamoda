@@ -118,6 +118,15 @@
 
     @media(max-width: 900px) { main { grid-template-columns: 1fr; } .footer-container { grid-template-columns: 1fr; } .marta-chat-window { width: 92vw; right: 4vw; } }
   </style>
+
+  <!-- SDK oficial do Google Generative AI (Gemini) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/genai": "https://esm.run/@google/genai"
+      }
+    }
+  </script>
 </head>
 <body>
 
@@ -217,7 +226,7 @@
           <i class="fa-solid fa-qrcode" style="color: var(--ac);"></i> QR Code de Recompra Rápida
         </h3>
         <p style="font-size: 0.72em; color: var(--mu); margin-bottom: 10px;">
-          Acesse o catálogo instantaneamente pelo celular.
+          Acesse el catálogo instantaneamente pelo celular.
         </p>
         <img src="qrcode.png" alt="QR Code Exclusiva" onerror="this.src='https://via.placeholder.com/120?text=QR+Code'">
       </div>
@@ -225,7 +234,7 @@
   </div>
 </main>
 
-<!-- AVATAR HOLOGRÁFICO DA MARTA (MOTOR COGNITIVO FLUIDO E DINÂMICO) -->
+<!-- AVATAR HOLOGRÁFICO DA MARTA (GEMINI SDK API REAL) -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
@@ -242,7 +251,7 @@
       <img src="marta.png" style="width:32px; height:32px; border-radius:50%; object-fit:cover;" onerror="this.src='logo.jpg'">
       <div>
         <div style="font-weight: 800; font-size: 0.88em;">Marta (Stylist Virtual)</div>
-        <div style="font-size: 0.68em; opacity: 0.9;">Online • Inteligência Fluida Ativa</div>
+        <div style="font-size: 0.68em; opacity: 0.9;">Online • Gemini AI Ativa</div>
       </div>
     </div>
     <button type="button" onclick="toggleMartaChat()" style="background:transparent; border:0; color:#fff; font-size:1.2em; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -346,7 +355,9 @@
   </div>
 </footer>
 
-<script>
+<script type="module">
+  import { GoogleGenAI } from "@google/genai";
+
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxM1lh6u1qQO5rmUrm6EiezxV6CRzg1F7SQ8lL0p_bpnb8_6XdgRd4xAjVUVus_Rtc/exec";
   const ADMIN_EMAIL = "phelipe.ribeiroop@gmail.com";
 
@@ -357,8 +368,9 @@
   let usuarioLogado = localStorage.getItem('exclusiva_user') || "";
   let imagemUploadedBase64 = "";
 
-  // Histórico de contexto para garantir raciocínio fluido sem repetições
-  let historicoConversa = [];
+  // Instância oficial do SDK Gemini
+  const ai = new GoogleGenAI({ apiKey: "AQ.Ab8RN6KQcW_lK-t7qkZfd4RYsQ9Hw4cfO30SCsBpHNPiM5PBxA" });
+  let chatSession = null;
 
   async function carregarProdutosDoGoogleSheets() {
     try {
@@ -367,6 +379,7 @@
       if (Array.isArray(data) && data.length > 0) {
         produtosCatalogo = data;
         renderCatalog();
+        initMartaChatSession(); // Inicializa o chat inteligente com os dados atualizados da planilha
       } else {
         document.getElementById('catalog-container').innerHTML = `<p style="text-align: center; grid-column: 1/-1;">Nenhum produto cadastrado na aba 'Produtos' da planilha.</p>`;
       }
@@ -488,7 +501,37 @@
     window.open(`https://wa.me/5541988353707?text=${encodeURIComponent(mensagemWhats)}`, '_blank');
   }
 
-  // MARTA STYLIST (MOTOR COGNITIVO FLUIDO - SEMPRE PENSANTE E ÚNICO)
+  // CONFIGURAÇÃO DA SESSÃO INTELIGENTE COM O GEMINI
+  function initMartaChatSession() {
+    const inventarioTexto = produtosCatalogo.map(p => 
+      `• Nome: ${p.nome} | Categoria: ${p.cat} | Descrição: ${p.descricao || 'N/A'} | Preço: R$ ${p.preco} | Tamanhos: ${p.tamanhos} | Cores: ${p.cores} | Estoque: ${p.qtd}`
+    ).join('\n');
+
+    const systemInstruction = `Você é a Marta, Consultora de Moda e Stylist Virtual da loja "Exclusiva Ponto da Moda", localizada na Av. Anita Garibaldi, 4591 - Barreirinha, Curitiba/PR (CNPJ: 42.752.095/0001-40).
+
+REGRAS ABSOLUTAS E INEGOCIÁVEIS:
+1. PENSAMENTO FLUIDO E ÚNICO: NUNCA repita a mesma resposta ou use frases prontas engessadas. Cada resposta deve ser pensada na hora, adaptada organicamente ao prompt exato do usuário, demonstrando alta inteligência, sagacidade e dinamismo conversacional.
+2. COMPREENSÃO DE CATÁLOGO: Analise rigorosamente a lista de estoque abaixo. Se o cliente perguntar se tem um item específico (ex: cropped, saia, shorts), verifique se ele consta na lista. Se tiver, informe com entusiasmo os detalhes, preços e cores. Se não tiver, diga com naturalidade que esgotou ou não está na vitrine atual, oferecendo alternativas similares da loja.
+3. EMPATIA E JOGO DE CINTURA: Para dúvidas sobre entregas, prazos ou pedidos passados (onde você não tem acesso ao sistema interno), demonstre empatia genuína e oriente o cliente a chamar a equipe diretamente pelo botão verde do WhatsApp no topo da página, variando o vocabulário a cada vez.
+4. TOM DE VOZ: Empático, acolhedor, charmoso, informal, compreendendo gírias ("maninho", "amiga", etc.) e respondendo com carinho.
+
+INVENTÁRIO ATUALIZADO DA PLANILHA:
+${inventarioTexto}`;
+
+    try {
+      chatSession = ai.models.chats.create({
+        model: 'gemini-2.5-flash',
+        config: {
+          systemInstruction: systemInstruction,
+          temperature: 0.9, // Máxima criatividade e variação fluida
+        }
+      });
+    } catch(err) {
+      console.error("Erro ao iniciar o chat do Gemini:", err);
+    }
+  }
+
+  // MARTA STYLIST (BALÃO FLUTUANTE)
   const martaTips = ["Loja na Av. Anita Garibaldi, 4591! 📍", "Me pergunte sobre looks, cores ou tamanhos! ✨", "Entregamos via Motoboy em Curitiba! 🚚"];
   let tipIdx = 0;
   setInterval(() => {
@@ -513,69 +556,26 @@
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     const loadingId = "loading_" + Date.now();
-    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está pensando...</div>`;
+    msgContainer.innerHTML += `<div class="chat-bubble marta" id="${loadingId}"><i class="fa-solid fa-spinner fa-spin"></i> Marta está analisando o catálogo para você...</div>`;
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    // Pequena pausa natural para simular raciocínio inteligente
-    await new Promise(resolve => setTimeout(resolve, 600));
+    try {
+      if (!chatSession) {
+        initMartaChatSession();
+      }
 
-    historicoConversa.push(text.toLowerCase());
-    const ultimaMsg = text.toLowerCase();
-    let resposta = "";
+      const response = await chatSession.sendMessage({ message: text });
+      document.getElementById(loadingId).remove();
 
-    // Geração dinâmica e pensante baseada em semântica e intenção (sem respostas repetidas ou robóticas)
-    const isAtrasoOuEntrega = ultimaMsg.includes('atras') || ultimaMsg.includes('demor') || ultimaMsg.includes('meses') || ultimaMsg.includes('entrega') || ultimaMsg.includes('recebi') || ultimaMsg.includes('correios') || ultimaMsg.includes('motoboy');
-    const isSaudacao = ultimaMsg === 'oi' || ultimaMsg === 'olá' || ultimaMsg === 'oiee' || ultimaMsg === 'e ai' || ultimaMsg === 'fala' || ultimaMsg.includes('tudo bem') || ultimaMsg.includes('(:') || ultimaMsg.includes(':d');
-    const isLookOuEstilo = ultimaMsg.includes('look') || ultimaMsg.includes('combinar') || ultimaMsg.includes('noite') || ultimaMsg.includes('sair') || ultimaMsg.includes('estilo') || ultimaMsg.includes('roupa');
-    
-    // Busca inteligente no catálogo dinâmico
-    const itensMatch = produtosCatalogo.filter(item => {
-      const info = (item.nome + " " + item.cat + " " + (item.cores || "") + " " + (item.descricao || "")).toLowerCase();
-      return ultimaMsg.split(' ').some(palavra => palavra.length > 3 && info.includes(palavra));
-    });
+      const respostaIA = response.text || "Amiga, tive um breve lapso aqui, mas como posso te ajudar a arrasar no visual hoje? 💕";
+      msgContainer.innerHTML += `<div class="chat-bubble marta">${respostaIA.replace(/\n/g, '<br>')}</div>`;
+      msgContainer.scrollTop = msgContainer.scrollHeight;
 
-    if (isAtrasoOuEntrega) {
-      const variacoesAtraso = [
-        `Poxa, sinto muito por saber disso! Nossas entregas costumam voar, mas se já passou todo esse tempo e você ainda não recebeu, te aconselho forte a chamar direto as meninas no WhatsApp oficial ali em cima. Como sou a stylist virtual, não tenho acesso ao sistema interno de rastreio, mas elas resolvem isso num instante para você! 📲✨`,
-        `Nossa, sério?! Olha, era pra ter chegado super rápido. Como eu fico cuidando mais da parte de estilo e provador, de verdade eu não tenho como checar o status do seu pacote por aqui. Dá um toque nas meninas pelo botão do WhatsApp que elas conferem o seu pedido agora mesmo! 💛`,
-        `Poxa vida, que chato isso acontecer! Me desculpe pelo transtorno. Como eu não acesso o painel de envios da loja, o melhor caminho é chamar a equipe no WhatsApp para elas rastrearem o seu pacote correndo. Tenho certeza que vão te ajudar rapidinho! 🚚`
-      ];
-      resposta = variacoesAtraso[Math.floor(Math.random() * variacoesAtraso.length)];
+    } catch (err) {
+      document.getElementById(loadingId).remove();
+      msgContainer.innerHTML += `<div class="chat-bubble marta">Poxa, tive uma instabilidade momentânea na conexão com a IA, mas nossa loja física fica na Av. Anita Garibaldi, 4591, Curitiba/PR. Quer falar direto com as meninas no WhatsApp? 💕</div>`;
+      msgContainer.scrollTop = msgContainer.scrollHeight;
     }
-    else if (isSaudacao) {
-      const variacoesOi = [
-        `Oie! Que bom te ver por aqui. Como posso te ajudar a montar um look incrível hoje, amada? ✨`,
-        `Oin! Tudo ótimo por aqui, e com você? Me conta o que está procurando para a gente arrasar no visual hoje! 💕`,
-        `Oieee! Pronta para renovar o guarda-roupa? O que você tem em mente para hoje, maninho(a)? 💃`
-      ];
-      resposta = variacoesOi[Math.floor(Math.random() * variacoesOi.length)];
-    }
-    else if (isLookOuEstilo) {
-      const variacoesLook = [
-        `Adoro essa vibe! Para um visual marcante, gosto muito de misturar nossas saias ou calças de alfaiataria com uma blusa leve e acessórios dourados. Me conta: você prefere um estilo mais casual ou algo bem sofisticado para a ocasião? ✨`,
-        `Com certeza! Combinar peças confortáveis com um toque elegante faz toda a diferença. Você quer focar em conforto para o dia a dia ou quer um look bem poderoso para balada/noite? 🥂`,
-        `Fechado! Para acertar em cheio no look, podemos apostar nos nossos conjuntos ou vestidos. Qual cor ou estilo faz mais o seu estilo hoje? 🖤`
-      ];
-      resposta = variacoesLook[Math.floor(Math.random() * variacoesLook.length)];
-    }
-    else if (itensMatch.length > 0) {
-      resposta = `Achei exatamente peças que combinam com o que você falou no nosso estoque:\n\n` +
-        itensMatch.map(item => `• *${item.nome}* (${item.cat}) — **R$ ${item.preco.toFixed(2).replace('.', ',')}**\n  🎨 Cores: *${item.cores || 'Variadas'}* | 📏 Tamanhos: *${item.tamanhos}* | 📦 Restam: *${item.qtd} un.*`).join('\n\n') +
-        `\n\nO caimento dessas peças é maravilhoso! Quer adicionar direto na sacola? 💕`;
-    }
-    else {
-      // Resposta inteligente e fluida gerada organicamente a partir da frase livre do usuário
-      const respostasLivres = [
-        `Nossa, achei super interessante o que você comentou! Deixa eu te contar: aqui na Exclusiva a gente preza muito pelo caimento e conforto. Quer dar uma olhada nas nossas categorias de vestidos e conjuntos ali no topo? ✨`,
-        `Entendi perfeitamente! Para te orientar da melhor forma, temos peças lindas na vitrine hoje. Se preferir tirar qualquer dúvida mais específica sobre prazos ou pagamentos, as meninas te atendem super rápido no WhatsApp da loja! 💖`,
-        `Que legal! Adoro conversar sobre moda com você. Se quiser, você pode filtrar as peças por categoria no topo da página ou me dizer qual estilo você ama usar que eu te ajudo a garimpar! 😉`
-      ];
-      resposta = respostasLivres[Math.floor(Math.random() * respostasLivres.length)];
-    }
-
-    document.getElementById(loadingId).remove();
-    msgContainer.innerHTML += `<div class="chat-bubble marta">${resposta.replace(/\n/g, '<br>')}</div>`;
-    msgContainer.scrollTop = msgContainer.scrollHeight;
   };
 
   // LOGIN & ADMIN
