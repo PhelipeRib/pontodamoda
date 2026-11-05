@@ -150,7 +150,7 @@
       <div class="instruction-banner">
         <i class="fa-solid fa-circle-info"></i>
         <div>
-          <b>Como Comprar:</b> Escolha suas peças no catálogo abaixo. Preencha seus dados ao lado e clique no botão verde para <b>enviar o pedido direto pelo WhatsApp</b>!
+          <b>Como Comprar:</b> Escolha suas peças no catálogo abaixo. Preencha seus dados ao lado e clique em <b>Pagar no Mercado Pago</b> para checkout seguro (Pix/Cartão) ou em <b>Enviar Pedido via WhatsApp</b>!
         </div>
       </div>
 
@@ -186,7 +186,7 @@
   <div class="col-side">
     <div class="cd" style="position: sticky; top: 84px;">
       <h2><i class="fa-solid fa-paper-plane" style="color: var(--ac);"></i> Concluir Pedido</h2>
-      <form id="form-fechar-pedido" onsubmit="enviarPedidoB2C(event)">
+      <form id="form-fechar-pedido">
         <label>Seu Nome Completo *</label>
         <input type="text" id="cli-nome" placeholder="Ex: Camila Silva" required>
 
@@ -202,12 +202,18 @@
         <label>Endereço de Entrega *</label>
         <textarea id="cli-endereco" rows="2" placeholder="Rua, Número, Bairro" required></textarea>
 
-        <button type="submit" class="btn success" style="width: 100%; padding: 14px; font-size: 0.95em; margin-top: 6px;">
-          <i class="fa-brands fa-whatsapp"></i> Enviar Pedido via WhatsApp
+        <!-- Botão 1: Checkout Direto no Mercado Pago -->
+        <button type="button" class="btn pr" id="btn-mp-checkout" onclick="processarCheckoutMercadoPago()" style="width: 100%; padding: 14px; font-size: 0.9em; margin-top: 6px; background: #009ee3; border-color: #009ee3; color: #fff !important;">
+          <i class="fa-solid fa-credit-card"></i> Pagar no Mercado Pago (Pix/Cartão)
+        </button>
+
+        <!-- Botão 2: Finalização Tradicional via WhatsApp -->
+        <button type="button" class="btn success" id="btn-whats-checkout" onclick="enviarPedidoB2C(event)" style="width: 100%; padding: 12px; font-size: 0.85em; margin-top: 8px;">
+          <i class="fa-brands fa-whatsapp"></i> Tratar Pedido via WhatsApp
         </button>
 
         <div class="disclaimer-box">
-          <i class="fa-solid fa-triangle-exclamation"></i> <b>Nota:</b> O pedido será enviado ao WhatsApp da atendente para combinar pagamento e frete.
+          <i class="fa-solid fa-shield-halved"></i> <b>Segurança:</b> Os pagamentos online são processados em ambiente seguro pelo Mercado Pago.
         </div>
       </form>
       
@@ -224,7 +230,7 @@
   </div>
 </main>
 
-<!-- AVATAR HOLOGRÁFICO DA MARTA (MOTOR COGNITIVO COM SUPORTE E BUSCA SEMÂNTICA EXATA) -->
+<!-- AVATAR HOLOGRÁFICO DA MARTA -->
 <div class="marta-3d-wrapper">
   <div class="marta-speech-bubble" id="martaSpeechBubble">
     Loja física na Av. Anita Garibaldi, 4591 - Curitiba! 📍
@@ -448,8 +454,53 @@
     totalDisplay.innerText = `R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
   }
 
+  // 1. PROCESSAR CHECKOUT NO MERCADO PAGO
+  async function processarCheckoutMercadoPago() {
+    if (carrinho.length === 0) { alert("⚠️ Adicione pelo menos um item à sacola!"); return; }
+
+    const nome = document.getElementById('cli-nome').value.trim();
+    const whats = document.getElementById('cli-whats').value.trim();
+    const entrega = document.getElementById('cli-entrega').value;
+    const endereco = document.getElementById('cli-endereco').value.trim();
+
+    if (!nome || !whats) { alert("Por favor, preencha seu Nome e WhatsApp antes de pagar!"); return; }
+
+    const btnMP = document.getElementById('btn-mp-checkout');
+    const txtOriginal = btnMP.innerHTML;
+    btnMP.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Gerando Link Seguro...`;
+    btnMP.disabled = true;
+
+    try {
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "criarCheckoutMercadoPago",
+          nomeCliente: nome,
+          emailCliente: usuarioLogado,
+          itens: carrinho
+        })
+      });
+
+      const result = await response.json();
+      btnMP.innerHTML = txtOriginal;
+      btnMP.disabled = false;
+
+      if (result.success && result.checkoutUrl) {
+        // Redireciona o cliente para a página oficial do Mercado Pago
+        window.open(result.checkoutUrl, '_blank');
+      } else {
+        alert("Não foi possível gerar o link do Mercado Pago. Você pode concluir seu pedido normalmente via WhatsApp!");
+      }
+    } catch (err) {
+      btnMP.innerHTML = txtOriginal;
+      btnMP.disabled = false;
+      alert("Erro ao conectar com o serviço de pagamento. Tente finalizar pelo WhatsApp.");
+    }
+  }
+
+  // 2. ENVIAR PEDIDO DIRETO VIA WHATSAPP
   async function enviarPedidoB2C(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     if (carrinho.length === 0) { alert("⚠️ Adicione pelo menos um item à sacola!"); return; }
 
     const totalGeral = carrinho.reduce((acc, item) => acc + item.preco, 0);
@@ -457,6 +508,8 @@
     const whats = document.getElementById('cli-whats').value;
     const entrega = document.getElementById('cli-entrega').value;
     const endereco = document.getElementById('cli-endereco').value;
+
+    if (!nome || !whats) { alert("Preencha Nome e WhatsApp!"); return; }
 
     let textoItens = "";
     const contagemItens = {};
@@ -469,6 +522,7 @@
 
     let mensagemWhats = `✨ *NOVO PEDIDO - EXCLUSIVA PONTO DA MODA* ✨\n\n👤 *Cliente:* ${nome}\n📞 *Whats:* ${whats}\n🚚 *Entrega:* ${entrega}\n📍 *Endereço:* ${endereco}\n\n🛍️ *Itens:*\n${textoItens}\n💰 *Total:* R$ ${totalGeral.toFixed(2)}`;
 
+    // Notifica o backend e baixa o estoque na planilha
     fetch(APPS_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
@@ -538,7 +592,6 @@
     const isSaudacao = p.includes('oi') || p.includes('ola') || p.includes('oiee') || p.includes('e ai') || p.includes('fala');
     const isLookOuEstilo = p.includes('look') || p.includes('combinar') || p.includes('noite') || p.includes('sair') || p.includes('estilo');
 
-    // Filtro semântico direto no catálogo carregado da planilha
     const termosBusca = p.split(' ').filter(w => w.length > 2 && !['tem', 'vcs', 'voces', 'com', 'que', 'para', 'uma', 'algum', 'alguma'].includes(w));
     const itensMatch = produtosCatalogo.filter(item => {
       const info = (item.nome + " " + item.cat + " " + (item.cores || "") + " " + (item.descricao || "")).toLowerCase();
@@ -553,7 +606,7 @@
       resposta = `Nossa loja física fica na **Av. Anita Garibaldi, 4591 - Barreirinha, Curitiba/PR**. Venha nos visitar ou escolha entrega via motoboy! 📍🚚`;
     }
     else if (isAjudaPedido) {
-      resposta = `Fazer seu pedido é muito fácil:\n\n1️⃣ Escolha a peça e o tamanho (P, M, G) no catálogo.\n2️⃣ Clique em **'Adicionar'** para mandar o item para a Sacola.\n3️⃣ Preencha seus dados no painel ao lado e clique em **'Enviar Pedido via WhatsApp'**! 💕`;
+      resposta = `Fazer seu pedido é muito fácil:\n\n1️⃣ Escolha a peça e o tamanho (P, M, G) no catálogo.\n2️⃣ Clique em **'Adicionar'** para mandar o item para a Sacola.\n3️⃣ Preencha seus dados no painel ao lado e escolha **Pagar no Mercado Pago** ou **Enviar via WhatsApp**! 💕`;
     }
     else if (isAtrasoOuEntrega) {
       resposta = `As entregas via motoboy em Curitiba são super rápidas! Para qualquer dúvida de rastreio ou prazo, chame a equipe diretamente no botão verde do WhatsApp no topo da página. 📲✨`;
